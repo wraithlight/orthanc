@@ -5,10 +5,10 @@
        <div class="game-tile"
         data-bind="css: { 'wall-top': top === 'TILE_WALL', 'wall-bottom': bottom === 'TILE_WALL', 'wall-right': right === 'TILE_WALL', 'wall-left': left === 'TILE_WALL' }">
         <!-- ko if: containsItems?.length > 0 -->
-          <!-- ko if: containsItems[0].iconName.toLowerCase() !== 'item_orb' -->
+          <!-- ko if: !['item_gold', 'item_orb'].includes(containsItems[0].iconName.toLowerCase()) -->
            <img data-bind="attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.png' }">
           <!-- /ko -->
-          <!-- ko if: containsItems[0].iconName.toLowerCase() === 'item_orb' -->
+          <!-- ko if: ['item_gold', 'item_orb'].includes(containsItems[0].iconName.toLowerCase()) -->
            <img data-bind="
             attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.svg' },
             class: containsItems[0].iconName.toLowerCase()
