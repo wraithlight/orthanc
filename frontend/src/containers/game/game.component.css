@@ -158,3 +158,7 @@ img.character-tile {
   height: 61px;
   background-color: #ffa500;
 }
+img.item_orb {
+  background-color: #ffa500;
+  height: 24px;
+}
