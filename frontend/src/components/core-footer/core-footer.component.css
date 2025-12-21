@@ -1,0 +1,7 @@
+.core-footer {
+  padding-top: 1px;
+  width: 100%;
+  font-size: 0.6rem;
+  display: flex;
+  justify-content: end;
+}

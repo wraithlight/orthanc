@@ -1,5 +1,6 @@
 {
   "apiUrl": "",
+  "version": "0.0.1-alpha",
   "isMemberLoginEnabled": false,
   "isKeyboardOnlyEnabled": false,
   "isKeyboardWithMouseEnabled": true,

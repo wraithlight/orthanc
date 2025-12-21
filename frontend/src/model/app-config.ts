@@ -8,4 +8,5 @@ export interface AppConfig {
   readonly isKeyboardOnlyEnabled: boolean;
   readonly isKeyboardWithMouseEnabled: boolean;
   readonly assets: AppAssetsConfig;
+  readonly version: string;
 }
