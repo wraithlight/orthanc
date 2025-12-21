@@ -1,0 +1,9 @@
+body {
+  background: #000;
+  color: #ffa500;
+  font-family: "Courier New", Courier, monospace;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

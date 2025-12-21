@@ -1,0 +1,20 @@
+<!-- ko if: state() === 'LOGIN' -->
+  <login-screen
+    params="{
+      isMemberLoginEnabled: config.isMemberLoginEnabled,
+      onLoginSuccess: onLoginSuccess
+    }"
+  >
+  </login-screen>
+<!-- /ko -->
+
+<!-- ko if: state() === 'MODE_SELECT' -->
+  <mode-select-screen
+    params="{
+      isKeyboardOnlyEnabled: config.isKeyboardOnlyEnabled,
+      isKeyboardWithMouseEnabled: config.isKeyboardWithMouseEnabled,
+      onBack: onBackFromModeSelect
+    }"
+  >
+  </mode-select-screen>
+<!-- /ko -->

@@ -1,0 +1,18 @@
+<div class="mode-select-box">
+  <div class="mode-select-title">
+    ORTHANC LOGIN
+  </div>
+
+  <div class="actions">
+    <!-- ko if: isKeyboardOnlyEnabled -->
+      <button data-bind="click: onKeyboardOnlyClick">Keyboard only</button>
+    <!-- /ko -->
+    <!-- ko if: isKeyboardWithMouseEnabled -->
+      <button data-bind="click: onKeyboardWithMouseClick">Keyboard with mouse</button>
+    <!-- /ko -->
+  </div>
+
+    <div class="actions">
+      <button data-bind="click: onBackClick">Back</button>
+  </div>
+</div>
