@@ -13,8 +13,20 @@
     params="{
       isKeyboardOnlyEnabled: config.isKeyboardOnlyEnabled,
       isKeyboardWithMouseEnabled: config.isKeyboardWithMouseEnabled,
-      onBack: onBackFromModeSelect
+      onBack: onBackFromModeSelect,
+      onModeSelected: onModeSelected
     }"
   >
   </mode-select-screen>
+<!-- /ko -->
+
+<!-- ko if: state() === 'CHARACTER_CREATION' -->
+  <character-creation-screen
+    params="{
+      isKeyboardOnlyEnabled: config.isKeyboardOnlyEnabled,
+      isKeyboardWithMouseEnabled: config.isKeyboardWithMouseEnabled,
+      onBack: onBackFromModeSelect
+    }"
+  >
+  </character-creation-screen>
 <!-- /ko -->

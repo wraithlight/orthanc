@@ -24,11 +24,11 @@ export class ModeSelectComponent implements ModeSelectComponentParams {
   }
 
   public onKeyboardOnlyClick(): void {
-
+    this.onKeyboardOnly.notifySubscribers();
   }
 
   public onKeyboardWithMouseClick(): void {
-
+    this.onKeyboardWithMouse.notifySubscribers();
   }
 
   public onBackClick(): void {

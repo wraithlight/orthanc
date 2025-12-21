@@ -1,6 +1,6 @@
 {
   "apiUrl": "",
   "isMemberLoginEnabled": false,
-  "isKeyboardOnlyEnabled": true,
+  "isKeyboardOnlyEnabled": false,
   "isKeyboardWithMouseEnabled": true
 }
