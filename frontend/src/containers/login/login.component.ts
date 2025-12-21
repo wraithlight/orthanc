@@ -17,7 +17,6 @@ export class LoginContainer implements LoginContainerParams {
     this.isMemberLoginEnabled = params.isMemberLoginEnabled;
     this.onLoginSuccess = params.onLoginSuccess;
     this.loginAsGuestEvent.subscribe((_m) => this.onLoginSuccess.notifySubscribers());
-    this.loginAsMemberEvent.subscribe((m) => console.log("loginAsMemberEvent", m));
    }
 
 }
