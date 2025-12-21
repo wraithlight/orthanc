@@ -14,27 +14,27 @@
       <table style="width: 100%;">
         <tr>
           <td><strong>Hits:</strong></td>
-          <td>12</td>
+          <td data-bind="text: stats().hits"></td>
         </tr>
         <tr>
           <td>Strength:</td>
-          <td>12</td>
+          <td data-bind="text: stats().str"></td>
         </tr>
         <tr>
           <td>Intelligence:</td>
-          <td>12</td>
+          <td data-bind="text: stats().int"></td>
         </tr>
         <tr>
           <td>Constitution:</td>
-          <td>12</td>
+          <td data-bind="text: stats().con"></td>
         </tr>
         <tr>
           <td>Dexterity:</td>
-          <td>12</td>
+          <td data-bind="text: stats().dex"></td>
         </tr>
       </table>
       <div class="actions">
-        <button data-bind="click: onBackClick">Regenerate</button>
+        <button data-bind="click: onGenerateClick">Regenerate</button>
       </div>
     </div>
   </div>
