@@ -1,0 +1,45 @@
+<div class="character-creation-box">
+  <div class="character-creation-title">
+    CHARACTER CREATION
+  </div>
+
+  <div class="character-creation-content">
+    <div class="character-creation-character-box">
+      <div class="character">
+        <img data-bind="attr: { src: characterImageUrl }">
+      </div>
+    </div>
+    <div class="character-creation-stats-box">
+      <h3>Characteristics</h3>
+      <table style="width: 100%;">
+        <tr>
+          <td>Strength:</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Intelligence:</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Constitution:</td>
+          <td>12</td>
+        </tr>
+        <tr>
+          <td>Dexterity:</td>
+          <td>12</td>
+        </tr>
+      </table>
+      <div class="actions">
+        <button data-bind="click: onBackClick">Regenerate</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button data-bind="click: onNextClick">Embark</button>
+  </div>
+
+  <div class="actions">
+    <button data-bind="click: onBackClick">Back</button>
+  </div>
+</div>

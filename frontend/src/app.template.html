@@ -23,9 +23,9 @@
 <!-- ko if: state() === 'CHARACTER_CREATION' -->
   <character-creation-screen
     params="{
-      isKeyboardOnlyEnabled: config.isKeyboardOnlyEnabled,
-      isKeyboardWithMouseEnabled: config.isKeyboardWithMouseEnabled,
-      onBack: onBackFromModeSelect
+      characterImageUrl: config.assets.characterImageUrl,
+      onBack: onBackFromCharacterCreation,
+      onNext: onNextFromCharacterCreation
     }"
   >
   </character-creation-screen>

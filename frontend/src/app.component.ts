@@ -9,6 +9,7 @@ export class Application {
   public onModeSelected = new subscribable<"KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE">();
   public onBackFromModeSelect = new subscribable();
   public onBackFromCharacterCreation = new subscribable();
+  public onNextFromCharacterCreation = new subscribable();
   public readonly config = getConfig();
 
   constructor() {
@@ -16,6 +17,7 @@ export class Application {
     this.onModeSelected.subscribe((mode) => this.modeSelected(mode));
     this.onBackFromModeSelect.subscribe(() => this.onBackFromModeSelectHandler());
     this.onBackFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
+    this.onNextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
   }
 
   public async onLoginSuccessHandler(): Promise<void> {
@@ -40,6 +42,12 @@ export class Application {
   public async onBackFromCharacterCreationHandler(): Promise<void> {
     setTimeout(() => {
       this.state(AppState.MODE_SELECT);
+    }, 500);
+  }
+
+  public async onNextFromCharacterCreationHandler(): Promise<void> {
+    setTimeout(() => {
+      this.state(AppState.INGAME);
     }, 500);
   }
 }
