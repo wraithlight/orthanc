@@ -1,3 +1,12 @@
+# Custom
+
+# to ignore /server/data folder that contains a bunch of files - will be removed once we have a DB
+data
+
+
+
+# AUTO
+
 # Logs
 logs
 *.log
