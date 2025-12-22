@@ -1,0 +1,86 @@
+.game-screen {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+.game-screen-layout {
+  display: grid;
+  grid-template-columns: 500px 1fr 1fr;
+  grid-template-rows: 200px 200px;
+  width: 100%;
+}
+.game-screen-chat {
+  align-self: flex-end;
+  width: 400px;
+}
+
+
+
+.game-view {
+  grid-row: 1 / span 2;
+  border: 1px solid;
+  padding: 98px;
+  display: flex;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+}
+.game-tile {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.w0w0::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to right, currentColor 25%, currentColor 25%, currentColor 75%, currentColor 75%) top/100% 0.5px no-repeat,
+    linear-gradient(to right, currentColor 25%, currentColor 25%, currentColor 75%, currentColor 75%) bottom/100% 0.5px no-repeat
+}
+
+.game-actions,
+.game-stats {
+  border: 1px solid;
+  padding: 5px 10px;
+}
+.game-actions {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.game-hits,
+.game-action {
+  padding: 4px 8px;
+}
+.game-hits {
+  font-weight: 700;
+}
+.game-action:hover {
+  cursor: pointer;
+  background: #ffa500;
+  color: #000;
+}
+.game-feedback {
+  grid-column: 2 / span 2;
+  border: 1px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+ul {
+  padding: 10px 15px;
+}
+table {
+  width: 100%;
+}
+td:nth-of-type(2) {
+  text-align: end;
+}

@@ -1,0 +1,113 @@
+<div class="game-screen">
+  <div class="game-screen-layout">
+    <div class="game-view">
+      <div class="game-tile"></div>
+      <div class="game-tile"></div>
+      <div class="game-tile"></div>
+      <div class="game-tile w0w0"></div>
+      <div class="game-tile w0w0"><img src="/assets/character.png"></div>
+      <div class="game-tile w0w0"><img src="/assets/orc.png"></div>
+      <div class="game-tile"></div>
+      <div class="game-tile"></div>
+      <div class="game-tile"></div>
+    </div>
+    <div class="game-feedback">You see a neutral orc.</div>
+    <div class="game-stats">&lt;Map&gt;</div>
+    <div class="game-stats"><strong>Spells on</strong>
+      <ul>
+        <li>Levitation</li>
+        <li>Invisibility</li>
+      </ul>
+    </div>
+    <div class="game-actions">
+      <div class="game-hits">10/10 HITS left.</div>
+      <div class="game-action">[F]ight</div>
+      <div class="game-action">[R]un</div>
+      <div class="game-action">[C]ast a spell</div>
+      <div class="game-action">[O]ptions</div>
+    </div>
+    <div class="game-stats">
+      <strong>Characteristics</strong>
+      <table>
+        <tr>
+          <td>Strength</td>
+          <td>14</td>
+        </tr>
+        <tr>
+          <td>Intelligence</td>
+          <td>13</td>
+        </tr>
+        <tr>
+          <td>Constitution</td>
+          <td>5</td>
+        </tr>
+        <tr>
+          <td>Dexterity</td>
+          <td>9</td>
+        </tr>
+      </table>
+      <br />
+      <strong>Equipment</strong>
+      <table>
+        <tr>
+          <td>Sword</td>
+          <td>Epic</td>
+        </tr>
+        <tr>
+          <td>Shield</td>
+          <td>Normal</td>
+        </tr>
+        <tr>
+          <td>Armor</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Arrows</td>
+          <td>0</td>
+        </tr>
+      </table>
+    </div>
+    <div class="game-stats">
+      <strong>Statistics</strong>
+      <table>
+        <tr>
+          <td>Experience</td>
+          <td>114</td>
+        </tr>
+        <tr>
+          <td>Money</td>
+          <td>0</td>
+        </tr>
+        <tr>
+          <td>Next Level</td>
+          <td>1000</td>
+        </tr>
+        <tr>
+          <td>% kills</td>
+          <td>1.00</td>
+        </tr>
+        <tr>
+          <td>Weight</td>
+          <td>00</td>
+        </tr>
+        <tr>
+          <td>Player level</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Spell units</td>
+          <td>4/4</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="game-screen-chat">
+    <game-chat params="{
+        members: chatMembers,
+        messages: chatMessages,
+        toPoll: onChatPoll,
+        toSendMessage: onSendChatMessage
+    }">
+    </game-chat>
+  </div>
+</div>

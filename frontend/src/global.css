@@ -7,3 +7,15 @@ body {
   justify-content: center;
   align-items: center;
 }
+
+orthanc {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+orthanc > game-screen {
+  width: 100%;
+}

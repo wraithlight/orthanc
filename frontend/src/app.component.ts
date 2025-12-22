@@ -4,7 +4,7 @@ import { getConfig } from "./state";
 
 export class Application {
   public mode = observable<"KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE">();
-  public state = observable<AppState>(AppState.LOGIN);
+  public state = observable<AppState>(AppState.INGAME);
   public onLoginSuccess = new subscribable();
   public onModeSelected = new subscribable<"KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE">();
   public onBackFromModeSelect = new subscribable();

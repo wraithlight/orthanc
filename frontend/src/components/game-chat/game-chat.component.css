@@ -1,0 +1,38 @@
+.chat-box {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid #ffa500;
+  /* border-left: 4px solid #ffa500; */
+}
+
+.chat-members {
+  height: 20%;
+  border-bottom: 2px solid #ffa500;
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  padding: 4px 8px;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  max-width: 281px;
+  padding: 4px;
+}
+
+.chat-actions {
+  display: flex;
+}
+
+.chat-actions>button {
+  width: 30%;
+  border-right: 0;
+  border-bottom: 0 !important;
+}
+
+.chat-actions>input {
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+}

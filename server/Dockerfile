@@ -1,16 +1,13 @@
-# FROM php:8.2-apache
-
-# RUN a2enmod rewrite
-
-# RUN sed -i '/<Directory \/var\/www\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/' /etc/apache2/apache2.conf
-
-# EXPOSE 3000
-
-# CMD ["apache2-foreground"]
-
 FROM php:8.0.7-apache
 
 COPY src /var/www/html/
+RUN mkdir -p /var/www/html/app/file-persistence \
+    && touch /var/www/html/app/file-persistence/chat_members.json \
+    && touch /var/www/html/app/file-persistence/chat_messages.json \
+    && chown -R www-data:www-data /var/www/html/app/file-persistence \
+    && chmod 755 /var/www/html/app/file-persistence \
+    && chmod 644 /var/www/html/app/file-persistence/chat_members.json \
+    && chmod 644 /var/www/html/app/file-persistence/chat_messages.json
 
 RUN a2enmod rewrite
 EXPOSE 3000
