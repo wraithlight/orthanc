@@ -10,7 +10,16 @@ export class CharacterCreationClient {
     const response = await fetch(
       `${this._baseUrl}/api/v1/character-creation/generate`,
       {
-        method: "POST"
+        method: "POST",
+        credentials: "include"
+      }
+    );
+
+    await fetch(
+      `${this._baseUrl}/api/v1/game/start`,
+      {
+        method: "GET",
+        credentials: "include"
       }
     );
 

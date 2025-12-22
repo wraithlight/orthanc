@@ -1,5 +1,5 @@
 export interface CharacterCreationStats {
-  hits: number;
+  maxHits: number;
   stats: {
     str: number;
     int: number;

@@ -14,12 +14,12 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   public onNext: Subscribable;
   public onGenerate: Subscribable;
   public characterImageUrl: string;
-  public readonly stats = observable<{ int: number; dex: number; str: number; con: number; hits: number; }>({
+  public readonly stats = observable<{ int: number; dex: number; str: number; con: number; maxHits: number; }>({
     int: 0,
     dex: 0,
     str: 0,
     con: 0,
-    hits: 0
+    maxHits: 0
   });
 
   private readonly _characterCreationClient = new CharacterCreationClient(getConfig().apiUrl);
@@ -37,7 +37,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
         dex: m.stats.dex,
         str: m.stats.str,
         con: m.stats.con,
-        hits: m.hits
+        maxHits: m.maxHits
       });
     });
   }
@@ -49,7 +49,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
         dex: m.stats.dex,
         str: m.stats.str,
         con: m.stats.con,
-        hits: m.hits
+        maxHits: m.maxHits
       });
     });
   }

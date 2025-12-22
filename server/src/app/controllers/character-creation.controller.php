@@ -9,15 +9,18 @@ class CharacterCreationController {
     
     $hits = divide($dex, 3) + roll_d8();
 
-    echo json_encode([
-        'stats' => [
-            'str' => $str,
-            'int' => $int,
-            'dex' => $dex,
-            'con' => $con
-        ],
-        'hits' => $hits
-    ], JSON_PRETTY_PRINT);
+    $character = [
+      'stats' => [
+        'str' => $str,
+        'int' => $int,
+        'dex' => $dex,
+        'con' => $con
+      ],
+      'maxHits' => $hits,
+    ];
+
+    $_SESSION['character'] = $character;
+    echo json_encode($character, JSON_PRETTY_PRINT);
   }
 }
 ?>

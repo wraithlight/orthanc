@@ -10,7 +10,7 @@ interface CharacterCreationComponentParams {
     dex: number;
     str: number;
     con: number;
-    hits: number;
+    maxHits: number;
   }>;
 }
 
@@ -19,7 +19,7 @@ export class CharacterCreationComponent implements CharacterCreationComponentPar
   public readonly onNext: Subscribable;
   public readonly onGenerate: Subscribable;
   public readonly characterImageUrl: string;
-  public readonly stats: Observable<{ int: number; dex: number; str: number; con: number; hits: number; }>;
+  public readonly stats: Observable<{ int: number; dex: number; str: number; con: number; maxHits: number; }>;
 
   constructor(params: CharacterCreationComponentParams) {
     this.onBack = params.onBack;
