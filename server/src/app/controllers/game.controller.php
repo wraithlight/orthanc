@@ -12,6 +12,24 @@ class GameController {
     $chatMembersService->addMember($username);
     $stateService->setPlayerCurHits($currentHits);
     $stateService->setChatLastMessageId($chatMessageService->getLastMessageId());
+    $stateService->setEquipmentSword("SWORD_NORMAL");
+    $stateService->setEquipmentShield("SHIELD_NORMAL");
+    $stateService->setEquipmentArmor("ARMOR_NORMAL");
+    $stateService->setEquipmentArrows(0);
+    $stateService->setCharacterXp(0);
+    $stateService->setCharacterXpFromKills(0);
+    $stateService->setCharacterStatsMoney(0);
+    $stateService->setCharacterStatsLevel(1);
+    $stateService->setCharacterStatsWeight(0);
+    $stateService->setCharacterSpellUnitsMax(4);
+    $stateService->setCharacterSpellUnitsCur(4);
+    // TODO
+    $stateService->setCharacterSpellsOn(array(
+      [
+        "key" => "SPELL_01",
+        "label" => "Levitation"
+      ]
+    ));
 
     $this->sendBackState();
   }
@@ -22,7 +40,15 @@ class GameController {
 
   private function sendBackState() {
     $stateService = new StateService();
+
+    $nextLevelInXp = 1000; // TODO
+
+    $sumXp = $stateService->getCharacterXp(0);
+    $xpFromKills = $stateService->getCharacterXpFromKills();
+    $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $xpFromKills) * 100;
+
     echo json_encode([
+      "__debug" => $_SESSION,
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
@@ -31,33 +57,24 @@ class GameController {
       ],
       "hits" => $stateService->getPlayerCurHits(),
       "maxHits" => $stateService->getPlayerMaxHits(),
-      "activeSpells" => array(
-        [
-          "key" => "SPELL_01",
-          "label" => "Levitation"
-        ],
-        [
-          "key" => "SPELL_02",
-          "label" => "Invisibility"
-        ],
-      ),
+      "activeSpells" => $stateService->getCharacterSpellsOn([]),
       "equipment" => [
-        "sword" => "SWORD_NORMAL",
-        "shield" => "SHIELD_NORMAL",
-        "armor" => "ARMOR_NORMAL",
-        "arrows" => 0
+        "sword" => $stateService->getEquipmentSword(),
+        "shield" => $stateService->getEquipmentShield(),
+        "armor" => $stateService->getEquipmentArmor(),
+        "arrows" => $stateService->getEquipmentArrows()
       ],
       "statistics" => [
-        "experience" => 666,
-        "money" => 555,
-        "nextLevelInXp" => 999,
-        "weight" => 10,
-        "playerLevel" => 1,
+        "experience" => $stateService->getCharacterXp(),
+        "money" => $stateService->getCharacterStatsMoney(),
+        "nextLevelInXp" => $nextLevelInXp,
+        "weight" => $stateService->getCharacterStatsWeight(),
+        "playerLevel" => $stateService->getCharacterStatsLevel(),
         "spellUnits" => [
-          "current" => 4,
-          "maximum" => 4
+          "current" => $stateService->getCharacterSpellUnitsCur(0),
+          "maximum" => $stateService->getCharacterSpellUnitsMax()
         ],
-        "xpPercentageFromKills" => 10
+        "xpPercentageFromKills" => $xpFromKillsPercentage
       ],
       "events" => array(
         [

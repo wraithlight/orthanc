@@ -11,19 +11,114 @@ class StateService {
   const HITS_CUR = "PLAYER_HITS_CUR";
   const HITS_MAX = "PLAYER_HITS_MAX";
   const CHAT_LAST_MESSAGE_ID = "CHAT_LAST_MESSAGE_ID";
+  const EQUIPMENT_SWORD = "EQUIPMENT_SWORD";
+  const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
+  const EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS";
+  const EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR";
+  const CHARACTER_STATS_EXPERIENCE = "CHARACTER_STATS_EXPERIENCE";
+  const CHARACTER_STATS_EXPERIENCE_FROM_KILLS = "CHARACTER_STATS_EXPERIENCE_FROM_KILLS";
+  const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
+  const CHARACTER_STATS_LEVEL = "CHARACTER_STATS_LEVEL";
+  const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
+  const CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
+  const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
+  const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
 
-  // const $EQUIPMENT_SWORD = "EQUIPMENT_SWORD";
-  // const $EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
-  // const $EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS";
-  // const $EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR";
-  // const $CHARACTER_STATS_EXPERIENCE = "CHARACTER_STATS_EXPERIENCE";
-  // const $CHARACTER_STATS_EXPERIENCE_FROM_KILLS = "CHARACTER_STATS_EXPERIENCE_FROM_KILLS";
-  // const $CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
-  // const $CHARACTER_STATS_LEVEL = "CHARACTER_STATS_LEVEL";
-  // const $CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
-  // const $CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
-  // const $CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
-  // const $CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
+  public function setCharacterXp($value){  
+    $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE, $value);
+  }
+
+  public function setCharacterXpFromKills($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS, $value);
+  }
+
+  public function setCharacterStatsMoney($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_MONEY, $value);
+  }
+
+  public function setCharacterStatsLevel($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_LEVEL, $value);
+  }
+
+  public function setCharacterStatsWeight($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_WEIGHT, $value);
+  }
+
+  public function setCharacterSpellUnitsMax($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX, $value);
+  }
+
+  public function setCharacterSpellUnitsCur($value) {
+    $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR, $value);
+  }
+
+  public function setCharacterSpellsOn($value) {
+    $this->writeToSessionState(self::CHARACTER_SPELLS_ON, $value);
+  }
+
+  public function getCharacterXp() {  
+    return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE);
+  }
+
+  public function getCharacterXpFromKills() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS);
+  }
+
+  public function getCharacterStatsMoney() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_MONEY);
+  }
+
+  public function getCharacterStatsLevel() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_LEVEL);
+  }
+
+  public function getCharacterStatsWeight() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_WEIGHT);
+  }
+
+  public function getCharacterSpellUnitsMax() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX);
+  }
+
+  public function getCharacterSpellUnitsCur() {
+    return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR);
+  }
+
+  public function getCharacterSpellsOn() {
+    return $this->readFromSessionState(self::CHARACTER_SPELLS_ON);
+  }
+
+  public function setEquipmentSword($value) {
+    $this->writeToSessionState(self::EQUIPMENT_SWORD, $value);
+  }
+
+  public function getEquipmentSword() {
+    return $this->readFromSessionState(self::EQUIPMENT_SWORD);
+  }
+
+  public function setEquipmentShield($value) {
+    $this->writeToSessionState(self::EQUIPMENT_SHIELD, $value);
+  }
+
+  public function getEquipmentShield() {
+    return $this->readFromSessionState(self::EQUIPMENT_SHIELD);
+  }
+
+  public function setEquipmentArrows($value) {
+    $this->writeToSessionState(self::EQUIPMENT_ARROWS, $value);
+  }
+
+  public function getEquipmentArrows() {
+    return $this->readFromSessionState(self::EQUIPMENT_ARROWS);
+  }
+
+  public function setEquipmentArmor($value) {
+    $this->writeToSessionState(self::EQUIPMENT_ARMOR, $value);
+  }
+
+  public function getEquipmentArmor() {
+    return $this->readFromSessionState(self::EQUIPMENT_ARMOR);
+  }
 
   public function getPlayerMaxHits() {
     return $this->readFromSessionState(self::HITS_MAX);
