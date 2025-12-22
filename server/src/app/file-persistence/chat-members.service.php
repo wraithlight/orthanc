@@ -1,7 +1,7 @@
 <?php
 class ChatMembersService extends BaseIOService
 {
-    protected string $filePath = __DIR__ . '/chat_members.json';
+    protected string $filePath = __DIR__ . '../../data/chat_members.json';
 
     public function addMember(string $name): int
     {
