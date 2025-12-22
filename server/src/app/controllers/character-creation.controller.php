@@ -2,6 +2,8 @@
 
 class CharacterCreationController {
   public function generate() {
+    $stateService = new StateService();
+
     $str = roll_d8() + roll_d8();
     $int = roll_d8() + roll_d8();
     $dex = roll_d8() + roll_d8();
@@ -9,18 +11,13 @@ class CharacterCreationController {
     
     $hits = divide($dex, 3) + roll_d8();
 
-    $character = [
-      'stats' => [
-        'str' => $str,
-        'int' => $int,
-        'dex' => $dex,
-        'con' => $con
-      ],
-      'maxHits' => $hits,
-    ];
+    $stateService->setPlayerStrength($str);
+    $stateService->setPlayerIntelligence($int);
+    $stateService->setPlayerDexterity($dex);
+    $stateService->setPlayerConstitution($con);
+    $stateService->setPlayerMaxHits($hits);
 
-    $_SESSION['character'] = $character;
-    echo json_encode($character, JSON_PRETTY_PRINT);
+    echo json_encode([]);
   }
 }
 ?>

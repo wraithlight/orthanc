@@ -2,7 +2,8 @@
 
 class ChatController {
   public function sendMessage() {
-    $username = $_SESSION['username'];
+    $stateService = new StateService();
+    $username = $stateService->getPlayerName();
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $message = $payload['message'];
@@ -17,9 +18,11 @@ class ChatController {
   }
 
   public function getMessages() {
-    $lastMessageId = $_SESSION['lastChatMessageId'];
-    $chatMessageService = new ChatMessagesService();
+    $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
+    $chatMessageService = new ChatMessagesService();
+
+    $lastMessageId = $stateService->getChatLastMessageId();;
     $messages = $chatMessageService->getMessagesSince($lastMessageId);
     $members = $chatMembersService->getAllMembers();
 

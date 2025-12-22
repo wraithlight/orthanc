@@ -6,6 +6,7 @@ require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
 require_once("./app/utils/dice/d8.php");
 require_once("./app/utils/dice/d10_000.php");
+require_once("./app/utils/state/state.service.php");
 require_once("./app/file-persistence/io-service.php");
 require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");
@@ -34,6 +35,7 @@ Wrapper::RegisterPath("POST", "/api/v1/character-creation/generate", $characterC
 Wrapper::RegisterPath("GET", "/api/v1/game/start", $gameControllerFactory, "startGame");
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
+Wrapper::RegisterPath("GET", "/api/v1/game/action", $gameControllerFactory, "onAction");
 
 Wrapper::Listen(true, true);
 
