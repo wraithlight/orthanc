@@ -200,8 +200,16 @@ class GameController
     }
 
     $hasPlayerWon = $stateService->getHasOrb() && $isAtStartPoint;
+    $mapHeight = $maze->mazeHeight();
+    $mapWidth = $maze->mazeWidth();
+
+    $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
       "hasPlayerWon" => $hasPlayerWon,
+      "mapSize" => [
+        "width" => $mapSize,
+        "height" => $mapSize
+      ],
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
