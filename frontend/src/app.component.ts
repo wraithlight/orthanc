@@ -46,8 +46,13 @@ export class Application {
   }
 
   public async onNextFromCharacterCreationHandler(): Promise<void> {
-    setTimeout(() => {
-      this.state(AppState.INGAME);
-    }, 500);
+    await fetch(
+      `${getConfig().apiUrl}/api/v1/game/start`,
+      {
+        method: "GET",
+        credentials: "include"
+      }
+    );
+    this.state(AppState.INGAME);
   }
 }

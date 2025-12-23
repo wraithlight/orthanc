@@ -15,14 +15,6 @@ export class CharacterCreationClient {
       }
     );
 
-    await fetch(
-      `${this._baseUrl}/api/v1/game/start`,
-      {
-        method: "GET",
-        credentials: "include"
-      }
-    );
-
     const content = JSON.parse(await response.text());
     return content;
   }
