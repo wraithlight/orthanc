@@ -16,7 +16,7 @@
 }
 
 .character-creation-character-box {
-  border: 2px solid #ffa500;
+  border: 1px solid #ffa500;
   border-right: 0;
   padding: 8px;
   width: 50%;
@@ -31,11 +31,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid #ffa500;
+  border: 0.5px solid #ffa500;
 }
 
 .character-creation-stats-box {
-  border: 2px solid #ffa500;
+  border: 1px solid #ffa500;
   padding: 8px;
   width: 50%;
 }
