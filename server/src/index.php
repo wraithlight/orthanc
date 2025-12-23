@@ -37,6 +37,7 @@ Wrapper::RegisterPath("POST", "/api/v1/character-creation/generate", $characterC
 Wrapper::RegisterPath("GET", "/api/v1/game/start", $gameControllerFactory, "startGame");
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
+Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
 Wrapper::RegisterPath("GET", "/api/v1/game/action", $gameControllerFactory, "onAction");
 Wrapper::RegisterPath("GET", "/api/v1/maze", $gameControllerFactory, "maze");
 
