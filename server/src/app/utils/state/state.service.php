@@ -185,23 +185,32 @@ class StateService {
   }
 
   public function moveNorth() {
-    $positionX = $this->readFromSessionState(self::POSITION_KEY_X) + 1;
-    $this->writeToSessionState(self::POSITION_KEY_X, $positionX);
+    $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) - 1;
+    $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
   }
 
   public function moveEast() {
-    $positionY = $this->readFromSessionState(self::POSITION_KEY_Y) + 1;
-    $this->writeToSessionState(self::POSITION_KEY_Y, $positionY);
+    $positionY = $this->readFromSessionState(self::POSITION_KEY_X) + 1;
+    $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
   }
 
   public function moveSouth() {
-    $positionX = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
-    $this->writeToSessionState(self::POSITION_KEY_X, $positionX);
+    $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) + 1;
+    $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
   }
 
   public function moveWest() {
-    $positionY = $this->readFromSessionState(self::POSITION_KEY_Y) - 1;
-    $this->writeToSessionState(self::POSITION_KEY_Y, $positionY);
+    $positionY = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
+    $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
+  }
+
+  public function getPlayerPosition(): array {
+    $x = $this->readFromSessionState(self::POSITION_KEY_X);
+    $y = $this->readFromSessionState(self::POSITION_KEY_Y);
+    return [
+      "x" => $x,
+      "y" => $y
+    ];
   }
 
   public function setPlayerPosition($x, $y) {
