@@ -228,7 +228,7 @@ class StateService {
   }
 
   public function setNpcs(array $npcs) {
-    return $this->writeToSessionState(self::MAP_NPCS, $items);
+    return $this->writeToSessionState(self::MAP_NPCS, $npcs);
   }
 
   public function getPlayerPosition(): array {

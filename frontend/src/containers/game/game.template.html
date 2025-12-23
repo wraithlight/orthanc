@@ -11,7 +11,11 @@
       <div class="game-tile" data-bind="css: { 'wall-top': tile21().top === 'TILE_WALL', 'wall-bottom': tile21().bottom === 'TILE_WALL', 'wall-right': tile21().right === 'TILE_WALL', 'wall-left': tile21().left === 'TILE_WALL' }"><!-- ko if: tile21().containsItems?.length > 0 --><img data-bind="attr: { src: '/assets/' + tile21().containsItems[0].key.toLowerCase() + '.png' }"><!-- /ko --></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile22().top === 'TILE_WALL', 'wall-bottom': tile22().bottom === 'TILE_WALL', 'wall-right': tile22().right === 'TILE_WALL', 'wall-left': tile22().left === 'TILE_WALL' }"><!-- ko if: tile22().containsItems?.length > 0 --><img data-bind="attr: { src: '/assets/' + tile22().containsItems[0].key.toLowerCase() + '.png' }"><!-- /ko --></div>
     </div>
-    <div class="game-feedback">You see a neutral orc.</div>
+    <div class="game-feedback">
+      <!-- ko foreach: events -->
+      <span data-bind="text: label"></span>
+      <!-- /ko -->
+    </div>
     <div class="game-stats">&lt;Map&gt;</div>
     <div class="game-stats"><strong>Spells on</strong>
       <ul>

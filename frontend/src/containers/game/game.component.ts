@@ -27,6 +27,7 @@ export class GameContainer {
   public readonly shouldOpenWinDialog = observable(true);
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
+  public readonly events = observableArray([]);
 
   public readonly characterDexterity = observable(0);
   public readonly characterIntelligence = observable(0);
@@ -101,6 +102,7 @@ export class GameContainer {
       this.playerName(m.playerName);
       this.activeSpells(m.activeSpells);
       this.hasPlayerWon(m.hasPlayerWon);
+      this.events(m.events);
     });
   }
 
