@@ -78,8 +78,16 @@
 ul {
   padding: 10px 15px;
 }
+li:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
 table {
   width: 100%;
+}
+td:nth-of-type(1):hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 td:nth-of-type(2) {
   text-align: end;
