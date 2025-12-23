@@ -135,85 +135,92 @@ class GameController {
   ): array {
     return [
       "tile00" => [
-          "top" => $this->getBorderType($currentTiles["tile01"]),
-          "right" => $this->getBorderType($currentTiles["tile12"]),
-          "bottom" => $this->getBorderType($currentTiles["tile21"]),
-          "left" => $this->getBorderType($currentTiles["tile12"]),
+          "top" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile01"]),
+          "right" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile12"]),
+          "bottom" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile21"]),
+          "left" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile12"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile01" => [
-          "top" => $this->getBorderType($currentTiles["tile02"]),
-          "right" => $this->getBorderType($currentTiles["tile13"]),
-          "bottom" => $this->getBorderType($currentTiles["tile22"]),
-          "left" => $this->getBorderType($currentTiles["tile11"]),
+          "top" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile02"]),
+          "right" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile13"]),
+          "bottom" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile22"]),
+          "left" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile11"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile02" => [
-          "top" => $this->getBorderType($currentTiles["tile03"]),
-          "right" => $this->getBorderType($currentTiles["tile14"]),
-          "bottom" => $this->getBorderType($currentTiles["tile23"]),
-          "left" => $this->getBorderType($currentTiles["tile12"]),
+          "top" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile03"]),
+          "right" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile14"]),
+          "bottom" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile23"]),
+          "left" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile12"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile10" => [
-          "top" => $this->getBorderType($currentTiles["tile11"]),
-          "right" => $this->getBorderType($currentTiles["tile22"]),
-          "bottom" => $this->getBorderType($currentTiles["tile31"]),
-          "left" => $this->getBorderType($currentTiles["tile20"]),
+          "top" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile11"]),
+          "right" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile22"]),
+          "bottom" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile31"]),
+          "left" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile20"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile11" => [
-          "top" => $this->getBorderType($currentTiles["tile12"]),
-          "right" => $this->getBorderType($currentTiles["tile23"]),
-          "bottom" => $this->getBorderType($currentTiles["tile32"]),
-          "left" => $this->getBorderType($currentTiles["tile21"]),
+          "top" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile12"]),
+          "right" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile23"]),
+          "bottom" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile32"]),
+          "left" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile21"]),
           "occupiedBy" => [
             "key" => "PLAYER",
           ]
         ],
         "tile12" => [
-          "top" => $this->getBorderType($currentTiles["tile13"]),
-          "right" => $this->getBorderType($currentTiles["tile24"]),
-          "bottom" => $this->getBorderType($currentTiles["tile33"]),
-          "left" => $this->getBorderType($currentTiles["tile22"]),
+          "top" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile13"]),
+          "right" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile24"]),
+          "bottom" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile33"]),
+          "left" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile22"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile20" => [
-          "top" => $this->getBorderType($currentTiles["tile21"]),
-          "right" => $this->getBorderType($currentTiles["tile32"]),
-          "bottom" => $this->getBorderType($currentTiles["tile41"]),
-          "left" => $this->getBorderType($currentTiles["tile30"]),
+          "top" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile21"]),
+          "right" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile32"]),
+          "bottom" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile41"]),
+          "left" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile30"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile21" => [
-          "top" => $this->getBorderType($currentTiles["tile22"]),
-          "right" => $this->getBorderType($currentTiles["tile33"]),
-          "bottom" => $this->getBorderType($currentTiles["tile42"]),
-          "left" => $this->getBorderType($currentTiles["tile31"]),
+          "top" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile22"]),
+          "right" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile33"]),
+          "bottom" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile42"]),
+          "left" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile31"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ],
         "tile22" => [
-          "top" => $this->getBorderType($currentTiles["tile23"]),
-          "right" => $this->getBorderType($currentTiles["tile34"]),
-          "bottom" => $this->getBorderType($currentTiles["tile43"]),
-          "left" => $this->getBorderType($currentTiles["tile32"]),
+          "top" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile23"]),
+          "right" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile34"]),
+          "bottom" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile43"]),
+          "left" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile32"]),
           "occupiedBy" => null,
           "containsItems" => array()
         ]
       ];
   }
 
-  private function getBorderType($targetTile): string {
-    if ($targetTile === "%") return "TILE_OPEN";
+  private function getBorderType(
+    $currentTile,
+    $targetTile
+  ): string {
+    if ($currentTile === "#") return "TILE_OPEN";
     if ($targetTile === "#") return "TILE_WALL";
+    if ($targetTile === "%") return "TILE_OPEN";
     return "TILE_OPEN";
+    // if ($targetTile === "%") return "TILE_OPEN";
+    // if ($targetTile === "#") return "TILE_WALL";
+    // return "TILE_OPEN";
   }
 }
 ?>
