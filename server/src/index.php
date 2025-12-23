@@ -10,6 +10,8 @@ require_once("./app/utils/state/state.service.php");
 require_once("./app/file-persistence/io-service.php");
 require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");
+require_once("./app/file-persistence/maze.service.php");
+require_once("./app/utils/maze.php");
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
 require_once("./app/controllers/game.controller.php");
@@ -36,6 +38,7 @@ Wrapper::RegisterPath("GET", "/api/v1/game/start", $gameControllerFactory, "star
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
 Wrapper::RegisterPath("GET", "/api/v1/game/action", $gameControllerFactory, "onAction");
+Wrapper::RegisterPath("GET", "/api/v1/maze", $gameControllerFactory, "maze");
 
 Wrapper::Listen(true, true);
 

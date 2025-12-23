@@ -21,6 +21,22 @@ abstract class BaseIOService
         return $data;
     }
 
+    protected function readText(): string
+    {
+        $fp = fopen($this->filePath, 'r');
+        if (!$fp) {
+            throw new RuntimeException("Cannot open file for reading: {$this->filePath}");
+        }
+        flock($fp, LOCK_SH);
+
+        $contents = stream_get_contents($fp);
+
+        flock($fp, LOCK_UN);
+        fclose($fp);
+
+        return $contents;
+    }
+
     protected function write(array $data): void
     {
         $fp = fopen($this->filePath, 'c+');
