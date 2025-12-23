@@ -6,15 +6,13 @@
 .game-screen-layout {
   display: grid;
   grid-template-columns: 500px 1fr 1fr;
-  grid-template-rows: 200px 200px;
+  grid-template-rows: 250px 250px;
   width: 100%;
 }
 .game-screen-chat {
   align-self: flex-end;
   width: 400px;
 }
-
-
 
 .game-view {
   grid-row: 1 / span 2;
@@ -34,14 +32,17 @@
   justify-content: center;
   position: relative;
 }
-.w0w0::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background:
-    linear-gradient(to right, currentColor 25%, currentColor 25%, currentColor 75%, currentColor 75%) top/100% 0.5px no-repeat,
-    linear-gradient(to right, currentColor 25%, currentColor 25%, currentColor 75%, currentColor 75%) bottom/100% 0.5px no-repeat
+.wall-top {
+  border-top: 0.5px solid;
+}
+.wall-bottom {
+  border-bottom: 0.5px solid;
+}
+.wall-left {
+  border-left: 0.5px solid;
+}
+.wall-right {
+  border-right: 0.5px solid;
 }
 
 .game-actions,
