@@ -30,7 +30,7 @@ class ChatMembersService extends BaseIOService
         $this->write($members);
     }
 
-    public function cleanupInactiveMembers(int $ttl = 15): void
+    public function cleanupInactiveMembers(int $ttl = 5): void
     {
         $members = $this->read();
         $now = time();
