@@ -23,6 +23,8 @@ class StateService {
   const CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
   const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
+  const MAP_ITEMS = "MAP_ITEMS";
+  const MAP_NPCS = "MAP_NPCS";
 
   public function setCharacterXp($value){  
     $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE, $value);
@@ -202,6 +204,22 @@ class StateService {
   public function moveWest() {
     $positionY = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
     $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
+  }
+
+  public function getItems(): array {
+    return $this->readFromSessionState(self::MAP_ITEMS);
+  }
+
+  public function setItems(array $items) {
+    return $this->writeToSessionState(self::MAP_ITEMS, $items);
+  }
+
+  public function getNpcs(): array {
+    return $this->readFromSessionState(self::MAP_NPCS);
+  }
+
+  public function setNpcs(array $npcs) {
+    return $this->writeToSessionState(self::MAP_NPCS, $items);
   }
 
   public function getPlayerPosition(): array {

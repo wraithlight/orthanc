@@ -1,6 +1,10 @@
 <?php
 
 class GameController {
+
+  const GOLD_PERCENTAGE_ON_MAP = 2;
+  const GOLD_WEIGHT = 1;
+
   public function startGame() {
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
@@ -26,6 +30,37 @@ class GameController {
     $stateService->setCharacterStatsWeight(0);
     $stateService->setCharacterSpellUnitsMax(4);
     $stateService->setCharacterSpellUnitsCur(4);
+
+    $walkableTiles = $maze->getWalkableTiles();
+    $numberOfWalkableTiles = count($walkableTiles);
+    $numberOfGoldOnMap = $numberOfWalkableTiles / 100 * self::GOLD_PERCENTAGE_ON_MAP;
+    $itemsOnMap = [];
+    for($i = 0; $i < $numberOfGoldOnMap; $i++) {
+      $randomIndex = array_rand($walkableTiles, 1);
+      $amount = roll_d10k();
+      array_push(
+        $itemsOnMap,
+        [
+          "x" => $walkableTiles[$randomIndex]["x"],
+          "y" => $walkableTiles[$randomIndex]["y"],
+          "item" => "ITEM_GOLD",
+          "amount" => $amount,
+          "weight" => $amount * self::GOLD_WEIGHT
+        ]
+      );
+    }
+    array_push(
+        $itemsOnMap,
+        [
+          "x" => 1,
+          "y" => 1,
+          "item" => "ITEM_GOLD",
+          "amount" => $amount,
+          "weight" => $amount * self::GOLD_WEIGHT
+        ]
+      );
+    $stateService->setItems($itemsOnMap);
+
     // TODO
     $stateService->setCharacterSpellsOn(array(
       [
@@ -47,7 +82,7 @@ class GameController {
     $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
-    $tiles = $this->calculateTiles($tilesAround);
+    $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
     $possibleActions = $this->getPossibleActions($tiles);
     $canDo = in_array($action, array_column($possibleActions, 'key'), true);
 
@@ -77,14 +112,16 @@ class GameController {
 
   public function maze() {
     $maze = new Maze();
+    $stateService = new StateService();
 
     $map = $maze->getFullMap();
     $location = $maze->getPlayerInitialLocation();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
-
     echo json_encode([
       "location" => $location,
       "tilesAround" => $tilesAround,
+      "gold" => $stateService->getItems(),
+      // "walkableTiles" => $maze->getWalkableTiles(),
       "maze" => $map,
       "size" => [
         "width" => $maze->mazeWidth(),
@@ -106,7 +143,7 @@ class GameController {
     $location = $stateService->getPlayerPosition();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
 
-    $tiles = $this->calculateTiles($tilesAround);
+    $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
     echo json_encode([
       "__debug" => $_SESSION,
       "character" => [
@@ -115,6 +152,7 @@ class GameController {
         "strength" => $stateService->getPlayerStrength(),
         "constitution" => $stateService->getPlayerConstitution()
       ],
+      "playerName" => $stateService->getPlayerName(),
       "hits" => $stateService->getPlayerCurHits(),
       "maxHits" => $stateService->getPlayerMaxHits(),
       "activeSpells" => $stateService->getCharacterSpellsOn([]),
@@ -152,16 +190,18 @@ class GameController {
   }
 
   private function calculateTiles(
-    $currentTiles
+    $currentTiles,
+    $x,
+    $y
   ): array {
     return [
       "tile00" => [
           "top" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile01"]),
           "right" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile12"]),
           "bottom" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile21"]),
-          "left" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile12"]),
+          "left" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile10"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 0, $y - 1)
         ],
         "tile01" => [
           "top" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile02"]),
@@ -169,7 +209,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile22"]),
           "left" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile11"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 0, $y - 1)
         ],
         "tile02" => [
           "top" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile03"]),
@@ -177,7 +217,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile23"]),
           "left" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile12"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 1, $y - 1)
         ],
         "tile10" => [
           "top" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile11"]),
@@ -185,7 +225,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile31"]),
           "left" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile20"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x - 1, $y + 0)
         ],
         "tile11" => [
           "top" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile12"]),
@@ -194,7 +234,8 @@ class GameController {
           "left" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile21"]),
           "occupiedBy" => [
             "key" => "PLAYER",
-          ]
+          ],
+          "containsItems" => $this->getItemsOnTile($x + 0, $y + 0)
         ],
         "tile12" => [
           "top" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile13"]),
@@ -202,7 +243,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile33"]),
           "left" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile22"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 1, $y + 0)
         ],
         "tile20" => [
           "top" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile21"]),
@@ -210,7 +251,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile41"]),
           "left" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile30"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x - 1, $y + 1)
         ],
         "tile21" => [
           "top" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile22"]),
@@ -218,7 +259,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile42"]),
           "left" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile31"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 0, $y + 1)
         ],
         "tile22" => [
           "top" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile23"]),
@@ -226,7 +267,7 @@ class GameController {
           "bottom" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile43"]),
           "left" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile32"]),
           "occupiedBy" => null,
-          "containsItems" => array()
+          "containsItems" => $this->getItemsOnTile($x + 1, $y + 1)
         ]
       ];
   }
@@ -239,12 +280,18 @@ class GameController {
 
     $canFight = false;  // TODO
     $canCast = true;    // TODO
-    $canPickup = false; // TODO
+    $canPickup = !empty($playerTile["containsItems"]);
 
     $canMoveNorth = $playerTile["top"] === "TILE_OPEN";
     $canMoveEast = $playerTile["right"] === "TILE_OPEN";
     $canMoveSouth = $playerTile["bottom"] === "TILE_OPEN";
     $canMoveWest = $playerTile["left"] === "TILE_OPEN";
+
+    if ($canPickup) {
+      foreach($playerTile["containsItems"] as $item) {
+        array_push($actions, ["label" => "Pick up {$item['key']} ({$item['amount']})", "key" => "PICKUP"]);
+      }
+    }
 
     $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN"]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT"]);
@@ -265,6 +312,19 @@ class GameController {
     if ($targetTile === "#") return "TILE_WALL";
     if ($targetTile === "%") return "TILE_OPEN_OUT";
     return "TILE_OPEN";
+  }
+
+  private function getItemsOnTile($x, $y): array {
+    // TODO: To make this work properly, tiles that are not visible should not be considered.
+    $stateService = new StateService();
+    $itemsOnMap = $stateService->getItems();
+    $itemsOnTile = array_values(array_filter($itemsOnMap, fn($m) => $m["x"] === $x && $m["y"] === $y));
+
+    return array_map(fn($m) => [
+      "key" => $m["item"],
+      "amount" => $m["amount"],
+      "weight" => $m["weight"]
+    ], $itemsOnTile);
   }
 }
 ?>

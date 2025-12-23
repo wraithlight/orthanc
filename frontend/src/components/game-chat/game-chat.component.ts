@@ -5,6 +5,7 @@ interface GameChatComponentParams {
   toSendMessage: Subscribable;
   members: ObservableArray;
   messages: ObservableArray;
+  playerName: Observable;
 }
 
 export class GameChatComponent implements GameChatComponentParams {
@@ -12,6 +13,7 @@ export class GameChatComponent implements GameChatComponentParams {
   public toSendMessage: Subscribable<any>;
   public members: ObservableArray<any>;
   public messages: ObservableArray<any>;
+  public playerName: Observable;
 
   public message = observable();
   
@@ -20,6 +22,7 @@ export class GameChatComponent implements GameChatComponentParams {
     this.toSendMessage = params.toSendMessage;
     this.members = params.members;
     this.messages = params.messages;
+    this.playerName = params.playerName;
 
     setInterval(() => this.toPoll.notifySubscribers(), 1_000);
   }

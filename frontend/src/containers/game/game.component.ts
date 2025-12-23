@@ -22,6 +22,7 @@ export class GameContainer {
   public readonly tile21 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile22 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
 
+  public readonly playerName = observable();
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
 
@@ -88,6 +89,7 @@ export class GameContainer {
       this.statisticsSpellUnitsMax(m.statistics.spellUnits.maximum);
       this.statisticsXpPercentageFromKills(m.statistics.xpPercentageFromKills);
       this.actions(m.possibleActions);
+      this.playerName(m.playerName);
     });
   }
 

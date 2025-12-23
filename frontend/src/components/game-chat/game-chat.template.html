@@ -1,7 +1,7 @@
 <div class="chat-box">
   <div class="chat-members">
     <!-- ko foreach: members -->
-     <span data-bind="text: $data"></span>
+     <span data-bind="text: $data, css: { player: $data == $parent.playerName() }"></span>
     <!-- /ko -->
   </div>
   <div class="chat-messages">

@@ -85,6 +85,19 @@ class Maze {
     return $this->getMaze();
   }
 
+  public function getWalkableTiles(): array {
+    $walkableTiles = [];
+    $maze = $this->getMaze();
+    for($y = 0; $y < count($maze); $y++) {
+      for($x = 0; $x < strlen($maze[$y]); $x++) {
+        if ($this->getTile($x, $y) === ".") {
+          array_push($walkableTiles, ["x" => $x, "y" => $y]);
+        }
+      }
+    }
+    return $walkableTiles;
+  }
+
   public function mazeWidth(): int {
     $maze = $this->getMaze();
     return strlen($maze[0]);
