@@ -73,6 +73,7 @@ class GameController {
     $location = $stateService->getPlayerPosition();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
 
+    $tiles = $this->calculateTiles($tilesAround);
     echo json_encode([
       "__debug" => $_SESSION,
       "character" => [
@@ -112,21 +113,8 @@ class GameController {
           "label" => "The neutral orc waves at you."
         ]
       ),
-      "possibleActions" => array(
-        [
-          "key" => "ACTION_FIGHT",
-          "label" => "[F]ight"
-        ],
-        [
-          "key" => "ACTION_RUN",
-          "label" => "[R]un"
-        ],
-        [
-          "key" => "ACTION_CAST",
-          "label" => "[C]ast a spell"
-        ]
-      ),
-      "mapState" => $this->calculateTiles($tilesAround)
+      "possibleActions" => $this->getPossibleActions($tiles),
+      "mapState" => $tiles
     ]);
   }
 
@@ -210,17 +198,40 @@ class GameController {
       ];
   }
 
+  private function getPossibleActions(
+    $tiles
+  ): array {
+    $actions = [];
+    $playerTile = $tiles["tile11"];
+
+    $canFight = false;  // TODO
+    $canCast = true;    // TODO
+    $canPickup = false; // TODO
+
+    $canMoveNorth = $playerTile["top"] === "TILE_OPEN";
+    $canMoveEast = $playerTile["right"] === "TILE_OPEN";
+    $canMoveSouth = $playerTile["bottom"] === "TILE_OPEN";
+    $canMoveWest = $playerTile["left"] === "TILE_OPEN";
+
+    $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN"]);
+    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT"]);
+    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[N]orth", "key" => "MOVE_NORTH"]);
+    !$canFight && $canMoveEast && array_push($actions, ["label" => "[E]ast", "key" => "MOVE_EAST"]);
+    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[S]outh", "key" => "MOVE_SOUTH"]);
+    !$canFight && $canMoveWest && array_push($actions, ["label" => "[W]est", "key" => "MOVE_WEST"]);
+    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL"]);
+
+    return $actions;
+  }
+
   private function getBorderType(
     $currentTile,
     $targetTile
   ): string {
     if ($currentTile === "#") return "TILE_OPEN";
     if ($targetTile === "#") return "TILE_WALL";
-    if ($targetTile === "%") return "TILE_OPEN";
+    if ($targetTile === "%") return "TILE_OPEN_OUT";
     return "TILE_OPEN";
-    // if ($targetTile === "%") return "TILE_OPEN";
-    // if ($targetTile === "#") return "TILE_WALL";
-    // return "TILE_OPEN";
   }
 }
 ?>
