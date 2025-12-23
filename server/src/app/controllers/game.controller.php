@@ -27,7 +27,8 @@ class GameController {
     $stateService->setCharacterSpellsOn(array(
       [
         "key" => "SPELL_01",
-        "label" => "Levitation"
+        "label" => "Levitation",
+        "remaining" => 5
       ]
     ));
 
