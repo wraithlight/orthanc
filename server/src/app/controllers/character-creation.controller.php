@@ -17,7 +17,15 @@ class CharacterCreationController {
     $stateService->setPlayerConstitution($con);
     $stateService->setPlayerMaxHits($hits);
 
-    echo json_encode([]);
+    echo json_encode([
+      "maxHits" => $hits,
+      "stats" => [
+        "str" => $str,
+        "int" => $int,
+        "dex" => $dex,
+        "con" => $con
+      ]
+    ]);
   }
 }
 ?>
