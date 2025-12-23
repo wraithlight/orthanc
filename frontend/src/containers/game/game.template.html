@@ -15,8 +15,9 @@
     <div class="game-stats">&lt;Map&gt;</div>
     <div class="game-stats"><strong>Spells on</strong>
       <ul>
-        <li>Levitation (5)</li>
-        <li>Invisibility (∞)</li>
+        <!-- ko foreach: activeSpells -->
+         <li data-bind="text: label + '(' + remaining + ')'"></li>
+        <!-- /ko -->
       </ul>
     </div>
     <div class="game-actions">
@@ -114,3 +115,18 @@
     </game-chat>
   </div>
 </div>
+<!-- ko if: hasPlayerWon() && shouldOpenWinDialog() -->
+<div class="popup-overlay">
+  <div class="popup">
+    <div class="popup-title">
+      You won!
+    </div>
+    <div class="popup-message">
+      Against all perils of the dungeon, you have emerged victorious! The Orb, long hidden in the depths, is now safely in your hands. Legends will speak of your bravery for ages to come!
+    </div>
+    <div class="popup-actions">
+      <button data-bind="click: closeWinDialog">OK</button>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

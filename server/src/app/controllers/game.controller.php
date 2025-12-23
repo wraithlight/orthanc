@@ -63,15 +63,6 @@ class GameController {
       );
     $stateService->setItems($itemsOnMap);
 
-    // TODO
-    $stateService->setCharacterSpellsOn(array(
-      [
-        "key" => "SPELL_01",
-        "label" => "Levitation",
-        "remaining" => 5
-      ]
-    ));
-
     $this->sendBackState();
   }
 
@@ -86,10 +77,9 @@ class GameController {
     $location = $stateService->getPlayerPosition();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
     $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
-    $possibleActions = $this->getPossibleActions($tiles);
+    $hasPlayerWon = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location;
+    $possibleActions = $this->getPossibleActions($tiles, $hasPlayerWon);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
-    // $canDo = in_array($action, array_column($possibleActions, 'key'), true);
-    // $isTargetValid
 
     if ($canDo) {
       switch($action) {
@@ -161,7 +151,10 @@ class GameController {
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
 
     $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
+
+    $hasPlayerWon = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location;
     echo json_encode([
+      "hasPlayerWon" => $hasPlayerWon,
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
@@ -200,7 +193,7 @@ class GameController {
           "label" => "The neutral orc waves at you."
         ]
       ),
-      "possibleActions" => $this->getPossibleActions($tiles),
+      "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
       "mapState" => $tiles
     ]);
   }
@@ -289,9 +282,13 @@ class GameController {
   }
 
   private function getPossibleActions(
-    $tiles
+    $tiles,
+    $isActionsDisabled
   ): array {
     $actions = [];
+    if ($isActionsDisabled) {
+      return $actions;
+    }
     $playerTile = $tiles["tile11"];
 
     $canFight = false;  // TODO

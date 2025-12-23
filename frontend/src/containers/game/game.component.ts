@@ -23,6 +23,8 @@ export class GameContainer {
   public readonly tile22 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
 
   public readonly playerName = observable();
+  public readonly hasPlayerWon = observable(false);
+  public readonly shouldOpenWinDialog = observable(true);
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
 
@@ -45,6 +47,7 @@ export class GameContainer {
   public readonly statisticsSpellUnitsMax = observable(0);
   public readonly statisticsXpPercentageFromKills = observable(0);
   public readonly actions = observableArray([]);
+  public readonly activeSpells = observableArray([]);
 
   private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
   private readonly _gameActionClient = new GameActionClient(getConfig().apiUrl);
@@ -96,7 +99,13 @@ export class GameContainer {
       this.statisticsXpPercentageFromKills(m.statistics.xpPercentageFromKills);
       this.actions(m.possibleActions);
       this.playerName(m.playerName);
+      this.activeSpells(m.activeSpells);
+      this.hasPlayerWon(m.hasPlayerWon);
     });
+  }
+
+  public closeWinDialog() {
+    this.shouldOpenWinDialog(false);
   }
 
   private async pollChat(): Promise<void> {
