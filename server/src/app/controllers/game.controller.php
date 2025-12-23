@@ -168,8 +168,7 @@ class GameController
   private function sendBackState(
     string $lastAction,
     $lastActionTarget = null
-  )
-  {
+  ) {
     $maze = new Maze();
     $stateService = new StateService();
 
@@ -207,9 +206,9 @@ class GameController
     echo json_encode([
       "hasPlayerWon" => $hasPlayerWon,
       "mapSize" => [
-        "width" => $mapSize,
-        "height" => $mapSize
-      ],
+          "width" => $mapSize,
+          "height" => $mapSize
+        ],
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
@@ -221,11 +220,11 @@ class GameController
       "maxHits" => $stateService->getPlayerMaxHits(),
       "activeSpells" => $stateService->getCharacterSpellsOn(),
       "equipment" => [
-        "sword" => $stateService->getEquipmentSword(),
-        "shield" => $stateService->getEquipmentShield(),
-        "armor" => $stateService->getEquipmentArmor(),
-        "arrows" => $stateService->getEquipmentArrows()
-      ],
+          "sword" => $stateService->getEquipmentSword(),
+          "shield" => $stateService->getEquipmentShield(),
+          "armor" => $stateService->getEquipmentArmor(),
+          "arrows" => $stateService->getEquipmentArrows()
+        ],
       "statistics" => [
         "experience" => $stateService->getCharacterXp(),
         "money" => $stateService->getCharacterStatsMoney(),
@@ -233,9 +232,9 @@ class GameController
         "weight" => $stateService->getCharacterStatsWeight(),
         "playerLevel" => $stateService->getCharacterStatsLevel(),
         "spellUnits" => [
-          "current" => $stateService->getCharacterSpellUnitsCur(),
-          "maximum" => $stateService->getCharacterSpellUnitsMax()
-        ],
+            "current" => $stateService->getCharacterSpellUnitsCur(),
+            "maximum" => $stateService->getCharacterSpellUnitsMax()
+          ],
         "xpPercentageFromKills" => $xpFromKillsPercentage
       ],
       "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
@@ -288,8 +287,8 @@ class GameController
         "bottom" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile32"]),
         "left" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile21"]),
         "occupiedBy" => [
-          "key" => "PLAYER",
-        ],
+            "key" => "PLAYER",
+          ],
         "containsItems" => $this->getItemsOnTile($x + 0, $y + 0)
       ],
       "tile12" => [
@@ -343,7 +342,7 @@ class GameController
 
     $visibleItems = array_merge(...array_values(array_map(fn($m) => $m['containsItems'], $tiles)));
 
-    foreach($visibleItems as $item) {
+    foreach ($visibleItems as $item) {
       array_push($events, [
         "key" => "ITEM_SEE",
         "label" => "You see a(n) {$item['key']}."

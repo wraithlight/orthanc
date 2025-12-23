@@ -19,16 +19,16 @@ require_once("./app/controllers/chat.controller.php");
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
-$loginControllerFactory = function() {
+$loginControllerFactory = function () {
   return new LoginController();
 };
-$characterCreationControllerFactory = function() {
+$characterCreationControllerFactory = function () {
   return new CharacterCreationController();
 };
-$gameControllerFactory = function() {
+$gameControllerFactory = function () {
   return new GameController();
 };
-$chatControllerFactory = function() {
+$chatControllerFactory = function () {
   return new ChatController();
 };
 

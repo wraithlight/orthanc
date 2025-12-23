@@ -1,24 +1,27 @@
 <?php
 
-class Maze {
-  
-  public function getPlayerInitialLocation(): array {
+class Maze
+{
+
+  public function getPlayerInitialLocation(): array
+  {
     $maze = $this->getMaze();
     $row = 0;
     for ($i = 0; $i <= count($maze); $i++) {
-        if (str_contains($maze[$i], "@")) {
-            $row = $i;
-            break;
-        }
+      if (str_contains($maze[$i], "@")) {
+        $row = $i;
+        break;
+      }
     }
     $col = strpos($maze[$row], "@");
     return [
-        "x" => $col,
-        "y" => $row
+      "x" => $col,
+      "y" => $row
     ];
   }
 
-  public function getTilesAroundPlayer($x, $y): array {
+  public function getTilesAroundPlayer($x, $y): array
+  {
     $maze = $this->getMaze();
 
     $tile00 = $this->getTile($x - 2, $y - 2);
@@ -53,43 +56,45 @@ class Maze {
 
 
     return [
-        "tile00" => $tile00,
-        "tile01" => $tile01,
-        "tile02" => $tile02,
-        "tile03" => $tile03,
-        "tile04" => $tile04,
-        "tile10" => $tile10,
-        "tile11" => $tile11,
-        "tile12" => $tile12,
-        "tile13" => $tile13,
-        "tile14" => $tile14,
-        "tile20" => $tile20,
-        "tile21" => $tile21,
-        "tile22" => $tile22,
-        "tile23" => $tile23,
-        "tile24" => $tile24,
-        "tile30" => $tile30,
-        "tile31" => $tile31,
-        "tile32" => $tile32,
-        "tile33" => $tile33,
-        "tile34" => $tile34,
-        "tile40" => $tile40,
-        "tile41" => $tile41,
-        "tile42" => $tile42,
-        "tile43" => $tile43,
-        "tile44" => $tile44,
+      "tile00" => $tile00,
+      "tile01" => $tile01,
+      "tile02" => $tile02,
+      "tile03" => $tile03,
+      "tile04" => $tile04,
+      "tile10" => $tile10,
+      "tile11" => $tile11,
+      "tile12" => $tile12,
+      "tile13" => $tile13,
+      "tile14" => $tile14,
+      "tile20" => $tile20,
+      "tile21" => $tile21,
+      "tile22" => $tile22,
+      "tile23" => $tile23,
+      "tile24" => $tile24,
+      "tile30" => $tile30,
+      "tile31" => $tile31,
+      "tile32" => $tile32,
+      "tile33" => $tile33,
+      "tile34" => $tile34,
+      "tile40" => $tile40,
+      "tile41" => $tile41,
+      "tile42" => $tile42,
+      "tile43" => $tile43,
+      "tile44" => $tile44,
     ];
   }
 
-  public function getFullMap(): array {
+  public function getFullMap(): array
+  {
     return $this->getMaze();
   }
 
-  public function getWalkableTiles(): array {
+  public function getWalkableTiles(): array
+  {
     $walkableTiles = [];
     $maze = $this->getMaze();
-    for($y = 0; $y < count($maze); $y++) {
-      for($x = 0; $x < strlen($maze[$y]); $x++) {
+    for ($y = 0; $y < count($maze); $y++) {
+      for ($x = 0; $x < strlen($maze[$y]); $x++) {
         if ($this->getTile($x, $y) === ".") {
           array_push($walkableTiles, ["x" => $x, "y" => $y]);
         }
@@ -98,26 +103,32 @@ class Maze {
     return $walkableTiles;
   }
 
-  public function mazeWidth(): int {
+  public function mazeWidth(): int
+  {
     $maze = $this->getMaze();
     return strlen($maze[0]);
   }
 
-  public function mazeHeight(): int {
+  public function mazeHeight(): int
+  {
     $maze = $this->getMaze();
     return count($maze);
   }
 
-  private function getTile($x, $y): string {
+  private function getTile($x, $y): string
+  {
     $maze = $this->getMaze();
 
-    if (!array_key_exists($y, $maze)) return "%";
-    if ($x < 0 || $x >= strlen($maze[$y])) return "%";
+    if (!array_key_exists($y, $maze))
+      return "%";
+    if ($x < 0 || $x >= strlen($maze[$y]))
+      return "%";
 
     return $maze[$y][$x];
   }
 
-  private function getMaze(): array {
+  private function getMaze(): array
+  {
     $mazeService = new MazeService();
     return $mazeService->getMaze();
   }

@@ -5,7 +5,8 @@
  *
  * @return int
  */
-function roll_d6() {
+function roll_d6()
+{
   return rand(1, 6);
 }
 

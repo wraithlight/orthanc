@@ -1,7 +1,9 @@
 <?php
 
-class LoginController {
-  public function loginGuest() {
+class LoginController
+{
+  public function loginGuest()
+  {
     $stateService = new StateService();
 
     $username = 'guest_' . roll_d10k();

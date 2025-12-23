@@ -2,60 +2,60 @@
 
 abstract class BaseIOService
 {
-    protected string $filePath;
+  protected string $filePath;
 
-    protected function read(): array
-    {
-        $fp = fopen($this->filePath, 'r');
-        if (!$fp) {
-            throw new RuntimeException("Cannot open file for reading: {$this->filePath}");
-        }
-        flock($fp, LOCK_SH);
-
-        $contents = stream_get_contents($fp);
-        $data = $contents ? json_decode($contents, true) : [];
-
-        flock($fp, LOCK_UN);
-        fclose($fp);
-
-        return $data;
+  protected function read(): array
+  {
+    $fp = fopen($this->filePath, 'r');
+    if (!$fp) {
+      throw new RuntimeException("Cannot open file for reading: {$this->filePath}");
     }
+    flock($fp, LOCK_SH);
 
-    protected function readText(): string
-    {
-        $fp = fopen($this->filePath, 'r');
-        if (!$fp) {
-            throw new RuntimeException("Cannot open file for reading: {$this->filePath}");
-        }
-        flock($fp, LOCK_SH);
+    $contents = stream_get_contents($fp);
+    $data = $contents ? json_decode($contents, true) : [];
 
-        $contents = stream_get_contents($fp);
+    flock($fp, LOCK_UN);
+    fclose($fp);
 
-        flock($fp, LOCK_UN);
-        fclose($fp);
+    return $data;
+  }
 
-        return $contents;
+  protected function readText(): string
+  {
+    $fp = fopen($this->filePath, 'r');
+    if (!$fp) {
+      throw new RuntimeException("Cannot open file for reading: {$this->filePath}");
     }
+    flock($fp, LOCK_SH);
 
-    protected function write(array $data): void
-    {
-        $fp = fopen($this->filePath, 'c+');
-        if (!$fp) {
-            throw new RuntimeException("Cannot open file for writing: {$this->filePath}");
-        }
-        flock($fp, LOCK_EX);
+    $contents = stream_get_contents($fp);
 
-        ftruncate($fp, 0);
-        rewind($fp);
-        fwrite($fp, json_encode($data, JSON_UNESCAPED_UNICODE));
+    flock($fp, LOCK_UN);
+    fclose($fp);
 
-        flock($fp, LOCK_UN);
-        fclose($fp);
+    return $contents;
+  }
+
+  protected function write(array $data): void
+  {
+    $fp = fopen($this->filePath, 'c+');
+    if (!$fp) {
+      throw new RuntimeException("Cannot open file for writing: {$this->filePath}");
     }
+    flock($fp, LOCK_EX);
 
-    public function clear(): void
-    {
-        $this->write([]);
-    }
+    ftruncate($fp, 0);
+    rewind($fp);
+    fwrite($fp, json_encode($data, JSON_UNESCAPED_UNICODE));
+
+    flock($fp, LOCK_UN);
+    fclose($fp);
+  }
+
+  public function clear(): void
+  {
+    $this->write([]);
+  }
 }
 

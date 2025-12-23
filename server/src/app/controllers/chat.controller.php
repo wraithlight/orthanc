@@ -1,7 +1,9 @@
 <?php
 
-class ChatController {
-  public function sendMessage() {
+class ChatController
+{
+  public function sendMessage()
+  {
     $stateService = new StateService();
     $username = $stateService->getPlayerName();
     $rawBody = file_get_contents('php://input');
@@ -17,7 +19,8 @@ class ChatController {
     echo json_encode([], JSON_PRETTY_PRINT);
   }
 
-  public function getMessages() {
+  public function getMessages()
+  {
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
@@ -26,7 +29,8 @@ class ChatController {
     $chatMembersService->updateLastSeen($username);
     $chatMembersService->cleanupInactiveMembers();
 
-    $lastMessageId = $stateService->getChatLastMessageId();;
+    $lastMessageId = $stateService->getChatLastMessageId();
+    ;
     $messages = $chatMessageService->getMessagesSince($lastMessageId);
     $members = $chatMembersService->getAllMembers();
 

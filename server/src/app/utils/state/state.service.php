@@ -1,5 +1,6 @@
 <?php
-class StateService {
+class StateService
+{
 
   const POSITION_KEY_X = "PLAYER_POSITION_X";
   const POSITION_KEY_Y = "PLAYER_POSITION_Y";
@@ -27,211 +28,262 @@ class StateService {
   const MAP_NPCS = "MAP_NPCS";
   const INVENTORY_ORB = "INVENTORY_ORB";
 
-  public function setCharacterXp($value){  
+  public function setCharacterXp($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE, $value);
   }
 
-  public function setCharacterXpFromKills($value) {
+  public function setCharacterXpFromKills($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS, $value);
   }
 
-  public function setCharacterStatsMoney($value) {
+  public function setCharacterStatsMoney($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_MONEY, $value);
   }
 
-  public function setCharacterStatsLevel($value) {
+  public function setCharacterStatsLevel($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_LEVEL, $value);
   }
 
-  public function setCharacterStatsWeight($value) {
+  public function setCharacterStatsWeight($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_WEIGHT, $value);
   }
 
-  public function setCharacterSpellUnitsMax($value) {
+  public function setCharacterSpellUnitsMax($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX, $value);
   }
 
-  public function setCharacterSpellUnitsCur($value) {
+  public function setCharacterSpellUnitsCur($value)
+  {
     $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR, $value);
   }
 
-  public function setCharacterSpellsOn($value) {
+  public function setCharacterSpellsOn($value)
+  {
     $this->writeToSessionState(self::CHARACTER_SPELLS_ON, $value);
   }
 
-  public function getCharacterXp() {  
+  public function getCharacterXp()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE);
   }
 
-  public function getCharacterXpFromKills() {
+  public function getCharacterXpFromKills()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS);
   }
 
-  public function getCharacterStatsMoney() {
+  public function getCharacterStatsMoney()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_MONEY);
   }
 
-  public function getCharacterStatsLevel() {
+  public function getCharacterStatsLevel()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_LEVEL);
   }
 
-  public function getCharacterStatsWeight() {
+  public function getCharacterStatsWeight()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_WEIGHT);
   }
 
-  public function getCharacterSpellUnitsMax() {
+  public function getCharacterSpellUnitsMax()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX);
   }
 
-  public function getCharacterSpellUnitsCur() {
+  public function getCharacterSpellUnitsCur()
+  {
     return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR);
   }
 
-  public function getCharacterSpellsOn() {
+  public function getCharacterSpellsOn()
+  {
     return $this->readFromSessionState(self::CHARACTER_SPELLS_ON);
   }
 
-  public function setEquipmentSword($value) {
+  public function setEquipmentSword($value)
+  {
     $this->writeToSessionState(self::EQUIPMENT_SWORD, $value);
   }
 
-  public function getEquipmentSword() {
+  public function getEquipmentSword()
+  {
     return $this->readFromSessionState(self::EQUIPMENT_SWORD);
   }
 
-  public function setEquipmentShield($value) {
+  public function setEquipmentShield($value)
+  {
     $this->writeToSessionState(self::EQUIPMENT_SHIELD, $value);
   }
 
-  public function getEquipmentShield() {
+  public function getEquipmentShield()
+  {
     return $this->readFromSessionState(self::EQUIPMENT_SHIELD);
   }
 
-  public function setEquipmentArrows($value) {
+  public function setEquipmentArrows($value)
+  {
     $this->writeToSessionState(self::EQUIPMENT_ARROWS, $value);
   }
 
-  public function getEquipmentArrows() {
+  public function getEquipmentArrows()
+  {
     return $this->readFromSessionState(self::EQUIPMENT_ARROWS);
   }
 
-  public function setEquipmentArmor($value) {
+  public function setEquipmentArmor($value)
+  {
     $this->writeToSessionState(self::EQUIPMENT_ARMOR, $value);
   }
 
-  public function getEquipmentArmor() {
+  public function getEquipmentArmor()
+  {
     return $this->readFromSessionState(self::EQUIPMENT_ARMOR);
   }
 
-  public function getPlayerMaxHits() {
+  public function getPlayerMaxHits()
+  {
     return $this->readFromSessionState(self::HITS_MAX);
   }
 
-  public function getPlayerCurHits() {
+  public function getPlayerCurHits()
+  {
     return $this->readFromSessionState(self::HITS_CUR);
   }
 
-  public function getChatLastMessageId() {
+  public function getChatLastMessageId()
+  {
     return $this->readFromSessionState(self::CHAT_LAST_MESSAGE_ID);
   }
 
-  public function setPlayerMaxHits($value) {
+  public function setPlayerMaxHits($value)
+  {
     $this->writeToSessionState(self::HITS_MAX, $value);
   }
 
-  public function setPlayerCurHits($value) {
+  public function setPlayerCurHits($value)
+  {
     $this->writeToSessionState(self::HITS_CUR, $value);
   }
 
-  public function setChatLastMessageId($value) {
+  public function setChatLastMessageId($value)
+  {
     $this->writeToSessionState(self::CHAT_LAST_MESSAGE_ID, $value);
   }
 
-  public function getPlayerDexterity() {
+  public function getPlayerDexterity()
+  {
     return $this->readFromSessionState(self::STAT_DEX);
   }
 
-  public function getPlayerIntelligence() {
+  public function getPlayerIntelligence()
+  {
     return $this->readFromSessionState(self::STAT_INT);
   }
 
-  public function getPlayerStrength() {
+  public function getPlayerStrength()
+  {
     return $this->readFromSessionState(self::STAT_STR);
   }
 
-  public function getPlayerConstitution() {
+  public function getPlayerConstitution()
+  {
     return $this->readFromSessionState(self::STAT_CON);
   }
 
-  public function setPlayerDexterity($value) {
+  public function setPlayerDexterity($value)
+  {
     return $this->writeToSessionState(self::STAT_DEX, $value);
   }
 
-  public function setPlayerIntelligence($value) {
+  public function setPlayerIntelligence($value)
+  {
     return $this->writeToSessionState(self::STAT_INT, $value);
   }
 
-  public function setPlayerStrength($value) {
+  public function setPlayerStrength($value)
+  {
     return $this->writeToSessionState(self::STAT_STR, $value);
   }
 
-  public function setPlayerConstitution($value) {
+  public function setPlayerConstitution($value)
+  {
     return $this->writeToSessionState(self::STAT_CON, $value);
   }
 
-  public function setPlayerName($name) {
+  public function setPlayerName($name)
+  {
     $this->writeToSessionState(self::PLAYER_NAME, $name);
   }
 
-  public function getPlayerName() {
+  public function getPlayerName()
+  {
     return $this->readFromSessionState(self::PLAYER_NAME);
   }
 
-  public function moveNorth() {
+  public function moveNorth()
+  {
     $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) - 1;
     $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
   }
 
-  public function moveEast() {
+  public function moveEast()
+  {
     $positionY = $this->readFromSessionState(self::POSITION_KEY_X) + 1;
     $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
   }
 
-  public function moveSouth() {
+  public function moveSouth()
+  {
     $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) + 1;
     $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
   }
 
-  public function moveWest() {
+  public function moveWest()
+  {
     $positionY = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
     $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
   }
 
-  public function getHasOrb(): bool {
+  public function getHasOrb(): bool
+  {
     return $this->readFromSessionState(self::INVENTORY_ORB);
   }
 
-  public function setHasOrb(bool $hasOrb) {
+  public function setHasOrb(bool $hasOrb)
+  {
     return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
   }
 
-  public function getItems(): array {
+  public function getItems(): array
+  {
     return $this->readFromSessionState(self::MAP_ITEMS);
   }
 
-  public function setItems(array $items) {
+  public function setItems(array $items)
+  {
     return $this->writeToSessionState(self::MAP_ITEMS, $items);
   }
 
-  public function getNpcs(): array {
+  public function getNpcs(): array
+  {
     return $this->readFromSessionState(self::MAP_NPCS);
   }
 
-  public function setNpcs(array $npcs) {
+  public function setNpcs(array $npcs)
+  {
     return $this->writeToSessionState(self::MAP_NPCS, $npcs);
   }
 
-  public function getPlayerPosition(): array {
+  public function getPlayerPosition(): array
+  {
     $x = $this->readFromSessionState(self::POSITION_KEY_X);
     $y = $this->readFromSessionState(self::POSITION_KEY_Y);
     return [
@@ -240,16 +292,19 @@ class StateService {
     ];
   }
 
-  public function setPlayerPosition($x, $y) {
+  public function setPlayerPosition($x, $y)
+  {
     $this->writeToSessionState(self::POSITION_KEY_X, $x);
     $this->writeToSessionState(self::POSITION_KEY_Y, $y);
   }
 
-  private function readFromSessionState($key) {
+  private function readFromSessionState($key)
+  {
     return $_SESSION[$key];
   }
 
-  private function writeToSessionState($key, $value) {
+  private function writeToSessionState($key, $value)
+  {
     $_SESSION[$key] = $value;
   }
 }
