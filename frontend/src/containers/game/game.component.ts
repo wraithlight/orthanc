@@ -51,8 +51,15 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
+    this.actionHandler("INITIAL");
+  }
 
-    this._gameActionClient.onAction().then(m => {
+  public onActionItemClick(action: string): void {
+    this.actionHandler(action);
+  }
+
+  private actionHandler(action: string): void {
+    this._gameActionClient.onAction(action).then(m => {
       this.tile00(m.mapState.tile00);
       this.tile01(m.mapState.tile01);
       this.tile02(m.mapState.tile02);

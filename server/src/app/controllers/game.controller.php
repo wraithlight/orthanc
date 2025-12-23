@@ -39,6 +39,39 @@ class GameController {
   }
 
   public function onAction() {
+    $rawBody = file_get_contents('php://input');
+    $payload = json_decode($rawBody, true);
+    $action = $payload['action'];
+
+    $maze = new Maze();
+    $stateService = new StateService();
+    $location = $stateService->getPlayerPosition();
+    $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
+    $tiles = $this->calculateTiles($tilesAround);
+    $possibleActions = $this->getPossibleActions($tiles);
+    $canDo = in_array($action, array_column($possibleActions, 'key'), true);
+
+    if ($canDo) {
+      switch($action) {
+        case "MOVE_NORTH": {
+          $stateService->moveNorth();
+          break;
+        }
+        case "MOVE_EAST": {
+          $stateService->moveEast();
+          break;
+        }
+        case "MOVE_SOUTH": {
+          $stateService->moveSouth();
+          break;
+        }
+        case "MOVE_WEST": {
+          $stateService->moveWest();
+          break;
+        }
+      }
+    }
+
     $this->sendBackState();
   }
 
