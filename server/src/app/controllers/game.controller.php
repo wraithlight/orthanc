@@ -4,6 +4,7 @@ class GameController {
 
   const GOLD_PERCENTAGE_ON_MAP = 2;
   const GOLD_WEIGHT = 1;
+  const ORB_WEIGHT = 1000;
 
   public function startGame() {
     $stateService = new StateService();
@@ -30,6 +31,7 @@ class GameController {
     $stateService->setCharacterStatsWeight(0);
     $stateService->setCharacterSpellUnitsMax(4);
     $stateService->setCharacterSpellUnitsCur(4);
+    $stateService->setHasOrb(false);
 
     $walkableTiles = $maze->getWalkableTiles();
     $numberOfWalkableTiles = count($walkableTiles);
@@ -54,9 +56,9 @@ class GameController {
         [
           "x" => 1,
           "y" => 1,
-          "item" => "ITEM_GOLD",
-          "amount" => $amount,
-          "weight" => $amount * self::GOLD_WEIGHT
+          "item" => "ITEM_ORB",
+          "amount" => 1,
+          "weight" => 1 * self::ORB_WEIGHT
         ]
       );
     $stateService->setItems($itemsOnMap);
@@ -77,6 +79,7 @@ class GameController {
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $action = $payload['action'];
+    $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
 
     $maze = new Maze();
     $stateService = new StateService();
@@ -84,7 +87,9 @@ class GameController {
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
     $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
     $possibleActions = $this->getPossibleActions($tiles);
-    $canDo = in_array($action, array_column($possibleActions, 'key'), true);
+    $canDo = $this->canDoAction($possibleActions, $action, $target);
+    // $canDo = in_array($action, array_column($possibleActions, 'key'), true);
+    // $isTargetValid
 
     if ($canDo) {
       switch($action) {
@@ -103,6 +108,18 @@ class GameController {
         case "MOVE_WEST": {
           $stateService->moveWest();
           break;
+        }
+        case "PICKUP" && $target === "ITEM_ORB": {
+          $stateService->setHasOrb(true);
+          $spells = $stateService->getCharacterSpellsOn();
+          array_push($spells, [
+            "key" => "SPELL_00",
+            "label" => "Blessing of the Orb",
+            "remaining" => "∞"
+          ]);
+          $stateService->setCharacterSpellsOn($spells);
+          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m['item'] !== "ITEM_ORB"));
+          $stateService->setItems($itemsOnMap);
         }
       }
     }
@@ -145,7 +162,6 @@ class GameController {
 
     $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
     echo json_encode([
-      "__debug" => $_SESSION,
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
@@ -289,17 +305,21 @@ class GameController {
 
     if ($canPickup) {
       foreach($playerTile["containsItems"] as $item) {
-        array_push($actions, ["label" => "Pick up {$item['key']} ({$item['amount']})", "key" => "PICKUP"]);
+        array_push($actions, [
+          "label" => "Pick up {$item['key']} ({$item['amount']})",
+          "key" => "PICKUP",
+          "payload" => $item['key']
+        ]);
       }
     }
 
-    $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN"]);
-    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT"]);
-    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[N]orth", "key" => "MOVE_NORTH"]);
-    !$canFight && $canMoveEast && array_push($actions, ["label" => "[E]ast", "key" => "MOVE_EAST"]);
-    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[S]outh", "key" => "MOVE_SOUTH"]);
-    !$canFight && $canMoveWest && array_push($actions, ["label" => "[W]est", "key" => "MOVE_WEST"]);
-    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL"]);
+    $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
+    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
+    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[N]orth", "key" => "MOVE_NORTH", "payload" => null]);
+    !$canFight && $canMoveEast && array_push($actions, ["label" => "[E]ast", "key" => "MOVE_EAST", "payload" => null]);
+    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[S]outh", "key" => "MOVE_SOUTH", "payload" => null]);
+    !$canFight && $canMoveWest && array_push($actions, ["label" => "[W]est", "key" => "MOVE_WEST", "payload" => null]);
+    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
 
     return $actions;
   }
@@ -325,6 +345,24 @@ class GameController {
       "amount" => $m["amount"],
       "weight" => $m["weight"]
     ], $itemsOnTile);
+  }
+
+  private function canDoAction(
+    array $actionsArray,
+    string $action,
+    $target = null
+  ): bool {
+    foreach ($actionsArray as $element) {
+      if ($element['key'] === $action) {
+        if ($target === null) {
+          return true;
+        }
+        if ($element['payload'] === $target) {
+            return true;
+        }
+      }
+    }
+    return false;
   }
 }
 ?>

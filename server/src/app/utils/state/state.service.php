@@ -25,6 +25,7 @@ class StateService {
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
   const MAP_ITEMS = "MAP_ITEMS";
   const MAP_NPCS = "MAP_NPCS";
+  const INVENTORY_ORB = "INVENTORY_ORB";
 
   public function setCharacterXp($value){  
     $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE, $value);
@@ -204,6 +205,14 @@ class StateService {
   public function moveWest() {
     $positionY = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
     $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
+  }
+
+  public function getHasOrb(): bool {
+    return $this->readFromSessionState(self::INVENTORY_ORB);
+  }
+
+  public function setHasOrb(bool $hasOrb) {
+    return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
   }
 
   public function getItems(): array {

@@ -52,15 +52,21 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
-    this.actionHandler("INITIAL");
+    this.actionHandler("INITIAL", null);
   }
 
-  public onActionItemClick(action: string): void {
-    this.actionHandler(action);
+  public onActionItemClick(
+    action: string,
+    payload: string | null
+  ): void {
+    this.actionHandler(action, payload);
   }
 
-  private actionHandler(action: string): void {
-    this._gameActionClient.onAction(action).then(m => {
+  private actionHandler(
+    action: string,
+    payload: string | null
+  ): void {
+    this._gameActionClient.onAction(action, payload).then(m => {
       this.tile00(m.mapState.tile00);
       this.tile01(m.mapState.tile01);
       this.tile02(m.mapState.tile02);

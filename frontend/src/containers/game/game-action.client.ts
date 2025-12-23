@@ -5,7 +5,8 @@ export class GameActionClient {
   }
 
   public async onAction(
-    action: string
+    action: string,
+    payload: string | null
   ): Promise<any> {
     const result = await fetch(
       `${this._baseUrl}/api/v1/game/action`,
@@ -13,7 +14,8 @@ export class GameActionClient {
         method: "POST",
         credentials: "include",
         body: JSON.stringify({
-          action: action
+          action: action,
+          payload: payload
         })
       }
     );

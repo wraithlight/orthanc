@@ -24,7 +24,7 @@
       <!-- ko foreach: actions -->
         <div class="game-action" data-bind="
           text: label,
-          click: $parent.onActionItemClick.bind($parent, key)
+          click: $parent.onActionItemClick.bind($parent, key, payload)
         "></div>
       <!-- /ko -->
     </div>
