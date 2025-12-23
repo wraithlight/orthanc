@@ -22,6 +22,29 @@ export class GameContainer {
   public readonly tile21 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile22 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
 
+  public readonly maxHits = observable(0);
+  public readonly curHits = observable(0);
+
+  public readonly characterDexterity = observable(0);
+  public readonly characterIntelligence = observable(0);
+  public readonly characterStrength = observable(0);
+  public readonly characterConstitution = observable(0);
+
+  public readonly equipmentSword = observable("???");
+  public readonly equipmentShield = observable("???");
+  public readonly equipmentArmor = observable("???");
+  public readonly equipmentArrows = observable(0);
+
+  public readonly statisticsExperience = observable(0);
+  public readonly statisticsMoney = observable(0);
+  public readonly statisticsNextLevelInXp = observable(0);
+  public readonly statisticsWeight = observable(0);
+  public readonly statisticsPlayerLevel = observable(0);
+  public readonly statisticsSpellUnitsCur = observable(0);
+  public readonly statisticsSpellUnitsMax = observable(0);
+  public readonly statisticsXpPercentageFromKills = observable(0);
+  public readonly actions = observableArray([]);
+
   private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
   private readonly _gameActionClient = new GameActionClient(getConfig().apiUrl);
 
@@ -39,6 +62,25 @@ export class GameContainer {
       this.tile20(m.mapState.tile20);
       this.tile21(m.mapState.tile21);
       this.tile22(m.mapState.tile22);
+      this.maxHits(m.maxHits);
+      this.curHits(m.hits);
+      this.characterDexterity(m.character.dexterity);
+      this.characterIntelligence(m.character.intelligence);
+      this.characterStrength(m.character.strength);
+      this.characterConstitution(m.character.constitution);
+      this.equipmentSword(m.equipment.sword);
+      this.equipmentShield(m.equipment.shield);
+      this.equipmentArmor(m.equipment.armor);
+      this.equipmentArrows(m.equipment.arrows);
+      this.statisticsExperience(m.statistics.experience);
+      this.statisticsMoney(m.statistics.money);
+      this.statisticsNextLevelInXp(m.statistics.nextLevelInXp);
+      this.statisticsWeight(m.statistics.weight);
+      this.statisticsPlayerLevel(m.statistics.playerLevel);
+      this.statisticsSpellUnitsCur(m.statistics.spellUnits.current);
+      this.statisticsSpellUnitsMax(m.statistics.spellUnits.maximum);
+      this.statisticsXpPercentageFromKills(m.statistics.xpPercentageFromKills);
+      this.actions(m.possibleActions);
     });
   }
 

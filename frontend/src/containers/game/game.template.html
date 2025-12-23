@@ -6,7 +6,7 @@
       <div class="game-tile" data-bind="css: { 'wall-top': tile02().top === 'TILE_WALL', 'wall-bottom': tile02().bottom === 'TILE_WALL', 'wall-right': tile02().right === 'TILE_WALL', 'wall-left': tile02().left === 'TILE_WALL' }"></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile10().top === 'TILE_WALL', 'wall-bottom': tile10().bottom === 'TILE_WALL', 'wall-right': tile10().right === 'TILE_WALL', 'wall-left': tile10().left === 'TILE_WALL' }"></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile11().top === 'TILE_WALL', 'wall-bottom': tile11().bottom === 'TILE_WALL', 'wall-right': tile11().right === 'TILE_WALL', 'wall-left': tile11().left === 'TILE_WALL' }"><img src="/assets/character.png"></div>
-      <div class="game-tile" data-bind="css: { 'wall-top': tile12().top === 'TILE_WALL', 'wall-bottom': tile12().bottom === 'TILE_WALL', 'wall-right': tile12().right === 'TILE_WALL', 'wall-left': tile12().left === 'TILE_WALL' }"><img src="/assets/orc.png"></div>
+      <div class="game-tile" data-bind="css: { 'wall-top': tile12().top === 'TILE_WALL', 'wall-bottom': tile12().bottom === 'TILE_WALL', 'wall-right': tile12().right === 'TILE_WALL', 'wall-left': tile12().left === 'TILE_WALL' }"></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile20().top === 'TILE_WALL', 'wall-bottom': tile20().bottom === 'TILE_WALL', 'wall-right': tile20().right === 'TILE_WALL', 'wall-left': tile20().left === 'TILE_WALL' }"></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile21().top === 'TILE_WALL', 'wall-bottom': tile21().bottom === 'TILE_WALL', 'wall-right': tile21().right === 'TILE_WALL', 'wall-left': tile21().left === 'TILE_WALL' }"></div>
       <div class="game-tile" data-bind="css: { 'wall-top': tile22().top === 'TILE_WALL', 'wall-bottom': tile22().bottom === 'TILE_WALL', 'wall-right': tile22().right === 'TILE_WALL', 'wall-left': tile22().left === 'TILE_WALL' }"></div>
@@ -20,30 +20,29 @@
       </ul>
     </div>
     <div class="game-actions">
-      <div class="game-hits">10/10 HITS left.</div>
-      <div class="game-action">[F]ight</div>
-      <div class="game-action">[R]un</div>
-      <div class="game-action">[C]ast a spell</div>
-      <div class="game-action">[O]ptions</div>
+      <div class="game-hits" data-bind="text: maxHits() + '/' + curHits() + ' HITS left.'"></div>
+      <!-- ko foreach: actions -->
+        <div class="game-action" data-bind="text: label"></div>
+      <!-- /ko -->
     </div>
     <div class="game-stats">
       <strong>Characteristics</strong>
       <table>
         <tr>
           <td>Strength</td>
-          <td>14</td>
+          <td data-bind="text: characterStrength"></td>
         </tr>
         <tr>
           <td>Intelligence</td>
-          <td>13</td>
+          <td data-bind="text: characterIntelligence"></td>
         </tr>
         <tr>
           <td>Constitution</td>
-          <td>5</td>
+          <td data-bind="text: characterConstitution"></td>
         </tr>
         <tr>
           <td>Dexterity</td>
-          <td>9</td>
+          <td data-bind="text: characterDexterity"></td>
         </tr>
       </table>
       <br />
@@ -51,19 +50,19 @@
       <table>
         <tr>
           <td>Sword</td>
-          <td>Epic</td>
+          <td data-bind="text: equipmentSword"></td>
         </tr>
         <tr>
           <td>Shield</td>
-          <td>Normal</td>
+          <td data-bind="text: equipmentShield"></td>
         </tr>
         <tr>
           <td>Armor</td>
-          <td>0</td>
+          <td data-bind="text: equipmentArmor"></td>
         </tr>
         <tr>
           <td>Arrows</td>
-          <td>0</td>
+          <td data-bind="text: equipmentArrows"></td>
         </tr>
       </table>
     </div>
@@ -72,31 +71,31 @@
       <table>
         <tr>
           <td>Experience</td>
-          <td>114</td>
+          <td data-bind="text: statisticsExperience"></td>
         </tr>
         <tr>
           <td>Money</td>
-          <td>0</td>
+          <td data-bind="text: statisticsMoney"></td>
         </tr>
         <tr>
           <td>Next Level</td>
-          <td>1000</td>
+          <td data-bind="text: statisticsNextLevelInXp"></td>
         </tr>
         <tr>
           <td>XP from kills</td>
-          <td>100%</td>
+          <td data-bind="text: statisticsXpPercentageFromKills() + '%'"></td>
         </tr>
         <tr>
           <td>Weight</td>
-          <td>00</td>
+          <td data-bind="text: statisticsWeight"></td>
         </tr>
         <tr>
           <td>Player level</td>
-          <td>1</td>
+          <td data-bind="text: statisticsPlayerLevel"></td>
         </tr>
         <tr>
           <td>Spell units</td>
-          <td>4/4</td>
+          <td data-bind="text: statisticsSpellUnitsCur() + '/' + statisticsSpellUnitsMax()"></td>
         </tr>
       </table>
     </div>
