@@ -22,6 +22,10 @@ class ChatController {
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
 
+    $username = $stateService->getPlayerName();
+    $chatMembersService->updateLastSeen($username);
+    $chatMembersService->cleanupInactiveMembers();
+
     $lastMessageId = $stateService->getChatLastMessageId();;
     $messages = $chatMessageService->getMessagesSince($lastMessageId);
     $members = $chatMembersService->getAllMembers();
