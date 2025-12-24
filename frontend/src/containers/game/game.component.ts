@@ -16,7 +16,7 @@ export class GameContainer {
   public readonly tile01 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile02 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile10 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile11 = observable({ top: 'TILE_WALL', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
+  public readonly tile11 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile12 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile20 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
   public readonly tile21 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
@@ -56,9 +56,9 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
+    this.actionHandler("INITIAL", null);
 
     document.addEventListener("keydown", (event: KeyboardEvent) => {
-      console.log("event.code", event.code);
       switch (event.code) {
         case "ArrowLeft": return this.onActionItemClick("MOVE_WEST", null);
         case "ArrowDown": return this.onActionItemClick("MOVE_SOUTH", null);
