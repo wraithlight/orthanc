@@ -60,13 +60,13 @@ export class GameContainer {
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
     this.actionHandler("INITIAL", null);
 
-    this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE_WEST", null));
-    this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE_SOUTH", null));
-    this._keyboardEventService.subscribe("ArrowUp", () => this.onActionItemClick("MOVE_NORTH", null));
-    this._keyboardEventService.subscribe("ArrowRight", () => this.onActionItemClick("MOVE_EAST", null));
-    // this._keyboardEventService.subscribe("r", () => this.onActionItemClick("MOVE_EAST", null));
-    // this._keyboardEventService.subscribe("f", () => this.onActionItemClick("MOVE_EAST", null));
-    // this._keyboardEventService.subscribe("c", () => this.onActionItemClick("MOVE_EAST", null));
+    this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
+    this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
+    this._keyboardEventService.subscribe("ArrowUp", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
+    this._keyboardEventService.subscribe("ArrowRight", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
+    // this._keyboardEventService.subscribe("r", () => this.onActionItemClick("", null));
+    // this._keyboardEventService.subscribe("f", () => this.onActionItemClick("", null));
+    // this._keyboardEventService.subscribe("c", () => this.onActionItemClick("", null));
   }
 
   public onActionItemClick(

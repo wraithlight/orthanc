@@ -107,19 +107,19 @@ class GameController
 
     if ($canDo) {
       switch ($action) {
-        case "MOVE_NORTH": {
+        case "MOVE" && $target === "DIRECTION_NORTH": {
           $stateService->moveNorth();
           break;
         }
-        case "MOVE_EAST": {
+        case "MOVE" && $target === "DIRECTION_EAST": {
           $stateService->moveEast();
           break;
         }
-        case "MOVE_SOUTH": {
+        case "MOVE" && $target === "DIRECTION_SOUTH": {
           $stateService->moveSouth();
           break;
         }
-        case "MOVE_WEST": {
+        case "MOVE" && $target === "DIRECTION_WEST": {
           $stateService->moveWest();
           break;
         }
@@ -373,10 +373,10 @@ class GameController
 
     $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
-    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE_NORTH", "payload" => null]);
-    !$canFight && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE_EAST", "payload" => null]);
-    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE_SOUTH", "payload" => null]);
-    !$canFight && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE_WEST", "payload" => null]);
+    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
+    !$canFight && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
+    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
+    !$canFight && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
 
     return $actions;
