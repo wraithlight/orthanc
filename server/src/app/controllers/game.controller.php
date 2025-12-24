@@ -154,27 +154,6 @@ class GameController
     $this->sendBackState($action, $target);
   }
 
-  public function maze()
-  {
-    $maze = new Maze();
-    $stateService = new StateService();
-
-    $map = $maze->getFullMap();
-    $location = $maze->getPlayerInitialLocation();
-    $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
-    echo json_encode([
-      "location" => $location,
-      "tilesAround" => $tilesAround,
-      "gold" => $stateService->getItems(),
-      // "walkableTiles" => $maze->getWalkableTiles(),
-      "maze" => $map,
-      "size" => [
-        "width" => $maze->mazeWidth(),
-        "height" => $maze->mazeHeight(),
-      ]
-    ]);
-  }
-
   private function sendBackState(
     string $lastAction,
     $lastActionTarget = null
@@ -186,7 +165,7 @@ class GameController
 
     $sumXp = $stateService->getCharacterXp();
     $xpFromKills = $stateService->getCharacterXpFromKills();
-    $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $xpFromKills) * 100;
+    $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $sumXp) * 100;
 
     $location = $stateService->getPlayerPosition();
     $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
@@ -207,8 +186,6 @@ class GameController
 
       $xp = $stateService->getCharacterXp();
       $stateService->setCharacterXp($xp + $money);
-
-      // TOD: XP from kills calculation
     }
 
     $hasPlayerWon = $stateService->getHasOrb() && $isAtStartPoint;
