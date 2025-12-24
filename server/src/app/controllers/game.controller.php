@@ -186,6 +186,9 @@ class GameController
     $isAtStartPoint = $maze->getPlayerInitialLocation() === $location;
 
     if ($isAtStartPoint) {
+      $maxHp = $stateService->getPlayerMaxHits();
+      $stateService->setPlayerCurHits($maxHp);
+
       $money = $stateService->getCharacterStatsMoney();
       $weight = $stateService->getCharacterStatsMoney();
 
