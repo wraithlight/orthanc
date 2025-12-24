@@ -38,10 +38,6 @@ input {
     font-size: 16px;
 }
 
-input:focus {
-    outline: none;
-    box-shadow: 0 0 4px currentColor;
-}
 
 .actions {
     text-align: center;
@@ -56,9 +52,4 @@ button {
     font-family: inherit;
     font-size: 16px;
     cursor: pointer;
-}
-
-button:hover {
-    background: #ffa500;
-    color: #000;
 }

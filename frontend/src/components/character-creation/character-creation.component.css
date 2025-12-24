@@ -60,8 +60,3 @@ button {
 button:last-of-type {
   border-bottom: 2px solid #ffa500;
 }
-
-button:hover {
-  background: #ffa500;
-  color: #000;
-}

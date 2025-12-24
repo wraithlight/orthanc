@@ -19,3 +19,16 @@ orthanc {
 orthanc > game-screen {
   width: 100%;
 }
+
+
+/* Globals */
+
+button:hover {
+  background: #ffa500;
+  color: #000;
+}
+
+input:focus {
+  outline: none;
+  box-shadow: 0 0 4px currentColor;
+}
