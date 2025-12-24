@@ -64,9 +64,6 @@ export class GameContainer {
     this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
     this._keyboardEventService.subscribe("ArrowUp", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
     this._keyboardEventService.subscribe("ArrowRight", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
-    // this._keyboardEventService.subscribe("r", () => this.onActionItemClick("", null));
-    // this._keyboardEventService.subscribe("f", () => this.onActionItemClick("", null));
-    // this._keyboardEventService.subscribe("c", () => this.onActionItemClick("", null));
   }
 
   public onActionItemClick(
