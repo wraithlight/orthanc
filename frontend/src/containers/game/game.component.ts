@@ -1,5 +1,6 @@
 import { observable, observableArray, subscribable } from "knockout";
 
+import { KeyboardEventService } from "../../services";
 import { getConfig } from "../../state";
 
 import { GameChatClient } from "./game-chat.client";
@@ -50,6 +51,7 @@ export class GameContainer {
   public readonly actions = observableArray([]);
   public readonly activeSpells = observableArray([]);
 
+  private readonly _keyboardEventService = KeyboardEventService.getInstance();
   private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
   private readonly _gameActionClient = new GameActionClient(getConfig().apiUrl);
 
@@ -58,17 +60,13 @@ export class GameContainer {
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
     this.actionHandler("INITIAL", null);
 
-    document.addEventListener("keydown", (event: KeyboardEvent) => {
-      switch (event.code) {
-        case "ArrowLeft": return this.onActionItemClick("MOVE_WEST", null);
-        case "ArrowDown": return this.onActionItemClick("MOVE_SOUTH", null);
-        case "ArrowUp": return this.onActionItemClick("MOVE_NORTH", null);
-        case "ArrowRight": return this.onActionItemClick("MOVE_EAST", null);
-        // case "r": return this.onActionItemClick("MOVE_EAST", null); // TODO
-        // case "f": return this.onActionItemClick("MOVE_EAST", null); // TODO
-        // case "c": return this.onActionItemClick("MOVE_EAST", null); // TODO
-      }
-    });
+    this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE_WEST", null));
+    this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE_SOUTH", null));
+    this._keyboardEventService.subscribe("ArrowUp", () => this.onActionItemClick("MOVE_NORTH", null));
+    this._keyboardEventService.subscribe("ArrowRight", () => this.onActionItemClick("MOVE_EAST", null));
+    // this._keyboardEventService.subscribe("r", () => this.onActionItemClick("MOVE_EAST", null));
+    // this._keyboardEventService.subscribe("f", () => this.onActionItemClick("MOVE_EAST", null));
+    // this._keyboardEventService.subscribe("c", () => this.onActionItemClick("MOVE_EAST", null));
   }
 
   public onActionItemClick(

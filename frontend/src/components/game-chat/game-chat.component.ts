@@ -1,5 +1,7 @@
 import { observable, Observable, ObservableArray, Subscribable } from "knockout";
 
+import { KeyboardEventService } from "../../services";
+
 interface GameChatComponentParams {
   toPoll: Subscribable;
   toSendMessage: Subscribable;
@@ -9,11 +11,13 @@ interface GameChatComponentParams {
 }
 
 export class GameChatComponent implements GameChatComponentParams {
+  public playerName: Observable;
   public toPoll: Subscribable<any>;
-  public toSendMessage: Subscribable<any>;
   public members: ObservableArray<any>;
   public messages: ObservableArray<any>;
-  public playerName: Observable;
+  public toSendMessage: Subscribable<any>;
+  public inputHasFocus = observable(false);
+  private readonly _keyboardEventService = KeyboardEventService.getInstance();
 
   public message = observable();
   
@@ -23,6 +27,13 @@ export class GameChatComponent implements GameChatComponentParams {
     this.members = params.members;
     this.messages = params.messages;
     this.playerName = params.playerName;
+
+    this.inputHasFocus.subscribe((hasFocus) => {
+      hasFocus
+        ? this._keyboardEventService.disableEmit()
+        : this._keyboardEventService.enableEmit()
+      ;
+    });
 
     setInterval(() => this.toPoll.notifySubscribers(), 1_000);
   }

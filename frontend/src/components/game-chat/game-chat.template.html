@@ -13,7 +13,10 @@
     <!-- /ko -->
   </div>
   <dib class="chat-actions">
-    <input type="text" data-bind="value: message">
+    <input
+      type="text"
+      data-bind="value: message, hasFocus: inputHasFocus"
+    >
     <button data-bind="click: onSendClick">Send</button>
   </dib>
 </div>
