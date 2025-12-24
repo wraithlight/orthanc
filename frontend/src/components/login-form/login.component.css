@@ -1,55 +1,55 @@
 .login-box {
-    border: 2px solid #ffa500;
-    padding: 20px 24px;
-    width: 320px;
+  border: 2px solid #ffa500;
+  padding: 20px 24px;
+  width: 320px;
 }
 
 .login-title {
-    text-align: center;
-    margin-bottom: 12px;
-    border-bottom: 1px solid #ffa500;
-    padding-bottom: 6px;
+  text-align: center;
+  margin-bottom: 12px;
+  border-bottom: 1px solid #ffa500;
+  padding-bottom: 6px;
 }
 
 .error-message {
-    border: 1px solid #ffa500;
-    color: #ffa500;
-    padding: 6px;
-    margin-bottom: 14px;
-    text-align: center;
+  border: 1px solid #ffa500;
+  color: #ffa500;
+  padding: 6px;
+  margin-bottom: 14px;
+  text-align: center;
 }
 
 .field {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
 label {
-    display: block;
-    margin-bottom: 4px;
+  display: block;
+  margin-bottom: 4px;
 }
 
 input {
-    width: 100%;
-    background: #000;
-    color: #ffa500;
-    border: 1px solid #ffa500;
-    padding: 6px;
-    font-family: inherit;
-    font-size: 16px;
+  width: 100%;
+  background: #000;
+  color: #ffa500;
+  border: 1px solid #ffa500;
+  padding: 6px;
+  font-family: inherit;
+  font-size: 16px;
 }
 
 
 .actions {
-    text-align: center;
-    margin-top: 10px;
+  text-align: center;
+  margin-top: 10px;
 }
 
 button {
-    background: #000;
-    color: #ffa500;
-    border: 2px solid #ffa500;
-    padding: 6px 16px;
-    font-family: inherit;
-    font-size: 16px;
-    cursor: pointer;
+  background: #000;
+  color: #ffa500;
+  border: 2px solid #ffa500;
+  padding: 6px 16px;
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
 }

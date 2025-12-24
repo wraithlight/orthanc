@@ -1,6 +1,6 @@
 import { getConfig } from "../../state";
 
-interface CoreFooterComponentProps {}
+interface CoreFooterComponentProps { }
 
 export class CoreFooterComponent implements CoreFooterComponentProps {
   public version: string;

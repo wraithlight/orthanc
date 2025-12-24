@@ -1,8 +1,8 @@
 export class LoginClient {
-  
+
   constructor(
     private readonly _baseUrl: string
-  ) {}
+  ) { }
 
   public async loginGuest(): Promise<{ username: string }> {
     const response = await fetch(

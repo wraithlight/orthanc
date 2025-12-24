@@ -20,7 +20,7 @@ export class GameChatComponent implements GameChatComponentParams {
   private readonly _keyboardEventService = KeyboardEventService.getInstance();
 
   public message = observable();
-  
+
   constructor(params: GameChatComponentParams) {
     this.toPoll = params.toPoll;
     this.toSendMessage = params.toSendMessage;
@@ -32,7 +32,7 @@ export class GameChatComponent implements GameChatComponentParams {
       hasFocus
         ? this._keyboardEventService.disableEmit()
         : this._keyboardEventService.enableEmit()
-      ;
+        ;
     });
 
     setInterval(() => this.toPoll.notifySubscribers(), 1_000);

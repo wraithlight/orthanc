@@ -1,22 +1,19 @@
 <div class="chat-box">
   <div class="chat-members">
     <!-- ko foreach: members -->
-     <span data-bind="text: $data, css: { player: $data == $parent.playerName() }"></span>
+    <span data-bind="text: $data, css: { player: $data == $parent.playerName() }"></span>
     <!-- /ko -->
   </div>
   <div class="chat-messages">
     <!-- ko foreach: messages -->
-     <div class="chat-message">
+    <div class="chat-message">
       <span data-bind="text: '<' + sender + '>:'"></span>
       <span data-bind="text: message"></span>
-     </div>
+    </div>
     <!-- /ko -->
   </div>
   <dib class="chat-actions">
-    <input
-      type="text"
-      data-bind="value: message, hasFocus: inputHasFocus"
-    >
+    <input type="text" data-bind="value: message, hasFocus: inputHasFocus">
     <button data-bind="click: onSendClick">Send</button>
   </dib>
 </div>

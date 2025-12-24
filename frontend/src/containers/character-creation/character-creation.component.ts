@@ -1,5 +1,4 @@
 import { observable, Subscribable, subscribable } from "knockout";
-import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
 import { CharacterCreationClient } from "./character-creation.client";
 import { getConfig } from "../../state";
 

@@ -16,7 +16,7 @@ orthanc {
   align-items: center;
 }
 
-orthanc > game-screen {
+orthanc>game-screen {
   width: 100%;
 }
 

@@ -1,40 +1,32 @@
 <!-- ko if: state() === 'LOGIN' -->
-  <login-screen
-    params="{
+<login-screen params="{
       isMemberLoginEnabled: config.isMemberLoginEnabled,
       onLoginSuccess: onLoginSuccess
-    }"
-  >
-  </login-screen>
+    }">
+</login-screen>
 <!-- /ko -->
 
 <!-- ko if: state() === 'MODE_SELECT' -->
-  <mode-select-screen
-    params="{
+<mode-select-screen params="{
       isKeyboardOnlyEnabled: config.isKeyboardOnlyEnabled,
       isKeyboardWithMouseEnabled: config.isKeyboardWithMouseEnabled,
       onBack: onBackFromModeSelect,
       onModeSelected: onModeSelected
-    }"
-  >
-  </mode-select-screen>
+    }">
+</mode-select-screen>
 <!-- /ko -->
 
 <!-- ko if: state() === 'CHARACTER_CREATION' -->
-  <character-creation-screen
-    params="{
+<character-creation-screen params="{
       characterImageUrl: config.assets.characterImageUrl,
       onBack: onBackFromCharacterCreation,
       onNext: onNextFromCharacterCreation
-    }"
-  >
-  </character-creation-screen>
+    }">
+</character-creation-screen>
 <!-- /ko -->
 
 <!-- ko if: state() === 'INGAME' -->
-  <game-screen
-    params="{
-    }"
-  >
-  </game-screen>
+<game-screen params="{
+    }">
+</game-screen>
 <!-- /ko -->
