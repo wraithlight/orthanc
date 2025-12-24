@@ -74,6 +74,16 @@ class GameController
         "weight" => 100 * self::GOLD_WEIGHT
       ]
     );
+  array_push(
+      $itemsOnMap,
+      [
+        "x" => 2,
+        "y" => 1,
+        "item" => "ITEM_GOLD",
+        "amount" => 100,
+        "weight" => 100 * self::GOLD_WEIGHT
+      ]
+    );
     $stateService->setItems($itemsOnMap);
 
     $this->sendBackState("START", null);
@@ -135,7 +145,7 @@ class GameController
           $stateService->setCharacterStatsMoney($currentGold + $currentItem["amount"]);
           $stateService->setCharacterStatsWeight($currentWeight + $currentItem["amount"] * self::GOLD_WEIGHT);
 
-          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m['item'] !== "ITEM_GOLD" && $m["x"] === $location["x"] && $m["y"] === $location["y"]));
+          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => !($m['item'] === "ITEM_GOLD" && $m["x"] === $location["x"] && $m["y"] === $location["y"])));
           $stateService->setItems($itemsOnMap);
         }
       }
