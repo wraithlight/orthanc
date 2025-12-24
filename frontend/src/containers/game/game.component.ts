@@ -56,7 +56,19 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
-    this.actionHandler("INITIAL", null);
+
+    document.addEventListener("keydown", (event: KeyboardEvent) => {
+      console.log("event.code", event.code);
+      switch (event.code) {
+        case "ArrowLeft": return this.onActionItemClick("MOVE_WEST", null);
+        case "ArrowDown": return this.onActionItemClick("MOVE_SOUTH", null);
+        case "ArrowUp": return this.onActionItemClick("MOVE_NORTH", null);
+        case "ArrowRight": return this.onActionItemClick("MOVE_EAST", null);
+        // case "r": return this.onActionItemClick("MOVE_EAST", null); // TODO
+        // case "f": return this.onActionItemClick("MOVE_EAST", null); // TODO
+        // case "c": return this.onActionItemClick("MOVE_EAST", null); // TODO
+      }
+    });
   }
 
   public onActionItemClick(
