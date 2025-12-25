@@ -21,9 +21,6 @@ namespace PhpAPI2 {
       $requestUrl = $_SERVER["REQUEST_URI"];
       $requestMethod = $_SERVER["REQUEST_METHOD"];
 
-      error_log($requestUrl);
-      error_log($requestMethod);
-
       $chopped = self::ChopQueryParams($requestUrl);
 
       $paths = PathCache::GetAllFilteredByRequestType($requestMethod);
