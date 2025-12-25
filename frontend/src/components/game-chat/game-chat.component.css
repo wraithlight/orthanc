@@ -24,17 +24,17 @@
   padding: 4px;
 }
 
-.chat-actions {
+.chat-actions>form {
   display: flex;
 }
 
-.chat-actions>button {
+.chat-actions>form>button {
   width: 30%;
   border-right: 0;
   border-bottom: 0 !important;
 }
 
-.chat-actions>input {
+.chat-actions>form>input {
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
