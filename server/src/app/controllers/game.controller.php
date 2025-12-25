@@ -70,28 +70,7 @@ class GameController
       ]
     );
 
-    array_push(
-      $itemsOnMap,
-      [
-        "x" => 1,
-        "y" => 1,
-        "item" => "ITEM_GOLD",
-        "amount" => 100,
-        "weight" => 100 * self::GOLD_WEIGHT
-      ]
-    );
-  array_push(
-      $itemsOnMap,
-      [
-        "x" => 2,
-        "y" => 1,
-        "item" => "ITEM_GOLD",
-        "amount" => 100,
-        "weight" => 100 * self::GOLD_WEIGHT
-      ]
-    );
     $stateService->setItems($itemsOnMap);
-
     $this->sendBackState("START", null);
   }
 
