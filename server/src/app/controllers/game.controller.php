@@ -122,8 +122,7 @@ class GameController
     $maze = new Maze();
     $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
-    $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
-    $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
+    $tiles = $this->calculateTiles($location['x'], $location['y']);
     $hasPlayerWon = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location;
     $possibleActions = $this->getPossibleActions($tiles, $hasPlayerWon);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
@@ -194,9 +193,8 @@ class GameController
     $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $sumXp) * 100;
 
     $location = $stateService->getPlayerPosition();
-    $tilesAround = $maze->getTilesAroundPlayer($location['x'], $location['y']);
 
-    $tiles = $this->calculateTiles($tilesAround, $location['x'], $location['y']);
+    $tiles = $this->calculateTiles($location['x'], $location['y']);
 
     $isAtStartPoint = $maze->getPlayerInitialLocation() === $location;
 
@@ -270,86 +268,28 @@ class GameController
   }
 
   private function calculateTiles(
-    $currentTiles,
-    $x,
-    $y
+    $centerX,
+    $centerY
   ): array {
-    return [
-      "tile00" => [
-        "top" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile01"]),
-        "right" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile12"]),
-        "bottom" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile21"]),
-        "left" => $this->getBorderType($currentTiles["tile11"], $currentTiles["tile10"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x - 1, $y - 1)
-      ],
-      "tile01" => [
-        "top" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile02"]),
-        "right" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile13"]),
-        "bottom" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile22"]),
-        "left" => $this->getBorderType($currentTiles["tile12"], $currentTiles["tile11"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x + 0, $y - 1)
-      ],
-      "tile02" => [
-        "top" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile03"]),
-        "right" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile14"]),
-        "bottom" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile23"]),
-        "left" => $this->getBorderType($currentTiles["tile13"], $currentTiles["tile12"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x + 1, $y - 1)
-      ],
-      "tile10" => [
-        "top" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile11"]),
-        "right" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile22"]),
-        "bottom" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile31"]),
-        "left" => $this->getBorderType($currentTiles["tile21"], $currentTiles["tile20"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x - 1, $y + 0)
-      ],
-      "tile11" => [
-        "top" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile12"]),
-        "right" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile23"]),
-        "bottom" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile32"]),
-        "left" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile21"]),
-        "occupiedBy" => [
-          "key" => "PLAYER",
-        ],
-        "containsItems" => $this->getItemsOnTile($x + 0, $y + 0)
-      ],
-      "tile12" => [
-        "top" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile13"]),
-        "right" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile24"]),
-        "bottom" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile33"]),
-        "left" => $this->getBorderType($currentTiles["tile23"], $currentTiles["tile22"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x + 1, $y + 0)
-      ],
-      "tile20" => [
-        "top" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile21"]),
-        "right" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile32"]),
-        "bottom" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile41"]),
-        "left" => $this->getBorderType($currentTiles["tile31"], $currentTiles["tile30"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x - 1, $y + 1)
-      ],
-      "tile21" => [
-        "top" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile22"]),
-        "right" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile33"]),
-        "bottom" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile42"]),
-        "left" => $this->getBorderType($currentTiles["tile32"], $currentTiles["tile31"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x + 0, $y + 1)
-      ],
-      "tile22" => [
-        "top" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile23"]),
-        "right" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile34"]),
-        "bottom" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile43"]),
-        "left" => $this->getBorderType($currentTiles["tile33"], $currentTiles["tile32"]),
-        "occupiedBy" => null,
-        "containsItems" => $this->getItemsOnTile($x + 1, $y + 1)
-      ]
-    ];
+    $radius = 3;
+    $neighborCount = (int)floor($radius / 2);
+
+    $maze = new Maze();
+
+    $result = [];
+    for ($y = -$neighborCount; $y <= $neighborCount; $y++) {
+      for ($x = -$neighborCount; $x <= $neighborCount; $x++) {
+        array_push($result, [
+          "top" =>    $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y - 1)),
+          "right" =>  $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
+          "bottom" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y + 1)),
+          "left" =>   $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
+          "occupiedBy" => ($x === 0 && $y === 0) ? ["key" => "CHARACTER"] : null,
+          "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y)
+        ]);
+      }
+    }
+    return $result;
   }
 
   private function getEvents(
@@ -386,7 +326,7 @@ class GameController
     if ($isActionsDisabled) {
       return $actions;
     }
-    $playerTile = $tiles["tile11"];
+    $playerTile = $tiles[(int)floor(count($tiles) / 2)];
 
     $canFight = false;  // TODO
     $canCast = true;    // TODO

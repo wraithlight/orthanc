@@ -13,15 +13,7 @@ export class GameContainer {
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
 
-  public readonly tile00 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile01 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile02 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile10 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile11 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile12 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile20 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile21 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
-  public readonly tile22 = observable({ top: 'TILE_OPEN', right: 'TILE_OPEN', bottom: 'TILE_OPEN', left: 'TILE_OPEN' });
+  public readonly tiles = observableArray<unknown>();
 
   public readonly playerName = observable();
   public readonly hasPlayerWon = observable(false);
@@ -78,15 +70,7 @@ export class GameContainer {
     payload: string | null
   ): void {
     this._gameActionClient.onAction(action, payload).then(m => {
-      this.tile00(m.mapState.tile00);
-      this.tile01(m.mapState.tile01);
-      this.tile02(m.mapState.tile02);
-      this.tile10(m.mapState.tile10);
-      this.tile11(m.mapState.tile11);
-      this.tile12(m.mapState.tile12);
-      this.tile20(m.mapState.tile20);
-      this.tile21(m.mapState.tile21);
-      this.tile22(m.mapState.tile22);
+      this.tiles(m.mapState);
       this.maxHits(m.maxHits);
       this.curHits(m.hits);
       this.characterDexterity(m.character.dexterity);

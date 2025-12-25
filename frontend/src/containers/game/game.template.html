@@ -1,49 +1,17 @@
 <div class="game-screen">
   <div class="game-screen-layout">
     <div class="game-view">
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile00().top === 'TILE_WALL', 'wall-bottom': tile00().bottom === 'TILE_WALL', 'wall-right': tile00().right === 'TILE_WALL', 'wall-left': tile00().left === 'TILE_WALL' }">
-        <!-- ko if: tile00().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile00().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
+      <!-- ko foreach: tiles -->
+       <div class="game-tile"
+        data-bind="css: { 'wall-top': top === 'TILE_WALL', 'wall-bottom': bottom === 'TILE_WALL', 'wall-right': right === 'TILE_WALL', 'wall-left': left === 'TILE_WALL' }">
+        <!-- ko if: containsItems?.length > 0 -->
+         <img data-bind="attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.png' }">
+        <!-- /ko -->
+        <!-- ko if: occupiedBy?.key -->
+         <img data-bind="attr: { src: '/assets/' + occupiedBy.key.toLowerCase() + '.png' }">
+        <!-- /ko -->
       </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile01().top === 'TILE_WALL', 'wall-bottom': tile01().bottom === 'TILE_WALL', 'wall-right': tile01().right === 'TILE_WALL', 'wall-left': tile01().left === 'TILE_WALL' }">
-        <!-- ko if: tile01().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile01().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile02().top === 'TILE_WALL', 'wall-bottom': tile02().bottom === 'TILE_WALL', 'wall-right': tile02().right === 'TILE_WALL', 'wall-left': tile02().left === 'TILE_WALL' }">
-        <!-- ko if: tile02().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile02().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile10().top === 'TILE_WALL', 'wall-bottom': tile10().bottom === 'TILE_WALL', 'wall-right': tile10().right === 'TILE_WALL', 'wall-left': tile10().left === 'TILE_WALL' }">
-        <!-- ko if: tile10().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile10().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile11().top === 'TILE_WALL', 'wall-bottom': tile11().bottom === 'TILE_WALL', 'wall-right': tile11().right === 'TILE_WALL', 'wall-left': tile11().left === 'TILE_WALL' }">
-        <img src="/assets/character.png"></div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile12().top === 'TILE_WALL', 'wall-bottom': tile12().bottom === 'TILE_WALL', 'wall-right': tile12().right === 'TILE_WALL', 'wall-left': tile12().left === 'TILE_WALL' }">
-        <!-- ko if: tile12().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile12().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile20().top === 'TILE_WALL', 'wall-bottom': tile20().bottom === 'TILE_WALL', 'wall-right': tile20().right === 'TILE_WALL', 'wall-left': tile20().left === 'TILE_WALL' }">
-        <!-- ko if: tile20().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile20().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile21().top === 'TILE_WALL', 'wall-bottom': tile21().bottom === 'TILE_WALL', 'wall-right': tile21().right === 'TILE_WALL', 'wall-left': tile21().left === 'TILE_WALL' }">
-        <!-- ko if: tile21().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile21().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
-      <div class="game-tile"
-        data-bind="css: { 'wall-top': tile22().top === 'TILE_WALL', 'wall-bottom': tile22().bottom === 'TILE_WALL', 'wall-right': tile22().right === 'TILE_WALL', 'wall-left': tile22().left === 'TILE_WALL' }">
-        <!-- ko if: tile22().containsItems?.length > 0 --><img
-          data-bind="attr: { src: '/assets/' + tile22().containsItems[0].iconName.toLowerCase() + '.png' }"><!-- /ko -->
-      </div>
+      <!-- /ko -->
     </div>
     <div class="game-feedback">
       <!-- ko foreach: events -->
