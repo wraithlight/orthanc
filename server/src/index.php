@@ -1,5 +1,8 @@
 <?php
 require_once("./phpapi/api.php");
+
+require_once("./app/utils/guid.php");
+
 require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
 require_once("./app/utils/dice/d8.php");
