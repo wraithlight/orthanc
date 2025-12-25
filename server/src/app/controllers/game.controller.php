@@ -88,15 +88,15 @@ class GameController
     array_push(
       $itemsOnMap,
       createItem(
-        "ITEM_GOLD",
-        "item_gold",
-        100,
-        100,
+        "ITEM_CHEST_SWORD",
+        "item_chest",
+        1,
+        0,
         100 * self::GOLD_WEIGHT,
         true,
-        "Pick up Gold (100)",
-        "You picked up Gold (100)",
-        "You see a pile of gold.",
+        "Loot chest",
+        "You picked a sword from the chest.",
+        "You see a chest",
         1,
         1,
       )
@@ -170,6 +170,10 @@ class GameController
               "remaining" => "∞"
             ]);
             $stateService->setCharacterSpellsOn($spells);
+          }
+
+          if ($currentItem->key === "ITEM_CHEST_SWORD") {
+            $stateService->setEquipmentSword("EPIC");
           }
 
         }
