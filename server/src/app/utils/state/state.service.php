@@ -262,11 +262,17 @@ class StateService
     return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
   }
 
+  /**
+   * @return Item[]
+   */
   public function getItems(): array
   {
     return $this->readFromSessionState(self::MAP_ITEMS);
   }
 
+  /**
+   * @param Item[] $items
+   */
   public function setItems(array $items)
   {
     return $this->writeToSessionState(self::MAP_ITEMS, $items);

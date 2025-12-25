@@ -2,6 +2,8 @@
 require_once("./phpapi/api.php");
 
 require_once("./app/utils/guid.php");
+require_once("./app/utils/factories/item/item.php");
+require_once("./app/utils/factories/item/item.factory.php");
 
 require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
@@ -34,6 +36,7 @@ $chatControllerFactory = function () {
 };
 
 Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
+Wrapper::RegisterPath("GET", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/character-creation/generate", $characterCreationControllerFactory, "generate");
 Wrapper::RegisterPath("GET", "/api/v1/game/start", $gameControllerFactory, "startGame");
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");

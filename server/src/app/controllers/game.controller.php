@@ -46,29 +46,60 @@ class GameController
     $walkableTiles = $maze->getWalkableTiles();
     $numberOfWalkableTiles = count($walkableTiles);
     $numberOfGoldOnMap = $numberOfWalkableTiles / 100 * self::GOLD_PERCENTAGE_ON_MAP;
+    /** @var Item[] */
     $itemsOnMap = [];
     for ($i = 0; $i < $numberOfGoldOnMap; $i++) {
       $randomIndex = array_rand($walkableTiles, 1);
       $amount = roll_d10k();
       array_push(
         $itemsOnMap,
-        [
-          "x" => $walkableTiles[$randomIndex]["x"],
-          "y" => $walkableTiles[$randomIndex]["y"],
-          "item" => "ITEM_GOLD",
-          "amount" => $amount
-        ]
+        createItem(
+          "ITEM_GOLD",
+          "item_gold",
+          $amount,
+          $amount,
+          $amount * self::GOLD_WEIGHT,
+          true,
+          "Pick up Gold ($amount)",
+          "You picked up Gold ($amount)",
+          "You see a pile of gold.",
+          $walkableTiles[$randomIndex]["x"],
+          $walkableTiles[$randomIndex]["y"],
+        )
       );
     }
     $randomIndex = array_rand($walkableTiles, 1);
     array_push(
       $itemsOnMap,
-      [
-        "x" => $walkableTiles[$randomIndex]["x"],
-        "y" => $walkableTiles[$randomIndex]["y"],
-        "item" => "ITEM_ORB",
-        "amount" => 1
-      ]
+      createItem(
+        "ITEM_ORB",
+        "item_orb",
+        1,
+        0,
+        1 * self::ORB_WEIGHT,
+        true,
+        "Pick up the Orb",
+        "You picked up the Orb! Run to the entrance!",
+        "You see the Orb!",
+        $walkableTiles[$randomIndex]["x"],
+        $walkableTiles[$randomIndex]["y"],
+      )
+    );
+    array_push(
+      $itemsOnMap,
+      createItem(
+        "ITEM_GOLD",
+        "item_gold",
+        100,
+        100,
+        100 * self::GOLD_WEIGHT,
+        true,
+        "Pick up Gold (100)",
+        "You picked up Gold (100)",
+        "You see a pile of gold.",
+        1,
+        1,
+      )
     );
 
     $stateService->setItems($itemsOnMap);
@@ -115,30 +146,33 @@ class GameController
           $stateService->moveWest();
           break;
         }
-        case "PICKUP" && $target === "ITEM_ORB": {
-          $stateService->setHasOrb(true);
-          $spells = $stateService->getCharacterSpellsOn();
-          array_push($spells, [
-            "key" => "SPELL_00",
-            "label" => "Blessing of the Orb",
-            "remaining" => "∞"
-          ]);
-          $currentWeight = $stateService->getCharacterStatsWeight();
-          $stateService->setCharacterStatsWeight($currentWeight + self::ORB_WEIGHT);
-          $stateService->setCharacterSpellsOn($spells);
-          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m['item'] !== "ITEM_ORB"));
-          $stateService->setItems($itemsOnMap);
-        }
-        case "PICKUP" && $target === "ITEM_GOLD": {
-          $currentGold = $stateService->getCharacterStatsMoney();
-          $currentWeight = $stateService->getCharacterStatsWeight();
+        case "PICKUP": {
           $currentItem = $this->getItemsOnTile($location["x"], $location["y"])[0];
 
-          $stateService->setCharacterStatsMoney($currentGold + $currentItem["amount"]);
-          $stateService->setCharacterStatsWeight($currentWeight + $currentItem["amount"] * self::GOLD_WEIGHT);
-
-          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => !($m['item'] === "ITEM_GOLD" && $m["x"] === $location["x"] && $m["y"] === $location["y"])));
+          // General.
+          $currentWeight = $stateService->getCharacterStatsWeight();
+          $stateService->setCharacterStatsWeight($currentWeight + $currentItem->sumWeight);
+          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m->id !== $target));
           $stateService->setItems($itemsOnMap);
+          $target = $currentItem->pickedupLabel;
+
+          if ($currentItem->key === "ITEM_GOLD") {
+            // TODO: This can be moved to general since Orb has 0 wealth.
+            $currentGold = $stateService->getCharacterStatsMoney();
+            $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
+          }
+
+          if ($currentItem->key === "ITEM_ORB") {
+            $stateService->setHasOrb(true);
+            $spells = $stateService->getCharacterSpellsOn();
+            array_push($spells, [
+              "key" => "SPELL_00",
+              "label" => "Blessing of the Orb",
+              "remaining" => "∞"
+            ]);
+            $stateService->setCharacterSpellsOn($spells);
+          }
+
         }
       }
     }
@@ -188,9 +222,9 @@ class GameController
     echo json_encode([
       "hasPlayerWon" => $hasPlayerWon,
       "mapSize" => [
-          "width" => $mapSize,
-          "height" => $mapSize
-        ],
+        "width" => $mapSize,
+        "height" => $mapSize
+      ],
       "character" => [
         "dexterity" => $stateService->getPlayerDexterity(),
         "intelligence" => $stateService->getPlayerIntelligence(),
@@ -202,11 +236,11 @@ class GameController
       "maxHits" => $stateService->getPlayerMaxHits(),
       "activeSpells" => $stateService->getCharacterSpellsOn(),
       "equipment" => [
-          "sword" => $stateService->getEquipmentSword(),
-          "shield" => $stateService->getEquipmentShield(),
-          "armor" => $stateService->getEquipmentArmor(),
-          "arrows" => $stateService->getEquipmentArrows()
-        ],
+        "sword" => $stateService->getEquipmentSword(),
+        "shield" => $stateService->getEquipmentShield(),
+        "armor" => $stateService->getEquipmentArmor(),
+        "arrows" => $stateService->getEquipmentArrows()
+      ],
       "statistics" => [
         "experience" => $stateService->getCharacterXp(),
         "money" => $stateService->getCharacterStatsMoney(),
@@ -214,14 +248,24 @@ class GameController
         "weight" => $stateService->getCharacterStatsWeight(),
         "playerLevel" => $stateService->getCharacterStatsLevel(),
         "spellUnits" => [
-            "current" => $stateService->getCharacterSpellUnitsCur(),
-            "maximum" => $stateService->getCharacterSpellUnitsMax()
-          ],
+          "current" => $stateService->getCharacterSpellUnitsCur(),
+          "maximum" => $stateService->getCharacterSpellUnitsMax()
+        ],
         "xpPercentageFromKills" => $xpFromKillsPercentage
       ],
       "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
       "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
-      "mapState" => $tiles
+      "mapState" => array_map(
+        fn($m) => [
+          "top" => $m["top"],
+          "right" => $m["right"],
+          "bottom" => $m["bottom"],
+          "left" => $m["left"],
+          "occupiedBy" => $m["occupiedBy"],
+          "containsItems" => $this->itemToItemDto($m["containsItems"]),
+        ],
+        $tiles
+      )
     ]);
   }
 
@@ -269,8 +313,8 @@ class GameController
         "bottom" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile32"]),
         "left" => $this->getBorderType($currentTiles["tile22"], $currentTiles["tile21"]),
         "occupiedBy" => [
-            "key" => "PLAYER",
-          ],
+          "key" => "PLAYER",
+        ],
         "containsItems" => $this->getItemsOnTile($x + 0, $y + 0)
       ],
       "tile12" => [
@@ -318,7 +362,7 @@ class GameController
     if ($lastAction === "PICKUP") {
       array_push($events, [
         "key" => "ITEM_PICKUP",
-        "label" => "You picked up $lastActionTarget."
+        "label" => $lastActionTarget
       ]);
     }
 
@@ -327,7 +371,7 @@ class GameController
     foreach ($visibleItems as $item) {
       array_push($events, [
         "key" => "ITEM_SEE",
-        "label" => "You see a(n) {$item['key']}."
+        "label" => $item->visibleLabel
       ]);
     }
 
@@ -355,11 +399,13 @@ class GameController
 
     if ($canPickup) {
       foreach ($playerTile["containsItems"] as $item) {
-        array_push($actions, [
-          "label" => "Pick up {$item['key']} ({$item['amount']})",
-          "key" => "PICKUP",
-          "payload" => $item['key']
-        ]);
+        if ($item->canPickup) {
+          array_push($actions, [
+            "label" => $item->pickupLabel,
+            "key" => "PICKUP",
+            "payload" => $item->id
+          ]);
+        }
       }
     }
 
@@ -386,16 +432,33 @@ class GameController
     return "TILE_OPEN";
   }
 
+  private function itemToItemDto(
+    array $items
+  ): array {
+    return array_map(fn($m) => (object) [
+      "id" => $m->id,
+      "iconName" => $m->iconName,
+    ], $items);
+  }
+
   private function getItemsOnTile($x, $y): array
   {
     // TODO: To make this work properly, tiles that are not visible should not be considered.
     $stateService = new StateService();
     $itemsOnMap = $stateService->getItems();
-    $itemsOnTile = array_values(array_filter($itemsOnMap, fn($m) => $m["x"] === $x && $m["y"] === $y));
+    $itemsOnTile = array_values(array_filter($itemsOnMap, fn($m) => $m->locationX === $x && $m->locationY === $y));
 
-    return array_map(fn($m) => [
-      "key" => $m["item"],
-      "amount" => $m["amount"]
+    return array_map(fn($m) => (object) [
+      "id" => $m->id,
+      "key" => $m->key,
+      "iconName" => $m->iconName,
+      "amount" => $m->amount,
+      "wealth" => $m->wealth,
+      "sumWeight" => $m->sumWeight,
+      "canPickup" => $m->canPickup,
+      "pickupLabel" => $m->pickupLabel,
+      "pickedupLabel" => $m->pickedupLabel,
+      "visibleLabel" => $m->visibleLabel,
     ], $itemsOnTile);
   }
 
