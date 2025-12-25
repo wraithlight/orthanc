@@ -14,11 +14,12 @@ class GameController
     $chatMessageService = new ChatMessagesService();
     $maze = new Maze();
 
+    $id = session_id();
     $username = $stateService->getPlayerName();
     $location = $maze->getPlayerInitialLocation();
     $currentHits = $stateService->getPlayerMaxHits();
 
-    $chatMembersService->addMember($username);
+    $chatMembersService->addMember($username, $id);
     $stateService->setPlayerPosition($location["x"], $location["y"]);
     $stateService->setPlayerCurHits($currentHits);
     $stateService->setChatLastMessageId($chatMessageService->getLastMessageId());

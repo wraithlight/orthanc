@@ -2,7 +2,7 @@
 
 class MazeService extends BaseIOService
 {
-  protected string $filePath = __DIR__ . '/../../game-data/maze.txt';
+  protected string $filePath = __DIR__ . '/../../../game-data/maze.txt';
 
   public function getMaze(): array
   {

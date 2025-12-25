@@ -1,12 +1,14 @@
 <?php
 class ChatMembersService extends BaseIOService
 {
-  protected string $filePath = __DIR__ . '/../../data/chat_members.json';
+  protected string $filePath = __DIR__ . '/../../../data/chat_members.json';
 
-  public function addMember(string $name): int
+  public function addMember(
+    string $name,
+    string $id
+  ): string
   {
     $members = $this->read();
-    $id = count($members) > 0 ? end($members)['id'] + 1 : 1;
     $member = [
       'name' => $name,
       'id' => $id,
@@ -18,11 +20,11 @@ class ChatMembersService extends BaseIOService
     return $id;
   }
 
-  public function updateLastSeen(string $name): void
+  public function updateLastSeen(string $id): void
   {
     $members = $this->read();
     foreach ($members as &$m) {
-      if ($m['name'] === $name) {
+      if ($m['id'] === $id) {
         $m['last_seen'] = time();
         break;
       }
@@ -30,18 +32,12 @@ class ChatMembersService extends BaseIOService
     $this->write($members);
   }
 
-  public function cleanupInactiveMembers(int $ttl = 5): void
+  public function getActiveMembers($ttl = 5): array
   {
     $members = $this->read();
     $now = time();
     $members = array_filter($members, fn($m) => isset($m['last_seen']) && ($now - $m['last_seen']) < $ttl);
-    $this->write(array_values($members));
-  }
-
-  public function getAllMembers(): array
-  {
-    $members = $this->read();
-    return array_map(fn($m) => $m['name'], $members);
+    return array_values(array_map(fn($m) => $m['name'], $members));
   }
 
 }

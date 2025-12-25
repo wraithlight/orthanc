@@ -25,14 +25,13 @@ class ChatController
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
 
-    $username = $stateService->getPlayerName();
-    $chatMembersService->updateLastSeen($username);
-    $chatMembersService->cleanupInactiveMembers();
+    $id = session_id();
+    $chatMembersService->updateLastSeen($id);
 
     $lastMessageId = $stateService->getChatLastMessageId();
-    ;
+
     $messages = $chatMessageService->getMessagesSince($lastMessageId);
-    $members = $chatMembersService->getAllMembers();
+    $members = $chatMembersService->getActiveMembers();
 
     echo json_encode([
       'messages' => $messages,
