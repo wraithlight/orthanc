@@ -4,10 +4,11 @@ class CharacterCreationController
 {
   public function generate()
   {
-    if (empty(session_id())) {
+    if (empty($_COOKIE['PHPSESSID'])) {
       http_response_code(401);
       exit;
     }
+    session_start();
 
     $stateService = new StateService();
 

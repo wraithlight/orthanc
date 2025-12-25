@@ -4,10 +4,11 @@ class ChatController
 {
   public function sendMessage()
   {
-    if (empty(session_id())) {
+    if (empty($_COOKIE['PHPSESSID'])) {
       http_response_code(401);
       exit;
     }
+    session_start();
 
     $stateService = new StateService();
     $username = $stateService->getPlayerName();
@@ -26,10 +27,11 @@ class ChatController
 
   public function getMessages()
   {
-    if (empty(session_id())) {
+    if (empty($_COOKIE['PHPSESSID'])) {
       http_response_code(401);
       exit;
     }
+    session_start();
 
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
