@@ -12,8 +12,10 @@
     </div>
     <!-- /ko -->
   </div>
-  <dib class="chat-actions">
-    <input type="text" data-bind="value: message, hasFocus: inputHasFocus">
-    <button data-bind="click: onSendClick">Send</button>
-  </dib>
+  <div class="chat-actions">
+    <form data-bind="submit: onSendClick">
+      <input type="text" data-bind="value: message, hasFocus: inputHasFocus">
+      <button type="submit">Send</button>
+    </form>
+  </div>
 </div>
