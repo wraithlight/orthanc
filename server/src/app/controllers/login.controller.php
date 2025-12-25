@@ -4,6 +4,7 @@ class LoginController
 {
   public function loginGuest()
   {
+    session_start();
     $stateService = new StateService();
 
     $username = 'guest_' . roll_d10k();

@@ -9,6 +9,11 @@ class GameController
 
   public function startGame()
   {
+    if (empty(session_id())) {
+      http_response_code(401);
+      exit;
+    }
+
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
@@ -92,6 +97,11 @@ class GameController
 
   public function onAction()
   {
+    if (empty(session_id())) {
+      http_response_code(401);
+      exit;
+    }
+
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $action = $payload['action'];
@@ -382,7 +392,6 @@ class GameController
 
     return $actions;
   }
-
   private function getBorderType(
     $currentTile,
     $targetTile

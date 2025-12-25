@@ -1,6 +1,4 @@
 <?php
-session_start();
-
 require_once("./phpapi/api.php");
 require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
@@ -40,8 +38,6 @@ Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMe
 Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
 // TODO: Remove GET
 Wrapper::RegisterPath("GET", "/api/v1/game/action", $gameControllerFactory, "onAction");
-// TODO: Remove maze
-Wrapper::RegisterPath("GET", "/api/v1/maze", $gameControllerFactory, "maze");
 
 Wrapper::Listen(true, true);
 

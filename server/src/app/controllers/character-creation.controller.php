@@ -4,6 +4,11 @@ class CharacterCreationController
 {
   public function generate()
   {
+    if (empty(session_id())) {
+      http_response_code(401);
+      exit;
+    }
+
     $stateService = new StateService();
 
     $str = roll_d8() + roll_d8();

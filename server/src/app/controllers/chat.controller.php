@@ -4,6 +4,11 @@ class ChatController
 {
   public function sendMessage()
   {
+    if (empty(session_id())) {
+      http_response_code(401);
+      exit;
+    }
+
     $stateService = new StateService();
     $username = $stateService->getPlayerName();
     $rawBody = file_get_contents('php://input');
@@ -21,6 +26,11 @@ class ChatController
 
   public function getMessages()
   {
+    if (empty(session_id())) {
+      http_response_code(401);
+      exit;
+    }
+
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
