@@ -26,7 +26,17 @@ class StateService
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
   const MAP_ITEMS = "MAP_ITEMS";
   const MAP_NPCS = "MAP_NPCS";
+  const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
+
+
+  public function setMapFull(array $value) {
+    $this->writeToSessionState(self::MAP_FULL, $value);
+  }
+
+  public function getMapFull(): array {
+    return $this->readFromSessionState(self::MAP_FULL);
+  }
 
   public function setCharacterXp($value)
   {

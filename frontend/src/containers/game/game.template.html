@@ -18,7 +18,9 @@
       <span data-bind="text: label"></span>
       <!-- /ko -->
     </div>
-    <div class="game-stats">&lt;Map&gt;</div>
+    <div class="game-minimap">
+      <canvas id="minimapCanvas"></canvas>
+    </div>
     <div class="game-stats"><strong>Spells on</strong>
       <ul>
         <!-- ko foreach: activeSpells -->

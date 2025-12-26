@@ -42,6 +42,7 @@ class GameController
     $stateService->setCharacterSpellUnitsCur(4);
     $stateService->setHasOrb(false);
     $stateService->setCharacterSpellsOn([]);
+    $stateService->setMapFull($maze->getFullMaze());
 
     $walkableTiles = $maze->getWalkableTiles();
     $numberOfWalkableTiles = count($walkableTiles);
@@ -220,6 +221,36 @@ class GameController
     $mapHeight = $maze->mazeHeight();
     $mapWidth = $maze->mazeWidth();
 
+    // Update map state
+    $map = $stateService->getMapFull();
+    foreach ($tiles as $tile) {
+      $y = $tile["y"];
+      $x = $tile["x"];
+
+      if (isset($map[$y][$x])) {
+        $map[$y][$x]->visited = true;
+      }
+    }
+    $stateService->setMapFull($map);
+    $minimapState = [];
+
+    for ($y = 0; $y < $mapHeight; $y++) {
+      $minimapState[$y] = [];
+      for ($x = 0; $x < $mapWidth; $x++) {
+        $tile = $map[$y][$x];
+
+        if (!$tile->visited) {
+          $minimapState[$y][$x] = "UNKNOWN";
+        } elseif ($tile->tileChar === "%" || $tile->tileChar === ".") {
+          $minimapState[$y][$x] = "EMPTY";
+        } else {
+          $minimapState[$y][$x] = "WALL";
+        }
+      }
+    }
+
+    $minimapState[$location['y']][$location['x']] = "PLAYER";
+
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
       "hasPlayerWon" => $hasPlayerWon,
@@ -267,7 +298,8 @@ class GameController
           "containsItems" => $this->itemToItemDto($m["containsItems"]),
         ],
         $tiles
-      )
+      ),
+      "minimapState" => $minimapState
     ]);
   }
 
@@ -276,7 +308,7 @@ class GameController
     $centerY
   ): array {
     $radius = 3;
-    $neighborCount = (int)floor($radius / 2);
+    $neighborCount = (int) floor($radius / 2);
 
     $maze = new Maze();
 
@@ -284,12 +316,14 @@ class GameController
     for ($y = -$neighborCount; $y <= $neighborCount; $y++) {
       for ($x = -$neighborCount; $x <= $neighborCount; $x++) {
         array_push($result, [
-          "top" =>    $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y - 1)),
-          "right" =>  $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
+          "top" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y - 1)),
+          "right" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
           "bottom" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y + 1)),
-          "left" =>   $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
+          "left" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
           "occupiedBy" => ($x === 0 && $y === 0) ? ["key" => "CHARACTER"] : null,
-          "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y)
+          "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y),
+          "x" => $centerX + $x,
+          "y" => $centerY + $y
         ]);
       }
     }
@@ -330,7 +364,7 @@ class GameController
     if ($isActionsDisabled) {
       return $actions;
     }
-    $playerTile = $tiles[(int)floor(count($tiles) / 2)];
+    $playerTile = $tiles[(int) floor(count($tiles) / 2)];
 
     $canFight = false;  // TODO
     $canCast = true;    // TODO

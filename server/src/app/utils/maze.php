@@ -58,6 +58,21 @@ class Maze
     return $maze[$y][$x];
   }
 
+  public function getFullMaze(): array {
+    $maze = $this->getMaze();
+    $map = array_map(
+      fn($row) => array_map(
+          fn($char) => (object)[
+            "tileChar" => $char,
+            "visited" => false
+          ],
+          str_split($row)
+      ),
+      $maze
+    );
+    return $map;
+  }
+
   private function getMaze(): array
   {
     $mazeService = new MazeService();
