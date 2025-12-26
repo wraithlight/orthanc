@@ -1,15 +1,16 @@
-import { defineConfig } from 'vite';
-import { resolve, join } from 'path';
-import { readFileSync, writeFileSync } from 'fs';
+import { defineConfig } from "vite";
+import { resolve, join } from "path";
+import { readFileSync, writeFileSync } from "fs";
+import { execSync } from "child_process";
 
 export default defineConfig({
-  root: '.',
-  base: './',
+  root: ".",
+  base: "./",
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     emptyOutDir: true,
     rollupOptions: {
-      input: resolve(__dirname, 'index.html'),
+      input: resolve(__dirname, "index.html"),
     },
   },
   server: {
@@ -22,9 +23,11 @@ export default defineConfig({
       apply: "build",
       writeBundle() {
         const configFilePath = resolve(__dirname, join("dist", "config.json"));
-        const content = JSON.parse(readFileSync(configFilePath, "utf-8"));
-        content.apiUrl = "";
-        writeFileSync(configFilePath, JSON.stringify(content), "utf-8");
+        const gitHash = execSync("git rev-parse --short HEAD").toString().trim();
+        const configContent = JSON.parse(readFileSync(configFilePath, "utf-8"));
+        configContent.apiUrl = "";
+        configContent.version += `-${gitHash}`;
+        writeFileSync(configFilePath, JSON.stringify(configContent), "utf-8");
       }
     }
   ]
