@@ -21,6 +21,21 @@ open localhost:3000                                     # open the app in your b
 
 ```
 
+**Production-like mode**
+```sh
+
+git clone https://github.com/wraithlight/orthanc.git    # fork the repo
+cd orthanc                                              # navigate to server folder
+sh run-local.sh                                         # run the server in docker
+open localhost:4100                                     # open the app in your browser
+
+```
+
+| Mode    | SH file         | Docker image name     | Docker container name | Port    |
+| :-:     | :-:             | :-:                   | :-:                   | :-:     |
+| `dev`   | `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`  | `3100`  |
+| `local` | `run-local-sh`  | `orthanc-game-local`  | `orthanc-game-local`  | `4100`  |
+
 ## Contribution
 
 To contribute this project, the following tools and plugins are suggested:

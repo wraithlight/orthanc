@@ -1,0 +1,20 @@
+FROM node:18.13.0 AS install
+
+WORKDIR /temp
+COPY frontend /temp
+USER root
+RUN yarn --frozen-lockfile
+RUN yarn build
+
+FROM php:8.0.7-apache AS runner
+COPY --from=install /temp/dist /var/www/html
+COPY server/src /var/www/html
+COPY server/game-data /var/www/game-data
+
+RUN mkdir -p /var/www/data \
+  && touch /var/www/data/chat_members.json \
+  && touch /var/www/data/chat_messages.json \
+  && chown -R www-data:www-data /var/www/data \
+  && chmod -R 775 /var/www/data
+
+RUN a2enmod rewrite
