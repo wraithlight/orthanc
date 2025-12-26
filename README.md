@@ -6,6 +6,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 **Requirements**
 * NodeJS installed
 * Docker installed
+* yarn
 
 ```sh
 
@@ -18,3 +19,33 @@ yarn dev                                                # start dev mode via yar
 open localhost:3000                                     # open the app in your browser
 
 ```
+
+## Contribution
+
+To contribute this project, the following tools and plugins are suggested:
+**Tools:**
+* Visual Studio Code
+* NodeJS
+* Docker Desktop
+* yarn
+
+**Plugins:**
+* Composer (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.composer-php-vscode)
+* IntelliPHP (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.intelli-php-vscode)
+* PHP (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)
+* PHP Profiler (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.profiler-php-vscode)
+
+When the commits are being created, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)!
+During build the `run.sh` script will create its own docker images name `orthanc-server`. The script itself takes care of the cleanup, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image!
+
+### Technical details
+The following technologies are used during the development of this game:
+* typescript/javascript
+* CSS
+* HTML
+* Vite
+* PHP
+* HTML Canvas with Typescript
+* Docker
+* yarn
+
