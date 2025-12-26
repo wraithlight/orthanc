@@ -5,6 +5,9 @@ server/data/*
 # node modules
 node_modules/
 
+# FE dist
+dist
+
 # Yarn
 yarn-debug.log*
 yarn-error.log*
