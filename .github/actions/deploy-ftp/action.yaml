@@ -1,0 +1,33 @@
+name: "FTP Deploy"
+description: "Deploy files to an FTP server"
+author: "kfarkasHU"
+runs:
+  using: "composite"
+  steps:
+    - name: Run deploy script
+      shell: bash
+      run: |
+        export FTP_HOST="${{ inputs.ftp_host }}"
+        export FTP_USER="${{ inputs.ftp_user }}"
+        export FTP_PASS="${{ inputs.ftp_pass }}"
+        export REMOTE_DIR="${{ inputs.remote_dir }}"
+        export LOCAL_DIR="${{ inputs.local_dir }}"
+
+        chmod +x ${{ github.action_path }}/deploy-ftp.sh
+        ${{ github.action_path }}/deploy-ftp.sh
+inputs:
+  ftp_host:
+    description: "FTP server host"
+    required: true
+  ftp_user:
+    description: "FTP username"
+    required: true
+  ftp_pass:
+    description: "FTP password"
+    required: true
+  remote_dir:
+    description: "Remote directory to deploy to"
+    required: true
+  local_dir:
+    description: "Local directory to deploy"
+    required: true
