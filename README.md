@@ -8,12 +8,13 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 * Docker installed
 * yarn
 
+**Local development mode**
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
-cd orthanc/server                                       # navigate to server folder
-sh run.sh                                               # run the server in docker
-cd ../frontend                                          # navigate to frontend folder
+cd orthanc                                              # navigate to server folder
+sh run-dev.sh                                           # run the server in docker
+cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
 yarn dev                                                # start dev mode via yarn
 open localhost:3000                                     # open the app in your browser
@@ -36,7 +37,7 @@ To contribute this project, the following tools and plugins are suggested:
 * PHP Profiler (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.profiler-php-vscode)
 
 When the commits are being created, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)!
-During build the `run.sh` script will create its own docker images name `orthanc-server`. The script itself takes care of the cleanup, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image!
+During build the `run-dev.sh` script will create its own docker images name `orthanc-server-dev`. The script itself takes care of the cleanup, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image!
 
 ### Technical details
 The following technologies are used during the development of this game:
