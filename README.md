@@ -12,7 +12,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
-cd orthanc                                              # navigate to server folder
+cd orthanc                                              # navigate to repo folder
 sh run-dev.sh                                           # run the server in docker
 cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
@@ -25,8 +25,8 @@ open localhost:3000                                     # open the app in your b
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
-cd orthanc                                              # navigate to server folder
-sh run-local.sh                                         # run the server in docker
+cd orthanc                                              # navigate to repo folder
+sh run-local.sh                                         # run the app in docker
 open localhost:4100                                     # open the app in your browser
 
 ```
