@@ -1,0 +1,21 @@
+name: FTP - Deploy MAZE
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Deploy to FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_MAZE_FOLDER }}
+          local_dir: "./server/game-data"

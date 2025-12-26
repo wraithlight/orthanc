@@ -1,0 +1,34 @@
+name: FTP - Deploy FRONTEND
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.20.8
+
+      - name: Install packages
+        run: yarn install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Run build
+        run: yarn build
+        working-directory: ./frontend
+
+      - name: Deploy to FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_FRONTEND_FOLDER }}
+          local_dir: "./frontend/dist"
