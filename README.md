@@ -1,6 +1,12 @@
 # orthanc
 Reimplementation of the Orthanc Labyrinth game from 1975.
 
+<h3>
+  <p align="center">
+  >><a href="https://orthanc.farkask.eu/" target="_blank"> TRY IT OUT HERE </a><<
+  </p>
+</h3>
+
 ## Get started
 
 **Requirements**
