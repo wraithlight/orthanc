@@ -337,6 +337,7 @@ class GameController
     $playerTile = $tiles[(int) floor(count($tiles) / 2)];
 
     $canFight = false;  // TODO
+    $canRun = true;     // TODO
     $canMove = true;    // TODO
     $canCast = true;    // TODO
     $canPickup = !empty($playerTile["containsItems"]);
@@ -358,7 +359,7 @@ class GameController
       }
     }
 
-    $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
+    $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
     $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
     $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
