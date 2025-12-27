@@ -27,7 +27,7 @@ export class GameChatClient {
     );
 
     const content = JSON.parse(await response.text());
-    return content;
+    return content.payload;
   }
 
 }

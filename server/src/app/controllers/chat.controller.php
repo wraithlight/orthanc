@@ -17,9 +17,11 @@ class ChatController
     $message = $payload['message'];
 
     $chatMessageService = new ChatMessagesService();
-    $id = $chatMessageService->addMessage([
-      'sender' => $username,
-      'message' => $message
+    $chatMessageService->addMessage([
+      "payload" => [
+        'sender' => $username,
+        'message' => $message
+      ]
     ]);
 
     echo json_encode([], JSON_PRETTY_PRINT);
@@ -46,8 +48,10 @@ class ChatController
     $members = $chatMembersService->getActiveMembers();
 
     echo json_encode([
-      'messages' => $messages,
-      'members' => $members
+      "payload" => [
+        'messages' => $messages,
+        'members' => $members
+      ]
     ], JSON_UNESCAPED_UNICODE);
   }
 }

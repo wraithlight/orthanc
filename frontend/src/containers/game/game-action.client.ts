@@ -21,6 +21,6 @@ export class GameActionClient {
     );
 
     const content = await result.text();
-    return JSON.parse(content);
+    return JSON.parse(content).payload;
   }
 }

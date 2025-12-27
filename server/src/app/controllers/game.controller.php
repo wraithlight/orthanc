@@ -306,53 +306,55 @@ class GameController
 
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
-      "hasPlayerWon" => $hasPlayerWon,
-      "mapSize" => [
-        "width" => $mapSize,
-        "height" => $mapSize
-      ],
-      "character" => [
-        "dexterity" => $stateService->getPlayerDexterity(),
-        "intelligence" => $stateService->getPlayerIntelligence(),
-        "strength" => $stateService->getPlayerStrength(),
-        "constitution" => $stateService->getPlayerConstitution()
-      ],
-      "playerName" => $stateService->getPlayerName(),
-      "hits" => $stateService->getPlayerCurHits(),
-      "maxHits" => $stateService->getPlayerMaxHits(),
-      "activeSpells" => $stateService->getCharacterSpellsOn(),
-      "equipment" => [
-        "sword" => $stateService->getEquipmentSword(),
-        "shield" => $stateService->getEquipmentShield(),
-        "armor" => $stateService->getEquipmentArmor(),
-        "arrows" => $stateService->getEquipmentArrows()
-      ],
-      "statistics" => [
-        "experience" => $stateService->getCharacterXp(),
-        "money" => $stateService->getCharacterStatsMoney(),
-        "nextLevelInXp" => $nextLevelInXp,
-        "weight" => $stateService->getCharacterStatsWeight(),
-        "playerLevel" => $stateService->getCharacterStatsLevel(),
-        "spellUnits" => [
-          "current" => $stateService->getCharacterSpellUnitsCur(),
-          "maximum" => $stateService->getCharacterSpellUnitsMax()
+      "payload" => [
+        "hasPlayerWon" => $hasPlayerWon,
+        "mapSize" => [
+          "width" => $mapSize,
+          "height" => $mapSize
         ],
-        "xpPercentageFromKills" => $xpFromKillsPercentage
-      ],
-      "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
-      "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
-      "mapState" => array_map(
-        fn($m) => [
-          "top" => $m["top"],
-          "right" => $m["right"],
-          "bottom" => $m["bottom"],
-          "left" => $m["left"],
-          "occupiedBy" => $m["occupiedBy"],
-          "containsItems" => $this->itemToItemDto($m["containsItems"]),
+        "character" => [
+          "dexterity" => $stateService->getPlayerDexterity(),
+          "intelligence" => $stateService->getPlayerIntelligence(),
+          "strength" => $stateService->getPlayerStrength(),
+          "constitution" => $stateService->getPlayerConstitution()
         ],
-        $tiles
-      ),
-      "minimapState" => $minimapState
+        "playerName" => $stateService->getPlayerName(),
+        "hits" => $stateService->getPlayerCurHits(),
+        "maxHits" => $stateService->getPlayerMaxHits(),
+        "activeSpells" => $stateService->getCharacterSpellsOn(),
+        "equipment" => [
+          "sword" => $stateService->getEquipmentSword(),
+          "shield" => $stateService->getEquipmentShield(),
+          "armor" => $stateService->getEquipmentArmor(),
+          "arrows" => $stateService->getEquipmentArrows()
+        ],
+        "statistics" => [
+          "experience" => $stateService->getCharacterXp(),
+          "money" => $stateService->getCharacterStatsMoney(),
+          "nextLevelInXp" => $nextLevelInXp,
+          "weight" => $stateService->getCharacterStatsWeight(),
+          "playerLevel" => $stateService->getCharacterStatsLevel(),
+          "spellUnits" => [
+            "current" => $stateService->getCharacterSpellUnitsCur(),
+            "maximum" => $stateService->getCharacterSpellUnitsMax()
+          ],
+          "xpPercentageFromKills" => $xpFromKillsPercentage
+        ],
+        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
+        "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
+        "mapState" => array_map(
+          fn($m) => [
+            "top" => $m["top"],
+            "right" => $m["right"],
+            "bottom" => $m["bottom"],
+            "left" => $m["left"],
+            "occupiedBy" => $m["occupiedBy"],
+            "containsItems" => $this->itemToItemDto($m["containsItems"]),
+          ],
+          $tiles
+        ),
+        "minimapState" => $minimapState
+      ]
     ]);
   }
 
