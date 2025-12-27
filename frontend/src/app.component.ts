@@ -49,7 +49,7 @@ export class Application {
     await fetch(
       `${getConfig().apiUrl}/api/v1/game/start`,
       {
-        method: "GET",
+        method: "POST",
         credentials: "include"
       }
     );
