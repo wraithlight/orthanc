@@ -360,10 +360,10 @@ class GameController
 
     $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
-    !$canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
-    !$canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
-    !$canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
-    !$canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
+    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
+    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
+    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
+    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
 
     return $actions;
