@@ -1,0 +1,582 @@
+openapi: 3.0.3
+info:
+  title: Game API
+  version: 1.0.0
+  description: API endpoints for Orthanc game.
+servers:
+  - url: https://orthanc.farkask.eu
+
+components:
+  parameters:
+    PHPSESSID:
+      in: cookie
+      name: PHPSESSID
+      required: true
+      schema:
+        type: string
+      description: Session identifier cookie, required for all endpoints except login
+
+  schemas:
+    BaseSuccessResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+          description: Unique identifier for the request
+        payload:
+          type: object
+          description: Endpoint-specific payload
+      required:
+        - requestId
+        - payload
+
+    UnauthorizedResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        payload:
+          type: object
+          nullable: true
+        errorCode:
+          type: string
+          pattern: '^ERROR_[0-9]{4}$'
+          example: ERROR_0401
+        message:
+          type: string
+          example: Unauthorized
+      required:
+        - requestId
+        - errorCode
+        - message
+
+    ErrorResponse:
+      type: object
+      properties:
+        requestId:
+          type: string
+          format: uuid
+        payload:
+          type: object
+          nullable: true
+        errorCode:
+          type: string
+          pattern: '^ERROR_[0-9]{4}$'
+          example: ERROR_0500
+        message:
+          type: string
+          example: Internal server error
+      required:
+        - requestId
+        - errorCode
+        - message
+
+    ChatSendRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          example: "Hello, world!"
+
+    GameActionRequest:
+      type: object
+      required:
+        - action
+      properties:
+        action:
+          type: string
+          enum: ["PICKUP", "MOVE"]
+        payload:
+          oneOf:
+            - type: string
+              format: uuid
+            - type: string
+              enum: ["NORTH", "EAST", "SOUTH", "WEST"]
+
+    CharacterGenerateRequest:
+      type: object
+      properties:
+
+    LoginGuestSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: "guest_301"
+
+    CharacterGenerateSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              required:
+                - maxHist
+                - stats
+              properties:
+                maxHits:
+                  type: number
+                  example: 9
+                stats:
+                  type: object
+                  properties:
+                    str:
+                      type: number
+                      example: 9
+                    int:
+                      type: number
+                      example: 9
+                    dex:
+                      type: number
+                      example: 9
+                    con:
+                      type: number
+                      example: 9
+
+    GameStateResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                hasPlayerWon:
+                  type: boolean
+                  example: false
+                mapSize:
+                  type: object
+                  properties:
+                    width:
+                      type: number
+                      example: 51
+                    height:
+                      type: number
+                      example: 51
+                character:
+                  type: object
+                  properties:
+                    dexterity:
+                      type: number
+                      example: 9
+                    intelligence:
+                      type: number
+                      example: 9
+                    strength:
+                      type: number
+                      example: 9
+                    constitution:
+                      type: number
+                      example: 9
+                playerName:
+                  type: string
+                  example: "guest_7028"
+                hits:
+                  type: number
+                  example: 5
+                maxHits:
+                  type: number
+                  example: 5
+                activeSpells:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        pattern: '^SPELL_[0-9]{2}$'
+                        example: "SPELL_00"
+                      label:
+                        type: string
+                        example: "Blessing of the Orb"
+                      remaining:
+                        oneOf:
+                          - type: number
+                          - type: string
+                            enum: ["∞"]
+                equipment:
+                  type: object
+                  properties:
+                    sword:
+                      type: string
+                      enum: ["NORMAL", "EPIC"]
+                      example: "NORMAL"
+                    shield:
+                      type: string
+                      enum: ["NORMAL", "EPIC"]
+                      example: "NORMAL"
+                    armor:
+                      type: string
+                      enum: ["NORMAL", "EPIC"]
+                      example: "NORMAL"
+                    arrows:
+                      type: number
+                      example: 0
+                statistics:
+                  type: object
+                  properties:
+                    experience:
+                      type: number
+                      example: 0
+                    money:
+                      type: number
+                      example: 100
+                    nextLevelInXp:
+                      type: number
+                      example: 1000
+                    weight:
+                      type: number
+                      example: 50
+                    playerLevel:
+                      type: number
+                      example: 1
+                    spellUnits:
+                      type: object
+                      properties:
+                        current:
+                          type: number
+                          example: 4
+                        maximmum:
+                          type: number
+                          example: 4
+                    xpPercentageFromKills:
+                      type: number
+                      example: 0
+                events:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        enum: ["ITEM_PICKUP", "ITEM_SEE"]
+                        example: "ITEM_PICKUP"
+                      label:
+                        type: string
+                        example: "You picked up the Orb! Run to the entrance!"
+                possibleActions:
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - label
+                      - key
+                    properties:
+                      label:
+                        type: string
+                        example: "Pick up the Orb"
+                      key:
+                        type: string
+                        enum: ["PICKUP"]
+                        example: "PICKUP"
+                      payload:
+                        type: string
+                        format: uuid
+                mapState:
+                  type: array
+                  minItems: 9
+                  maxItems: 9
+                  items:
+                    type: object
+                    required:
+                      - top
+                      - right
+                      - bottom
+                      - left
+                      - containsItems
+                    properties:
+                      top:
+                        type: string
+                        enum: ["TILE_OPEN_OUT", "TILE_WALL", "TILE_OPEN"]
+                        example: "TILE_WALL"
+                      right:
+                        type: string
+                        enum: ["TILE_OPEN_OUT", "TILE_WALL", "TILE_OPEN"]
+                        example: "TILE_WALL"
+                      bottom:
+                        type: string
+                        enum: ["TILE_OPEN_OUT", "TILE_WALL", "TILE_OPEN"]
+                        example: "TILE_WALL"
+                      left:
+                        type: string
+                        enum: ["TILE_OPEN_OUT", "TILE_WALL", "TILE_OPEN"]
+                        example: "TILE_WALL"
+                      occupiedBy:
+                        type: object
+                        properties:
+                          key:
+                            type: string
+                            enum: ["CHARACTER"]
+                            example: "CHARACTER"
+                      containsItems:
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            id:
+                              type: string
+                              format: uuid
+                            iconName:
+                              type: string
+                              enum: ["item_gold"]
+                              example: "item_gold"
+                minimapState:
+                  type: array
+                  minItems: 51
+                  maxItems: 51
+                  items:
+                    type: array
+                    minItems: 51
+                    maxItems: 51
+                    items:
+                      type: string
+                      enum: ["EMPTY", "WALL", "UNKNOWN"]
+                      example: "UNKNOWN"
+
+    GameStartSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/GameStateResponse'
+
+    GameActionSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/GameStateResponse'
+
+    ChatSendSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: array
+              minItems: 0
+              maxItems: 0
+              items:
+                type: object
+
+    ChatPollSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                messages:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      sender:
+                        type: string
+                        example: "guest_567"
+                      message:
+                        type: string
+                        example: "Hello, world!"
+                      id:
+                        type: number
+                        example: 1
+                      timestamp:
+                        type: number
+                        example: 1766847209.693713
+                members:
+                  type: array
+                  items:
+                    type: string
+                    example: "guest_123"
+
+tags:
+  - name: session
+    description: Endpoints for user login and session management
+  - name: game
+    description: Endpoints for game actions, character creation, and game start
+  - name: chat
+    description: Endpoints for chat messaging and polling
+
+paths:
+  /api/v1/login/guest:
+    post:
+      summary: Login as GUEST
+      operationId: loginGuestPost
+      tags:
+        - session
+      responses:
+        '200':
+          description: Successfully logged in as guest
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginGuestSuccessResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/character-creation/generate:
+    post:
+      summary: Generate character
+      operationId: generateCharacter
+      tags:
+        - game
+      parameters:
+        - $ref: '#/components/parameters/PHPSESSID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CharacterGenerateRequest'
+      responses:
+        '200':
+          description: Character generated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CharacterGenerateSuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/game/start:
+    post:
+      summary: Start game
+      operationId: startGame
+      tags:
+        - game
+      parameters:
+        - $ref: '#/components/parameters/PHPSESSID'
+      responses:
+        '200':
+          description: Game started successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameStartSuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/chat/send:
+    post:
+      summary: Send chat message
+      operationId: sendChat
+      tags:
+        - chat
+      parameters:
+        - $ref: '#/components/parameters/PHPSESSID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatSendRequest'
+      responses:
+        '200':
+          description: Message sent successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatSendSuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/chat/poll:
+    get:
+      summary: Poll chat messages
+      operationId: pollChat
+      tags:
+        - chat
+      parameters:
+        - $ref: '#/components/parameters/PHPSESSID'
+      responses:
+        '200':
+          description: Chat messages retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatPollSuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/game/action:
+    post:
+      summary: Perform game action
+      operationId: gameActionPost
+      tags:
+        - game
+      parameters:
+        - $ref: '#/components/parameters/PHPSESSID'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GameActionRequest'
+      responses:
+        '200':
+          description: Action performed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GameActionSuccessResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
