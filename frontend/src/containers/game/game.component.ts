@@ -17,8 +17,8 @@ export class GameContainer {
   public readonly minimapState = observableArray<ReadonlyArray<unknown>>();
 
   public readonly playerName = observable();
-  public readonly hasPlayerWon = observable(false);
-  public readonly shouldOpenWinDialog = observable(true);
+  public readonly gameState = observable("GAME_RUNNING");
+  public readonly shouldOpenEndDialog = observable(true);
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
   public readonly events = observableArray([]);
@@ -93,7 +93,7 @@ export class GameContainer {
       this.actions(m.possibleActions);
       this.playerName(m.playerName);
       this.activeSpells(m.activeSpells);
-      this.hasPlayerWon(m.hasPlayerWon);
+      this.gameState(m.gameState);
       this.events(m.events);
       this.minimapState(m.minimapState);
       this.renderMinimap();
@@ -126,9 +126,10 @@ export class GameContainer {
     }
   }
 
-  public closeWinDialog() {
-    this.shouldOpenWinDialog(false);
+  public closeEndDialog() {
+    this.shouldOpenEndDialog(false);
   }
+
 
   private async pollChat(): Promise<void> {
     const result = await this._gameChatClient.poll();

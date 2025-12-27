@@ -192,7 +192,7 @@ class GameController
 
     if ($isAtStartPoint) {
       $maxHp = $stateService->getPlayerMaxHits();
-      $stateService->setPlayerCurHits($maxHp);
+      $maxHp > 0 ?? $stateService->setPlayerCurHits($maxHp);
 
       $money = $stateService->getCharacterStatsMoney();
       $weight = $stateService->getCharacterStatsMoney();
