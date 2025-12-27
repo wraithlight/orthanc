@@ -22,6 +22,7 @@ require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
 require_once("./app/managers/items-on-map.manager.php");
+require_once("./app/managers/npcs-on-map.manager.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
