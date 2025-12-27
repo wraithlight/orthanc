@@ -92,6 +92,7 @@
 }
 
 .game-feedback {
+  padding: 20px;
   grid-column: 2 / span 2;
   border: 1px solid;
   display: flex;
