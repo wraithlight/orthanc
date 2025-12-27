@@ -30,6 +30,7 @@ class GameController
 
     $chatMembersService->addMember($username, $id);
     $stateService->setPlayerPosition($location["x"], $location["y"]);
+    $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
     $stateService->setPlayerCurHits($currentHits);
     $stateService->setChatLastMessageId($chatMessageService->getLastMessageId());
     $stateService->setEquipmentSword("NORMAL");
@@ -83,18 +84,22 @@ class GameController
     if ($canDo) {
       switch ($action) {
         case "MOVE" && $target === "DIRECTION_NORTH": {
+          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
           $stateService->moveNorth();
           break;
         }
         case "MOVE" && $target === "DIRECTION_EAST": {
+          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
           $stateService->moveEast();
           break;
         }
         case "MOVE" && $target === "DIRECTION_SOUTH": {
+          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
           $stateService->moveSouth();
           break;
         }
         case "MOVE" && $target === "DIRECTION_WEST": {
+          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
           $stateService->moveWest();
           break;
         }

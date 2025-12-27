@@ -29,7 +29,24 @@ class StateService
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
   const GAME_START_TIME = "GAME_START_TIME";
+  const PREVIOUS_POSITION_X = "PREVIOUS_POSITION_X";
+  const PREVIOUS_POSITION_Y = "PREVIOUS_POSITION_Y";
 
+  public function getPlayerPreviousPosition(): array
+  {
+    $x = $this->readFromSessionState(self::PREVIOUS_POSITION_X);
+    $y = $this->readFromSessionState(self::PREVIOUS_POSITION_Y);
+    return [
+      "x" => $x,
+      "y" => $y
+    ];
+  }
+
+  public function setPlayerPreviousPosition($x, $y)
+  {
+    $this->writeToSessionState(self::PREVIOUS_POSITION_X, $x);
+    $this->writeToSessionState(self::PREVIOUS_POSITION_Y, $y);
+  }
   public function setStartTime(int $startTime) {
     $this->writeToSessionState(self::GAME_START_TIME, $startTime);
   }
