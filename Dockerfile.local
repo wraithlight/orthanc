@@ -14,6 +14,7 @@ COPY server/game-data /var/www/game-data
 RUN mkdir -p /var/www/data \
   && touch /var/www/data/chat_members.json \
   && touch /var/www/data/chat_messages.json \
+  && touch /var/www/data/hall_of_fame.json \
   && chown -R www-data:www-data /var/www/data \
   && chmod -R 775 /var/www/data
 

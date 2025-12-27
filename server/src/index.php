@@ -14,6 +14,7 @@ require_once("./app/file-persistence/io-service.php");
 require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");
 require_once("./app/file-persistence/maze.service.php");
+require_once("./app/file-persistence/hall-of-fame.service.php");
 require_once("./app/utils/maze.php");
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");

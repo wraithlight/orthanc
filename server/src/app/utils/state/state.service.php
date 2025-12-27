@@ -28,7 +28,15 @@ class StateService
   const MAP_NPCS = "MAP_NPCS";
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
+  const GAME_START_TIME = "GAME_START_TIME";
 
+  public function setStartTime(int $startTime) {
+    $this->writeToSessionState(self::GAME_START_TIME, $startTime);
+  }
+
+  public function getStartTime(): int {
+    return $this->readFromSessionState(self::GAME_START_TIME);
+  }
 
   public function setMapFull(array $value) {
     $this->writeToSessionState(self::MAP_FULL, $value);

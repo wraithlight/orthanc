@@ -43,6 +43,7 @@ class GameController
     $stateService->setHasOrb(false);
     $stateService->setCharacterSpellsOn([]);
     $stateService->setMapFull($maze->getFullMaze());
+    $stateService->setStartTime(time());
 
     $walkableTiles = $maze->getWalkableTiles();
     $numberOfWalkableTiles = count($walkableTiles);
@@ -82,8 +83,10 @@ class GameController
         "Pick up the Orb",
         "You picked up the Orb! Run to the entrance!",
         "You see the Orb!",
-        $walkableTiles[$randomIndex]["x"],
-        $walkableTiles[$randomIndex]["y"],
+        1,
+        1
+        // $walkableTiles[$randomIndex]["x"],
+        // $walkableTiles[$randomIndex]["y"],
       )
     );
     // Sword
@@ -232,6 +235,7 @@ class GameController
   ) {
     $maze = new Maze();
     $stateService = new StateService();
+    $hallOfFameService = new HallOfFameService();
 
     $nextLevelInXp = 1000; // TODO
 
@@ -260,6 +264,15 @@ class GameController
     }
 
     $hasPlayerWon = $stateService->getHasOrb() && $isAtStartPoint;
+
+    if ($hasPlayerWon) {
+      $hallOfFameService->addUser(
+        $stateService->getPlayerName(),
+        session_id(),
+        $stateService->getStartTime()
+      );
+    }
+
     $mapHeight = $maze->mazeHeight();
     $mapWidth = $maze->mazeWidth();
 
