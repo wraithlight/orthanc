@@ -151,8 +151,9 @@ components:
             payload:
               type: object
               properties:
-                hasPlayerWon:
-                  type: boolean
+                gameState:
+                  type: string
+                  enum: ["GAME_RUNNING", "GAME_END_SUCCESS", "GAME_END_FAIL"]
                   example: false
                 mapSize:
                   type: object

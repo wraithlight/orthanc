@@ -77,8 +77,8 @@ class GameController
     $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
     $tiles = $this->calculateTiles($location['x'], $location['y']);
-    $hasPlayerWon = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location;
-    $possibleActions = $this->getPossibleActions($tiles, $hasPlayerWon);
+    $isGameRunning = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location && $stateService->getPlayerCurHits() === 0;
+    $possibleActions = $this->getPossibleActions($tiles, $isGameRunning);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
 
     $feedbackEvents = [];
@@ -204,9 +204,15 @@ class GameController
       $stateService->setCharacterXp($xp + $money);
     }
 
-    $hasPlayerWon = $stateService->getHasOrb() && $isAtStartPoint;
+    $gameState =
+      $stateService->getPlayerCurHits() === 0
+        ? "GAME_END_FAIL"
+        : ($stateService->getHasOrb() && $isAtStartPoint
+          ? "GAME_END_SUCCESS"
+          : "GAME_RUNNING")
+    ;
 
-    if ($hasPlayerWon) {
+    if ($gameState === "GAME_END_SUCCESS") {
       $hallOfFameService->addUser(
         $stateService->getPlayerName(),
         session_id(),
@@ -250,7 +256,7 @@ class GameController
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
       "payload" => [
-        "hasPlayerWon" => $hasPlayerWon,
+        "gameState" => $gameState,
         "mapSize" => [
           "width" => $mapSize,
           "height" => $mapSize
@@ -284,7 +290,7 @@ class GameController
           "xpPercentageFromKills" => $xpFromKillsPercentage
         ],
         "events" => $this->getEvents($tiles, $lastAction, $events, $lastActionTarget),
-        "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
+        "possibleActions" => $this->getPossibleActions($tiles, $gameState !== "GAME_RUNNING"),
         "mapState" => array_map(
           fn($m) => [
             "top" => $m["top"],
