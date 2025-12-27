@@ -81,6 +81,7 @@ class GameController
     $possibleActions = $this->getPossibleActions($tiles, $hasPlayerWon);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
 
+    $feedbackEvents = [];
     if ($canDo) {
       switch ($action) {
         case "MOVE" && $target === "DIRECTION_NORTH": {
@@ -101,6 +102,20 @@ class GameController
         case "MOVE" && $target === "DIRECTION_WEST": {
           $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
           $stateService->moveWest();
+          break;
+        }
+        case "RUN": {
+          $isFailed = rand(0,1) == 1;
+          if($isFailed) {
+            array_push(
+              $feedbackEvents,
+              "Your legs tremble with fear; you find yourself unable to flee this mysterious form of evil."
+            );
+            break;
+          }
+          $previousPosition = $stateService->getPlayerPreviousPosition();
+          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
+          $stateService->setPlayerPosition($previousPosition["x"], $previousPosition["y"]);
           break;
         }
         case "PICKUP": {
@@ -144,12 +159,17 @@ class GameController
       }
     }
 
-    $this->sendBackState($action, $target);
+    $this->sendBackState(
+      $action,
+      $target,
+      $feedbackEvents
+    );
   }
 
   private function sendBackState(
     string $lastAction,
-    $lastActionTarget = null
+    $lastActionTarget = null,
+    array $events
   ) {
     $maze = new Maze();
     $stateService = new StateService();
@@ -260,7 +280,7 @@ class GameController
           ],
           "xpPercentageFromKills" => $xpFromKillsPercentage
         ],
-        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
+        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget, $events),
         "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
         "mapState" => array_map(
           fn($m) => [
@@ -308,10 +328,9 @@ class GameController
   private function getEvents(
     array $tiles,
     string $lastAction,
-    $lastActionTarget = null
+    $lastActionTarget = null,
+    array $events
   ): array {
-    $events = [];
-
     if ($lastAction === "PICKUP") {
       array_push($events, [
         "key" => "ITEM_PICKUP",
