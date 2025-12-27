@@ -8,8 +8,12 @@ require_once("./app/file-persistence/maze.service.php");
 require_once("./app/file-persistence/hall-of-fame.service.php");
 
 require_once("./app/utils/guid.php");
+
 require_once("./app/utils/factories/item/item.php");
 require_once("./app/utils/factories/item/item.factory.php");
+require_once("./app/utils/factories/npc/npc.php");
+require_once("./app/utils/factories/npc/npc.factory.php");
+
 require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
 require_once("./app/utils/dice/d8.php");
