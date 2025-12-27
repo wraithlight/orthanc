@@ -19,6 +19,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to repo folder
+sh init-repo.sh                                         # initialize server/data folder
 sh run-dev.sh                                           # run the server in docker
 cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
