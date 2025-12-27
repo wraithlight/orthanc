@@ -315,7 +315,7 @@ class GameController
           "right" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
           "bottom" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y + 1)),
           "left" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
-          "occupiedBy" => ($x === 0 && $y === 0) ? ["key" => "CHARACTER"] : null,
+          "occupiedBy" => ($x === 0 && $y === 0) ? (object)["key" => "CHARACTER"] : null,
           "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y),
           "x" => $centerX + $x,
           "y" => $centerY + $y
