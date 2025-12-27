@@ -83,10 +83,8 @@ class GameController
         "Pick up the Orb",
         "You picked up the Orb! Run to the entrance!",
         "You see the Orb!",
-        1,
-        1
-        // $walkableTiles[$randomIndex]["x"],
-        // $walkableTiles[$randomIndex]["y"],
+        $walkableTiles[$randomIndex]["x"],
+        $walkableTiles[$randomIndex]["y"],
       )
     );
     // Sword
