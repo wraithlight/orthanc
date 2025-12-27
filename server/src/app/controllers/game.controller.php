@@ -53,7 +53,7 @@ class GameController
     $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
 
     $stateService->setItems($itemsOnMap);
-    $this->sendBackState("START", null);
+    $this->sendBackState("START", [], null);
   }
 
   public function onAction()
@@ -109,7 +109,10 @@ class GameController
           if($isFailed) {
             array_push(
               $feedbackEvents,
-              "Your legs tremble with fear; you find yourself unable to flee this mysterious form of evil."
+              [
+                "key" => "ACTION_RUN_FAIL",
+                "label" => "Your legs tremble with fear; you find yourself unable to flee this mysterious form of evil."
+              ]
             );
             break;
           }
@@ -161,15 +164,15 @@ class GameController
 
     $this->sendBackState(
       $action,
+      $feedbackEvents,
       $target,
-      $feedbackEvents
     );
   }
 
   private function sendBackState(
     string $lastAction,
+    array $events,
     $lastActionTarget = null,
-    array $events
   ) {
     $maze = new Maze();
     $stateService = new StateService();
@@ -280,7 +283,7 @@ class GameController
           ],
           "xpPercentageFromKills" => $xpFromKillsPercentage
         ],
-        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget, $events),
+        "events" => $this->getEvents($tiles, $lastAction, $events, $lastActionTarget),
         "possibleActions" => $this->getPossibleActions($tiles, $hasPlayerWon),
         "mapState" => array_map(
           fn($m) => [
@@ -315,7 +318,7 @@ class GameController
           "right" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
           "bottom" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y + 1)),
           "left" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
-          "occupiedBy" => ($x === 0 && $y === 0) ? (object)["key" => "CHARACTER"] : null,
+          "occupiedBy" => ($x === 0 && $y === 0) ? (object)["key" => "CHARACTER"] : $this->getNPCsOnTile($centerX + $x, $centerY + $y),
           "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y),
           "x" => $centerX + $x,
           "y" => $centerY + $y
@@ -328,8 +331,8 @@ class GameController
   private function getEvents(
     array $tiles,
     string $lastAction,
+    array $events,
     $lastActionTarget = null,
-    array $events
   ): array {
     if ($lastAction === "PICKUP") {
       array_push($events, [
@@ -355,14 +358,16 @@ class GameController
     $isActionsDisabled
   ): array {
     $actions = [];
+    $stateService = new StateService();
     if ($isActionsDisabled) {
       return $actions;
     }
     $playerTile = $tiles[(int) floor(count($tiles) / 2)];
+    $visibleNpcs = array_values(array_filter(array_map(fn($m) => $m['occupiedBy'], $tiles), fn($m) => isset($m) && $m->key !== "CHARACTER"));
 
-    $canFight = false;  // TODO
-    $canRun = true;     // TODO
-    $canMove = true;    // TODO
+    $canFight = count($visibleNpcs) === 1;
+    $canRun = $canFight && ($stateService->getPlayerPosition() !== $stateService->getPlayerPreviousPosition());
+    $canMove = count($visibleNpcs) === 0;
     $canCast = true;    // TODO
     $canPickup = !empty($playerTile["containsItems"]);
 
@@ -370,6 +375,12 @@ class GameController
     $canMoveEast = $playerTile["right"] === "TILE_OPEN";
     $canMoveSouth = $playerTile["bottom"] === "TILE_OPEN";
     $canMoveWest = $playerTile["left"] === "TILE_OPEN";
+
+    // TODO: The NPCs cannot be next to each other!
+    if(count($visibleNpcs) === 1) {
+      $canMove = false;
+      $canFight = true;
+    }
 
     if ($canPickup) {
       foreach ($playerTile["containsItems"] as $item) {
@@ -413,6 +424,14 @@ class GameController
       "id" => $m->id,
       "iconName" => $m->iconName,
     ], $items);
+  }
+
+  private function getNPCsOnTile($x, $y): ?NPC {
+    // if ($x === 2 && $y === 1) {
+    //   $manager = new NPCsOnMapManager();
+    //   return $manager->getNPCsOnMap([])[0];
+    // }
+    return null;
   }
 
   private function getItemsOnTile($x, $y): array

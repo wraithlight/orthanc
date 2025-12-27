@@ -44,6 +44,7 @@ $chatControllerFactory = function () {
   return new ChatController();
 };
 
+Wrapper::RegisterPath("GET", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/character-creation/generate", $characterCreationControllerFactory, "generate");
 Wrapper::RegisterPath("POST", "/api/v1/game/start", $gameControllerFactory, "startGame");
