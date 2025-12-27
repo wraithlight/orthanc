@@ -29,9 +29,9 @@ class GameController
     $stateService->setPlayerPosition($location["x"], $location["y"]);
     $stateService->setPlayerCurHits($currentHits);
     $stateService->setChatLastMessageId($chatMessageService->getLastMessageId());
-    $stateService->setEquipmentSword("SWORD_NORMAL");
-    $stateService->setEquipmentShield("SHIELD_NORMAL");
-    $stateService->setEquipmentArmor("ARMOR_NORMAL");
+    $stateService->setEquipmentSword("NORMAL");
+    $stateService->setEquipmentShield("NORMAL");
+    $stateService->setEquipmentArmor("NORMAL");
     $stateService->setEquipmentArrows(0);
     $stateService->setCharacterXp(0);
     $stateService->setCharacterXpFromKills(0);
@@ -86,6 +86,8 @@ class GameController
         $walkableTiles[$randomIndex]["y"],
       )
     );
+    // Sword
+    $randomIndex = array_rand($walkableTiles, 1);
     array_push(
       $itemsOnMap,
       createItem(
@@ -96,10 +98,44 @@ class GameController
         100 * self::GOLD_WEIGHT,
         true,
         "Loot chest",
-        "You picked a sword from the chest.",
+        "You picked up a sword from the chest.",
         "You see a chest",
+        $walkableTiles[$randomIndex]["x"],
+        $walkableTiles[$randomIndex]["y"],
+      )
+    );
+    $randomIndex = array_rand($walkableTiles, 1);
+    array_push(
+      $itemsOnMap,
+      createItem(
+        "ITEM_CHEST_SHIELD",
+        "item_chest",
         1,
+        0,
+        100 * self::GOLD_WEIGHT,
+        true,
+        "Loot chest",
+        "You picked up a shield from the chest.",
+        "You see a chest",
+        $walkableTiles[$randomIndex]["x"],
+        $walkableTiles[$randomIndex]["y"],
+      )
+    );
+    $randomIndex = array_rand($walkableTiles, 1);
+    array_push(
+      $itemsOnMap,
+      createItem(
+        "ITEM_CHEST_ARMOR",
+        "item_chest",
         1,
+        0,
+        100 * self::GOLD_WEIGHT,
+        true,
+        "Loot chest",
+        "You picked up an armor from the chest.",
+        "You see a chest",
+        $walkableTiles[$randomIndex]["x"],
+        $walkableTiles[$randomIndex]["y"],
       )
     );
 
@@ -175,6 +211,12 @@ class GameController
 
           if ($currentItem->key === "ITEM_CHEST_SWORD") {
             $stateService->setEquipmentSword("EPIC");
+          }
+          if ($currentItem->key === "ITEM_CHEST_SHIELD") {
+            $stateService->setEquipmentShield("EPIC");
+          }
+          if ($currentItem->key === "ITEM_CHEST_ARMOR") {
+            $stateService->setEquipmentArmor("EPIC");
           }
 
         }
