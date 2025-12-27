@@ -337,6 +337,7 @@ class GameController
     $playerTile = $tiles[(int) floor(count($tiles) / 2)];
 
     $canFight = false;  // TODO
+    $canMove = true;    // TODO
     $canCast = true;    // TODO
     $canPickup = !empty($playerTile["containsItems"]);
 
@@ -359,10 +360,10 @@ class GameController
 
     $canFight && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
-    !$canFight && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
-    !$canFight && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
-    !$canFight && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
-    !$canFight && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
+    !$canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
+    !$canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
+    !$canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
+    !$canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
 
     return $actions;
