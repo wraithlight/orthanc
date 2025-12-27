@@ -3,9 +3,7 @@
 class GameController
 {
 
-  private const GOLD_PERCENTAGE_ON_MAP = 2;
   private const GOLD_WEIGHT = 1;
-  private const ORB_WEIGHT = 1000;
 
   public function startGame()
   {
@@ -22,6 +20,7 @@ class GameController
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
+    $itemsOnMapManager = new ItemsOnMapManager();
     $maze = new Maze();
 
     $id = session_id();
@@ -50,99 +49,7 @@ class GameController
     $stateService->setStartTime(time());
 
     $walkableTiles = $maze->getWalkableTiles();
-    $numberOfWalkableTiles = count($walkableTiles);
-    $numberOfGoldOnMap = $numberOfWalkableTiles / 100 * self::GOLD_PERCENTAGE_ON_MAP;
-    /** @var Item[] */
-    $itemsOnMap = [];
-    for ($i = 0; $i < $numberOfGoldOnMap; $i++) {
-      $randomIndex = array_rand($walkableTiles, 1);
-      $amount = roll_d10k();
-      array_push(
-        $itemsOnMap,
-        createItem(
-          "ITEM_GOLD",
-          "item_gold",
-          $amount,
-          $amount,
-          $amount * self::GOLD_WEIGHT,
-          true,
-          "Pick up Gold ($amount)",
-          "You picked up Gold ($amount)",
-          "You see a pile of gold.",
-          $walkableTiles[$randomIndex]["x"],
-          $walkableTiles[$randomIndex]["y"],
-        )
-      );
-    }
-    $randomIndex = array_rand($walkableTiles, 1);
-    array_push(
-      $itemsOnMap,
-      createItem(
-        "ITEM_ORB",
-        "item_orb",
-        1,
-        0,
-        1 * self::ORB_WEIGHT,
-        true,
-        "Pick up the Orb",
-        "You picked up the Orb! Run to the entrance!",
-        "You see the Orb!",
-        $walkableTiles[$randomIndex]["x"],
-        $walkableTiles[$randomIndex]["y"],
-      )
-    );
-    // Sword
-    $randomIndex = array_rand($walkableTiles, 1);
-    array_push(
-      $itemsOnMap,
-      createItem(
-        "ITEM_CHEST_SWORD",
-        "item_chest",
-        1,
-        0,
-        100 * self::GOLD_WEIGHT,
-        true,
-        "Loot chest",
-        "You picked up a sword from the chest.",
-        "You see a chest",
-        $walkableTiles[$randomIndex]["x"],
-        $walkableTiles[$randomIndex]["y"],
-      )
-    );
-    $randomIndex = array_rand($walkableTiles, 1);
-    array_push(
-      $itemsOnMap,
-      createItem(
-        "ITEM_CHEST_SHIELD",
-        "item_chest",
-        1,
-        0,
-        100 * self::GOLD_WEIGHT,
-        true,
-        "Loot chest",
-        "You picked up a shield from the chest.",
-        "You see a chest",
-        $walkableTiles[$randomIndex]["x"],
-        $walkableTiles[$randomIndex]["y"],
-      )
-    );
-    $randomIndex = array_rand($walkableTiles, 1);
-    array_push(
-      $itemsOnMap,
-      createItem(
-        "ITEM_CHEST_ARMOR",
-        "item_chest",
-        1,
-        0,
-        100 * self::GOLD_WEIGHT,
-        true,
-        "Loot chest",
-        "You picked up an armor from the chest.",
-        "You see a chest",
-        $walkableTiles[$randomIndex]["x"],
-        $walkableTiles[$randomIndex]["y"],
-      )
-    );
+    $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
 
     $stateService->setItems($itemsOnMap);
     $this->sendBackState("START", null);
