@@ -5,6 +5,6 @@
   "isKeyboardOnlyEnabled": false,
   "isKeyboardWithMouseEnabled": true,
   "assets": {
-    "characterImageUrl": "/assets/character.png"
+    "characterImageUrl": "/assets/character.svg"
   }
 }
