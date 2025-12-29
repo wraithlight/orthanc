@@ -33,7 +33,7 @@ namespace PhpAPI2 {
       $controllerFactory,
       $method
     ) {
-      self::RegisterPathInternal(GET_HTTP_KEY, $relativeUri, $controllerFactory, $method);
+      self::RegisterPathInternal(self::GET_HTTP_KEY, $relativeUri, $controllerFactory, $method);
     }
 
     public static function RegisterPOSTPath(
@@ -41,7 +41,7 @@ namespace PhpAPI2 {
       $controllerFactory,
       $method
     ) {
-      self::RegisterPathInternal(POST_HTTP_KEY, $relativeUri, $controllerFactory, $method);
+      self::RegisterPathInternal(self::POST_HTTP_KEY, $relativeUri, $controllerFactory, $method);
     }
 
     public static function RegisterPUTPath(
@@ -49,7 +49,7 @@ namespace PhpAPI2 {
       $controllerFactory,
       $method
     ) {
-      self::RegisterPathInternal(PUT_HTTP_KEY, $relativeUri, $controllerFactory, $method);
+      self::RegisterPathInternal(self::PUT_HTTP_KEY, $relativeUri, $controllerFactory, $method);
     }
 
     public static function RegisterPATCHpath(
@@ -57,7 +57,7 @@ namespace PhpAPI2 {
       $controllerFactory,
       $method
     ) {
-      self::RegisterPathInternal(PATCH_HTTP_KEY, $relativeUri, $controllerFactory, $method);
+      self::RegisterPathInternal(self::PATCH_HTTP_KEY, $relativeUri, $controllerFactory, $method);
     }
 
     public static function RegisterDELETEPath(
@@ -65,7 +65,7 @@ namespace PhpAPI2 {
       $controllerFactory,
       $method
     ) {
-      self::RegisterPathInternal(DELETE_HTTP_KEY, $relativeUri, $controllerFactory, $method);
+      self::RegisterPathInternal(self::DELETE_HTTP_KEY, $relativeUri, $controllerFactory, $method);
     }
 
     public static function Listen(
