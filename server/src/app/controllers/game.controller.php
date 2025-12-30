@@ -77,7 +77,7 @@ class GameController
     $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
     $tiles = $this->calculateTiles($location['x'], $location['y']);
-    $isGameRunning = $stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location && $stateService->getPlayerCurHits() === 0;
+    $isGameRunning = ($stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location) || $stateService->getPlayerCurHits() === 0;
     $possibleActions = $this->getPossibleActions($tiles, $isGameRunning);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
 
@@ -137,7 +137,7 @@ class GameController
             $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
           }
 
-          if ($currentItem->key === "ITEM_ORB") {
+          if ($currentItem->key === "ITEM_CHEST_ORB") {
             $stateService->setHasOrb(true);
             $spells = $stateService->getCharacterSpellsOn();
             array_push($spells, [
