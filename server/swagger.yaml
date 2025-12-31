@@ -253,6 +253,85 @@ components:
                     xpPercentageFromKills:
                       type: number
                       example: 0
+                availableSpells:
+                  type: object
+                  properties:
+                    level_1:
+                      type: object
+                      properties:
+                        displayName:
+                          type: string
+                          example: "Teleportation"
+                        action:
+                          type: object;
+                          properties:
+                            key:
+                              type: string
+                              enum: ["CAST"]
+                              example: "CAST"
+                            payload:
+                              type: string
+                              format: uuid
+                            isClientSideOnly:
+                              type: boolean
+                              example: false
+                    level_2:
+                      type: object
+                      properties:
+                        displayName:
+                          type: string
+                          example: "Teleportation"
+                        action:
+                          type: object;
+                          properties:
+                            key:
+                              type: string
+                              enum: ["CAST"]
+                              example: "CAST"
+                            payload:
+                              type: string
+                              format: uuid
+                            isClientSideOnly:
+                              type: boolean
+                              example: false
+                    level_3:
+                      type: object
+                      properties:
+                        displayName:
+                          type: string
+                          example: "Teleportation"
+                        action:
+                          type: object;
+                          properties:
+                            key:
+                              type: string
+                              enum: ["CAST"]
+                              example: "CAST"
+                            payload:
+                              type: string
+                              format: uuid
+                            isClientSideOnly:
+                              type: boolean
+                              example: false
+                    level_4:
+                      type: object
+                      properties:
+                        displayName:
+                          type: string
+                          example: "Teleportation"
+                        action:
+                          type: object;
+                          properties:
+                            key:
+                              type: string
+                              enum: ["CAST"]
+                              example: "CAST"
+                            payload:
+                              type: string
+                              format: uuid
+                            isClientSideOnly:
+                              type: boolean
+                              example: false
                 events:
                   type: array
                   items:
