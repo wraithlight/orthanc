@@ -51,7 +51,8 @@ class ActionsManager
           array_push($actions, [
             "label" => $item->pickupLabel,
             "key" => "PICKUP",
-            "payload" => $item->id
+            "payload" => $item->id,
+            "isClientSideOnly" => false
           ]);
         }
       }

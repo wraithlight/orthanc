@@ -283,6 +283,9 @@ components:
                       payload:
                         type: string
                         format: uuid
+                      isClientSideOnly:
+                        type: boolean
+                        example: false
                 mapState:
                   type: array
                   minItems: 9
