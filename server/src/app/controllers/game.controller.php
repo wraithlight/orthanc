@@ -67,41 +67,23 @@ class GameController
       exit;
     }
     session_start();
+    $stateService = new StateService();
+    $actionsManager = new ActionsManager();
 
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $action = $payload['action'];
     $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
 
-    $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
     $tiles = $this->calculateTiles($location['x'], $location['y']);
-    $possibleActions = $this->getPossibleActions($tiles);
-    $canDo = $this->canDoAction($possibleActions, $action, $target);
+    $possibleActions = $actionsManager->getPossibleActions($tiles, $this->getGameState());
+    $canDo = $actionsManager->canDoAction($possibleActions, $action, $target);
 
     $feedbackEvents = [];
     if ($canDo) {
+      $actionsManager->handleAction($action, $target);
       switch ($action) {
-        case "MOVE" && $target === "DIRECTION_NORTH": {
-          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-          $stateService->moveNorth();
-          break;
-        }
-        case "MOVE" && $target === "DIRECTION_EAST": {
-          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-          $stateService->moveEast();
-          break;
-        }
-        case "MOVE" && $target === "DIRECTION_SOUTH": {
-          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-          $stateService->moveSouth();
-          break;
-        }
-        case "MOVE" && $target === "DIRECTION_WEST": {
-          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-          $stateService->moveWest();
-          break;
-        }
         case "RUN": {
           $isFailed = rand(0,1) == 1;
           if($isFailed) {
@@ -180,6 +162,8 @@ class GameController
     array $events,
     $lastActionTarget = null,
   ) {
+    $actionsManager = new ActionsManager();
+
     $maze = new Maze();
     $stateService = new StateService();
     $hallOfFameService = new HallOfFameService();
@@ -290,7 +274,7 @@ class GameController
           "xpPercentageFromKills" => $xpFromKillsPercentage
         ],
         "events" => $this->getEvents($tiles, $lastAction, $events, $lastActionTarget),
-        "possibleActions" => $this->getPossibleActions($tiles),
+        "possibleActions" => $actionsManager->getPossibleActions($tiles, $this->getGameState()),
         "mapState" => array_map(
           fn($m) => [
             "top" => $m["top"],
@@ -357,57 +341,6 @@ class GameController
     }
 
     return $events;
-  }
-
-  private function getPossibleActions(
-    $tiles,
-  ): array {
-    $actions = [];
-    if ($this->getGameState() !== "GAME_RUNNING") {
-      return $actions;
-    }
-    $stateService = new StateService();
-    $playerTile = $tiles[(int) floor(count($tiles) / 2)];
-    $visibleNpcs = array_values(array_filter(array_map(fn($m) => $m['occupiedBy'], $tiles), fn($m) => isset($m) && $m->key !== "CHARACTER"));
-
-    $canFight = count($visibleNpcs) === 1;
-    $canRun = $canFight && ($stateService->getPlayerPosition() !== $stateService->getPlayerPreviousPosition());
-    $canMove = count($visibleNpcs) === 0;
-    $canCast = true;    // TODO
-    $canPickup = !empty($playerTile["containsItems"]);
-
-    $canMoveNorth = $playerTile["top"] === "TILE_OPEN";
-    $canMoveEast = $playerTile["right"] === "TILE_OPEN";
-    $canMoveSouth = $playerTile["bottom"] === "TILE_OPEN";
-    $canMoveWest = $playerTile["left"] === "TILE_OPEN";
-
-    // TODO: The NPCs cannot be next to each other!
-    if(count($visibleNpcs) === 1) {
-      $canMove = false;
-      $canFight = true;
-    }
-
-    if ($canPickup) {
-      foreach ($playerTile["containsItems"] as $item) {
-        if ($item->canPickup) {
-          array_push($actions, [
-            "label" => $item->pickupLabel,
-            "key" => "PICKUP",
-            "payload" => $item->id
-          ]);
-        }
-      }
-    }
-
-    $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
-    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
-    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH"]);
-    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST"]);
-    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH"]);
-    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST"]);
-    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
-
-    return $actions;
   }
   private function getBorderType(
     $currentTile,
@@ -489,22 +422,5 @@ class GameController
     return $hasWinItems && $isAlive && $isAtStartPoint;
   }
 
-  private function canDoAction(
-    array $actionsArray,
-    string $action,
-    $target = null
-  ): bool {
-    foreach ($actionsArray as $element) {
-      if ($element['key'] === $action) {
-        if ($target === null) {
-          return true;
-        }
-        if ($element['payload'] === $target) {
-          return true;
-        }
-      }
-    }
-    return false;
-  }
 }
 ?>
