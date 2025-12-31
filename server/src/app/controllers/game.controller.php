@@ -113,6 +113,14 @@ class GameController
               ]
             );
             break;
+          } else {
+            array_push(
+              $feedbackEvents,
+              [
+                "key" => "ACTION_RUN_SUCCESS",
+                "label" => "You flee into the choking dark, the malignant presence fading behind you as the shadows swallow your escape."
+              ]
+            );
           }
           $previousPosition = $stateService->getPlayerPreviousPosition();
           $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
