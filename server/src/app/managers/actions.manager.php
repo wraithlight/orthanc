@@ -31,7 +31,7 @@ class ActionsManager
     $canFight = count($visibleNpcs) === 1;
     $canRun = $canFight && ($stateService->getPlayerPosition() !== $stateService->getPlayerPreviousPosition());
     $canMove = count($visibleNpcs) === 0;
-    $canCast = true;    // TODO
+    $canCast = $stateService->getCharacterSpellUnitsCur() > 0;
     $canPickup = !empty($playerTile["containsItems"]);
 
     $canMoveNorth = $playerTile["top"] === "TILE_OPEN";
