@@ -73,12 +73,10 @@ class GameController
     $action = $payload['action'];
     $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
 
-    $maze = new Maze();
     $stateService = new StateService();
     $location = $stateService->getPlayerPosition();
     $tiles = $this->calculateTiles($location['x'], $location['y']);
-    $isGameRunning = ($stateService->getHasOrb() && $maze->getPlayerInitialLocation() === $location) || $stateService->getPlayerCurHits() === 0;
-    $possibleActions = $this->getPossibleActions($tiles, $isGameRunning);
+    $possibleActions = $this->getPossibleActions($tiles);
     $canDo = $this->canDoAction($possibleActions, $action, $target);
 
     $feedbackEvents = [];
@@ -204,13 +202,7 @@ class GameController
       $stateService->setCharacterXp($xp + $money);
     }
 
-    $gameState =
-      $stateService->getPlayerCurHits() === 0
-        ? "GAME_END_FAIL"
-        : ($stateService->getHasOrb() && $isAtStartPoint
-          ? "GAME_END_SUCCESS"
-          : "GAME_RUNNING")
-    ;
+    $gameState = $this->getGameState();
 
     if ($gameState === "GAME_END_SUCCESS") {
       $hallOfFameService->addUser(
@@ -290,7 +282,7 @@ class GameController
           "xpPercentageFromKills" => $xpFromKillsPercentage
         ],
         "events" => $this->getEvents($tiles, $lastAction, $events, $lastActionTarget),
-        "possibleActions" => $this->getPossibleActions($tiles, $gameState !== "GAME_RUNNING"),
+        "possibleActions" => $this->getPossibleActions($tiles),
         "mapState" => array_map(
           fn($m) => [
             "top" => $m["top"],
@@ -361,13 +353,12 @@ class GameController
 
   private function getPossibleActions(
     $tiles,
-    $isActionsDisabled
   ): array {
     $actions = [];
-    $stateService = new StateService();
-    if ($isActionsDisabled) {
+    if ($this->getGameState() !== "GAME_RUNNING") {
       return $actions;
     }
+    $stateService = new StateService();
     $playerTile = $tiles[(int) floor(count($tiles) / 2)];
     $visibleNpcs = array_values(array_filter(array_map(fn($m) => $m['occupiedBy'], $tiles), fn($m) => isset($m) && $m->key !== "CHARACTER"));
 
@@ -459,6 +450,35 @@ class GameController
       "pickedupLabel" => $m->pickedupLabel,
       "visibleLabel" => $m->visibleLabel,
     ], $itemsOnTile);
+  }
+
+  private function getGameState(): string {
+    if ($this->isPlayerDead()) return "GAME_END_FAIL";
+    if ($this->areWinConditionsMet()) return "GAME_END_SUCCESS";
+    return "GAME_RUNNING";
+  }
+
+  private function isPlayerDead(): bool {
+    $stateService = new StateService();
+    $currentHits = $stateService->getPlayerCurHits();
+    $isAlive = $currentHits > 0;
+    return $isAlive;
+  }
+
+  private function areWinConditionsMet(): bool {
+    $maze = new Maze();
+    $stateService = new StateService();
+
+    $hasOrb = $stateService->getHasOrb();
+    $currentHits = $stateService->getPlayerCurHits();
+    $currentLocation = $stateService->getPlayerPosition();
+    $initialLocation = $maze->getPlayerInitialLocation();
+
+    $hasWinItems = $hasOrb;
+    $isAlive = $currentHits > 0;
+    $isAtStartPoint = $currentLocation === $initialLocation;
+
+    return $hasWinItems && $isAlive && $isAtStartPoint;
   }
 
   private function canDoAction(
