@@ -3,11 +3,13 @@
 class GameController
 {
   private $_sessionManager;
+  private $_actionsManager;
   private $_itemsOnMapManager;
 
   public function __construct()
   {
     $this->_sessionManager = new SessionManager();
+    $this->_actionsManager = new ActionsManager();
     $this->_itemsOnMapManager = new ItemsOnMapManager();
   }
 
@@ -63,7 +65,6 @@ class GameController
 
     $stateService = new StateService();
     $itemsService = new ItemsService();
-    $actionsManager = new ActionsManager();
 
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
@@ -72,12 +73,12 @@ class GameController
 
     $location = $stateService->getPlayerPosition();
     $tiles = $this->calculateTiles($location['x'], $location['y']);
-    $possibleActions = $actionsManager->getPossibleActions($tiles, $this->getGameState());
-    $canDo = $actionsManager->canDoAction($possibleActions, $action, $target);
+    $possibleActions = $this->_actionsManager->getPossibleActions($tiles, $this->getGameState());
+    $canDo = $this->_actionsManager->canDoAction($possibleActions, $action, $target);
 
     $feedbackEvents = [];
     if ($canDo) {
-      $actionsManager->handleAction($action, $target);
+      $this->_actionsManager->handleAction($action, $target);
       switch ($action) {
         case "RUN": {
           $isFailed = rand(0, 1) == 1;
@@ -149,7 +150,6 @@ class GameController
 
   private function sendBackState()
   {
-    $actionsManager = new ActionsManager();
 
     $maze = new Maze();
     $stateService = new StateService();
@@ -309,7 +309,7 @@ class GameController
           ]
         ],
         "events" => $this->getEvents($tiles),
-        "possibleActions" => $actionsManager->getPossibleActions($tiles, $this->getGameState()),
+        "possibleActions" => $this->_actionsManager->getPossibleActions($tiles, $this->getGameState()),
         "mapState" => array_map(
           fn($m) => [
             "top" => $m["top"],
