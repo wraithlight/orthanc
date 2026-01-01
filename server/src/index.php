@@ -1,6 +1,8 @@
 <?php
 require_once("./phpapi/api.php");
 
+require_once("./app/enums/game-state.enum.php");
+
 require_once("./app/file-persistence/io-service.php");
 require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");

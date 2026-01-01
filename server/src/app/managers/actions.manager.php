@@ -18,10 +18,10 @@ class ActionsManager
 
   public function getPossibleActions(
     $tiles,
-    $gameState
+    GameState $gameState
   ): array {
     $actions = [];
-    if ($gameState !== "GAME_RUNNING") {
+    if ($gameState !== GameState::Running) {
       return $actions;
     }
     $stateService = new StateService();

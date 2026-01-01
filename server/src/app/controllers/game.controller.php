@@ -196,7 +196,7 @@ class GameController
 
     $gameState = $this->getGameState();
 
-    if ($gameState === "GAME_END_SUCCESS") {
+    if ($gameState === GameState::EndSuccess) {
       $hallOfFameService->addUser(
         $stateService->getPlayerName(),
         session_id(),
@@ -435,10 +435,10 @@ class GameController
     ], $itemsOnTile);
   }
 
-  private function getGameState(): string {
-    if ($this->isPlayerDead()) return "GAME_END_FAIL";
-    if ($this->areWinConditionsMet()) return "GAME_END_SUCCESS";
-    return "GAME_RUNNING";
+  private function getGameState(): GameState {
+    if ($this->isPlayerDead()) return GameState::EndFail;
+    if ($this->areWinConditionsMet()) return GameState::EndSuccess;
+    return GameState::Running;
   }
 
   private function isPlayerDead(): bool {
