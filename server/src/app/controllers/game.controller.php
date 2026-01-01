@@ -16,6 +16,7 @@ class GameController
     $id = $this->sessionManager->authenticate();
 
     $stateService = new StateService();
+    $itemsService = new ItemsService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
     $itemsOnMapManager = new ItemsOnMapManager();
@@ -53,7 +54,7 @@ class GameController
     $walkableTiles = $maze->getWalkableTiles();
     $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
 
-    $stateService->setItems($itemsOnMap);
+    $itemsService->setItemsOnMap($itemsOnMap);
     $this->sendBackState();
   }
 
@@ -62,6 +63,7 @@ class GameController
     $this->sessionManager->authenticate();
 
     $stateService = new StateService();
+    $itemsService = new ItemsService();
     $actionsManager = new ActionsManager();
 
     $rawBody = file_get_contents('php://input');
@@ -108,8 +110,7 @@ class GameController
 
           $currentWeight = $stateService->getCharacterStatsWeight();
           $stateService->setCharacterStatsWeight($currentWeight + $currentItem->sumWeight);
-          $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m->id !== $target));
-          $stateService->setItems($itemsOnMap);
+          $itemsService->removeItemFromMap($target);
           $currentGold = $stateService->getCharacterStatsMoney();
           $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
 
@@ -404,9 +405,8 @@ class GameController
   private function getItemsOnTile($x, $y): array
   {
     // TODO: To make this work properly, tiles that are not visible should not be considered.
-    $stateService = new StateService();
-    $itemsOnMap = $stateService->getItems();
-    $itemsOnTile = array_values(array_filter($itemsOnMap, fn($m) => $m->locationX === $x && $m->locationY === $y));
+    $itemsService = new ItemsService();
+    $itemsOnTile = $itemsService->getItemsOnTile($x, $y);
 
     return array_map(fn($m) => (object) [
       "id" => $m->id,
