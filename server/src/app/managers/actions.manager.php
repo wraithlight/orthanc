@@ -4,20 +4,25 @@ class ActionsManager
 {
 
   private $_playerLocationService;
+  private $_stateService;
 
-  public function __construct() {
+  public function __construct()
+  {
     $this->_playerLocationService = new PlayerLocationService();
+    $this->_stateService = new StateService();
   }
 
   public function handleAction(
     string $action,
     string $target
-  ): void
-  {
-    switch($action) {
+  ): void {
+    switch ($action) {
       case "MOVE": {
         $this->handleMovement($target);
         break;
+      }
+      case "RUN": {
+        $this->handleRun();
       }
     }
   }
@@ -113,5 +118,18 @@ class ActionsManager
         break;
       }
     }
+  }
+
+  private function handleRun(): void
+  {
+    $feedbackEvents = [];
+    $isFailed = rand(0, 1) == 1;
+    if ($isFailed) {
+      array_push($feedbackEvents, C_ACTION_RUN_FAIL_EVENT);
+    } else {
+      array_push($feedbackEvents, C_ACTION_RUN_SUCCESS_EVENT);
+    }
+    $this->_playerLocationService->moveToPreviousPosition();
+    $this->_stateService->setFeedbackEvents($feedbackEvents);
   }
 }

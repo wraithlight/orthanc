@@ -82,17 +82,6 @@ class GameController
     if ($canDo) {
       $this->_actionsManager->handleAction($action, $target);
       switch ($action) {
-        case "RUN": {
-          $isFailed = rand(0, 1) == 1;
-          if ($isFailed) {
-            array_push($feedbackEvents, C_ACTION_RUN_FAIL_EVENT);
-            break;
-          } else {
-            array_push($feedbackEvents, C_ACTION_RUN_SUCCESS_EVENT);
-          }
-          $playerLocationService->moveToPreviousPosition();
-          break;
-        }
         case "PICKUP": {
           $currentItem = $itemsService->getItem($target);
 
@@ -134,7 +123,6 @@ class GameController
 
   private function sendBackState()
   {
-
     $maze = new Maze();
     $stateService = new StateService();
     $hallOfFameService = new HallOfFameService();
