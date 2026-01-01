@@ -30,6 +30,15 @@ class StateService
   const GAME_START_TIME = "GAME_START_TIME";
   const PREVIOUS_POSITION_X = "PREVIOUS_POSITION_X";
   const PREVIOUS_POSITION_Y = "PREVIOUS_POSITION_Y";
+  const FEEDBACK_EVENTS = "FEEDBACK_EVENTS";
+
+  public function setFeedbackEvents(array $events): void {
+    $this->writeToSessionState(self::FEEDBACK_EVENTS, $events);
+  }
+
+  public function getFeedbackEvents(): array {
+    return $this->readFromSessionState(self::FEEDBACK_EVENTS);
+  }
 
   public function getPlayerPreviousPosition(): array
   {

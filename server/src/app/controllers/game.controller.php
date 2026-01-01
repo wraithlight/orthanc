@@ -48,12 +48,13 @@ class GameController
     $stateService->setCharacterSpellsOn([]);
     $stateService->setMapFull($maze->getFullMaze());
     $stateService->setStartTime(time());
+    $stateService->setFeedbackEvents([]);
 
     $walkableTiles = $maze->getWalkableTiles();
     $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
 
     $stateService->setItems($itemsOnMap);
-    $this->sendBackState("START", [], null);
+    $this->sendBackState("START", null);
   }
 
   public function onAction()
@@ -143,16 +144,16 @@ class GameController
       }
     }
 
+    $stateService->setFeedbackEvents($feedbackEvents);
+
     $this->sendBackState(
       $action,
-      $feedbackEvents,
       $target,
     );
   }
 
   private function sendBackState(
     string $lastAction,
-    array $events,
     $lastActionTarget = null,
   ) {
     $actionsManager = new ActionsManager();
@@ -314,7 +315,7 @@ class GameController
             ]
           ]
         ],
-        "events" => $this->getEvents($tiles, $lastAction, $events, $lastActionTarget),
+        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
         "possibleActions" => $actionsManager->getPossibleActions($tiles, $this->getGameState()),
         "mapState" => array_map(
           fn($m) => [
@@ -362,9 +363,10 @@ class GameController
   private function getEvents(
     array $tiles,
     string $lastAction,
-    array $events,
     $lastActionTarget = null,
   ): array {
+    $stateService = new StateService();
+    $events = $stateService->getFeedbackEvents();
     if ($lastAction === "PICKUP") {
       array_push($events, [
         "key" => "ITEM_PICKUP",
