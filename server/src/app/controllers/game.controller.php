@@ -54,7 +54,7 @@ class GameController
     $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
 
     $stateService->setItems($itemsOnMap);
-    $this->sendBackState("START", null);
+    $this->sendBackState();
   }
 
   public function onAction()
@@ -79,8 +79,8 @@ class GameController
       $actionsManager->handleAction($action, $target);
       switch ($action) {
         case "RUN": {
-          $isFailed = rand(0,1) == 1;
-          if($isFailed) {
+          $isFailed = rand(0, 1) == 1;
+          if ($isFailed) {
             array_push(
               $feedbackEvents,
               [
@@ -106,12 +106,10 @@ class GameController
         case "PICKUP": {
           $currentItem = array_values(array_filter($this->getItemsOnTile($location["x"], $location["y"]), fn($m) => $m->id === $target))[0];
 
-          // General.
           $currentWeight = $stateService->getCharacterStatsWeight();
           $stateService->setCharacterStatsWeight($currentWeight + $currentItem->sumWeight);
           $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m->id !== $target));
           $stateService->setItems($itemsOnMap);
-          $target = $currentItem->pickedupLabel;
           $currentGold = $stateService->getCharacterStatsMoney();
           $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
 
@@ -136,22 +134,21 @@ class GameController
             $stateService->setEquipmentArmor("EPIC");
           }
 
+          array_push($feedbackEvents, [
+            "key" => "ITEM_PICKUP",
+            "label" => $currentItem->pickedupLabel
+          ]);
         }
       }
     }
 
     $stateService->setFeedbackEvents($feedbackEvents);
 
-    $this->sendBackState(
-      $action,
-      $target,
-    );
+    $this->sendBackState();
   }
 
-  private function sendBackState(
-    string $lastAction,
-    $lastActionTarget = null,
-  ) {
+  private function sendBackState()
+  {
     $actionsManager = new ActionsManager();
 
     $maze = new Maze();
@@ -311,7 +308,7 @@ class GameController
             ]
           ]
         ],
-        "events" => $this->getEvents($tiles, $lastAction, $lastActionTarget),
+        "events" => $this->getEvents($tiles),
         "possibleActions" => $actionsManager->getPossibleActions($tiles, $this->getGameState()),
         "mapState" => array_map(
           fn($m) => [
@@ -346,7 +343,7 @@ class GameController
           "right" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x + 1, $centerY + $y - 0)),
           "bottom" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 0, $centerY + $y + 1)),
           "left" => $this->getBorderType($maze->getTile($centerX + $x, $centerY + $y), $maze->getTile($centerX + $x - 1, $centerY + $y - 0)),
-          "occupiedBy" => ($x === 0 && $y === 0) ? (object)["key" => "CHARACTER"] : $this->getNPCsOnTile($centerX + $x, $centerY + $y),
+          "occupiedBy" => ($x === 0 && $y === 0) ? (object) ["key" => "CHARACTER"] : $this->getNPCsOnTile($centerX + $x, $centerY + $y),
           "containsItems" => $this->getItemsOnTile($centerX + $x, $centerY + $y),
           "x" => $centerX + $x,
           "y" => $centerY + $y
@@ -357,18 +354,10 @@ class GameController
   }
 
   private function getEvents(
-    array $tiles,
-    string $lastAction,
-    $lastActionTarget = null,
+    array $tiles
   ): array {
     $stateService = new StateService();
     $events = $stateService->getFeedbackEvents();
-    if ($lastAction === "PICKUP") {
-      array_push($events, [
-        "key" => "ITEM_PICKUP",
-        "label" => $lastActionTarget
-      ]);
-    }
 
     $visibleItems = array_merge(...array_values(array_map(fn($m) => $m['containsItems'], $tiles)));
 
@@ -403,7 +392,8 @@ class GameController
     ], $items);
   }
 
-  private function getNPCsOnTile($x, $y): ?NPC {
+  private function getNPCsOnTile($x, $y): ?NPC
+  {
     // if ($x === 2 && $y === 1) {
     //   $manager = new NPCsOnMapManager();
     //   return $manager->getNPCsOnMap([])[0];
@@ -432,20 +422,27 @@ class GameController
     ], $itemsOnTile);
   }
 
-  private function getGameState(): GameState {
-    if ($this->isPlayerDead()) return GameState::EndFail;
-    if ($this->areWinConditionsMet()) return GameState::EndSuccess;
+  private function getGameState(): GameState
+  {
+    if ($this->isPlayerDead()) {
+      return GameState::EndFail;
+    }
+    if ($this->areWinConditionsMet()) {
+      return GameState::EndSuccess;
+    }
     return GameState::Running;
   }
 
-  private function isPlayerDead(): bool {
+  private function isPlayerDead(): bool
+  {
     $stateService = new StateService();
     $currentHits = $stateService->getPlayerCurHits();
     $isAlive = $currentHits <= 0;
     return $isAlive;
   }
 
-  private function areWinConditionsMet(): bool {
+  private function areWinConditionsMet(): bool
+  {
     $maze = new Maze();
     $stateService = new StateService();
 
@@ -476,12 +473,13 @@ class GameController
     }
   }
 
-  private function getLevel(int $xp): int {
+  private function getLevel(int $xp): int
+  {
     $THRESHOLD_LEVEL = 8;
     $THRESHOLD_XP = 128000;
 
     if ($xp > $THRESHOLD_XP) {
-      $levelsAbove = (int)floor($xp / $THRESHOLD_XP);
+      $levelsAbove = (int) floor($xp / $THRESHOLD_XP);
       return $levelsAbove + $THRESHOLD_LEVEL;
     } else {
       $lvlBase = floor($xp / 500);
