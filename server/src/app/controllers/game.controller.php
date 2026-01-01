@@ -85,22 +85,10 @@ class GameController
         case "RUN": {
           $isFailed = rand(0, 1) == 1;
           if ($isFailed) {
-            array_push(
-              $feedbackEvents,
-              [
-                "key" => "ACTION_RUN_FAIL",
-                "label" => "Your legs tremble with fear; you find yourself unable to flee this mysterious form of evil."
-              ]
-            );
+            array_push($feedbackEvents, C_ACTION_RUN_FAIL_EVENT);
             break;
           } else {
-            array_push(
-              $feedbackEvents,
-              [
-                "key" => "ACTION_RUN_SUCCESS",
-                "label" => "You flee into the choking dark, the malignant presence fading behind you as the shadows swallow your escape."
-              ]
-            );
+            array_push($feedbackEvents, C_ACTION_RUN_SUCCESS_EVENT);
           }
           $playerLocationService->moveToPreviousPosition();
           break;
@@ -117,11 +105,7 @@ class GameController
           if ($currentItem->key === "ITEM_CHEST_ORB") {
             $stateService->setHasOrb(true);
             $spells = $stateService->getCharacterSpellsOn();
-            array_push($spells, [
-              "key" => "SPELL_00",
-              "label" => "Blessing of the Orb",
-              "remaining" => "∞"
-            ]);
+            array_push($spells, C_SPELL_ORB);
             $stateService->setCharacterSpellsOn($spells);
           }
 
