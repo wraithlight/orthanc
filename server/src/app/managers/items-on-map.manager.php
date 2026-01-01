@@ -115,7 +115,7 @@ class ItemsOnMapManager {
     $itemsOnMap = [];
     for ($i = 0; $i < $number; $i++) {
       $randomIndex = array_rand($tileCoordinates, 1);
-      $amount = roll_d10k();
+      $amount = roll_d150();
       array_push(
         $itemsOnMap,
         createItem(
