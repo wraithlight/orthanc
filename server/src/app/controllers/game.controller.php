@@ -104,7 +104,7 @@ class GameController
           break;
         }
         case "PICKUP": {
-          $currentItem = $this->getItemsOnTile($location["x"], $location["y"])[0];
+          $currentItem = array_values(array_filter($this->getItemsOnTile($location["x"], $location["y"]), fn($m) => $m->id === $target))[0];
 
           // General.
           $currentWeight = $stateService->getCharacterStatsWeight();
