@@ -6,7 +6,7 @@ USER root
 RUN yarn --frozen-lockfile
 RUN yarn build
 
-FROM php:8.0.7-apache AS runner
+FROM php:8.1.0-apache AS runner
 COPY --from=install /temp/dist /var/www/html
 COPY server/src /var/www/html
 COPY server/game-data /var/www/game-data
