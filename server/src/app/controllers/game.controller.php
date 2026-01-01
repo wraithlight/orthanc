@@ -181,8 +181,7 @@ class GameController
       $stateService->setCharacterStatsMoney(0);
       $stateService->setCharacterStatsWeight($weight - $money * self::GOLD_WEIGHT);
 
-      $xp = $stateService->getCharacterXp();
-      $newXp = $xp + $money;
+      $newXp = $sumXp + $money;
       $stateService->setCharacterXp($newXp);
 
       $level = $this->getLevel($newXp);
@@ -234,7 +233,8 @@ class GameController
 
     $minimapState[$location['y']][$location['x']] = "PLAYER";
 
-    $level = $this->getLevel($stateService->getCharacterXp());
+    $xp = $stateService->getCharacterXp();
+    $level = $this->getLevel($xp);
 
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
@@ -261,9 +261,9 @@ class GameController
           "arrows" => $stateService->getEquipmentArrows()
         ],
         "statistics" => [
-          "experience" => $stateService->getCharacterXp(),
+          "experience" => $xp,
           "money" => $stateService->getCharacterStatsMoney(),
-          "nextLevelInXp" => $this->getXpForNextLevel($level) - $stateService->getCharacterXp(),
+          "nextLevelInXp" => $this->getXpForNextLevel($level) - $xp,
           "weight" => $stateService->getCharacterStatsWeight(),
           "playerLevel" => $level,
           "spellUnits" => [
