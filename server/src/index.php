@@ -23,6 +23,7 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
+require_once("./app/managers/session.manager.php");
 require_once("./app/managers/items-on-map.manager.php");
 require_once("./app/managers/npcs-on-map.manager.php");
 require_once("./app/managers/actions.manager.php");

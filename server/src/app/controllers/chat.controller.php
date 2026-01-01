@@ -2,17 +2,16 @@
 
 class ChatController
 {
+  private $sessionManager;
+
+  public function __construct()
+  {
+    $this->sessionManager = new SessionManager();
+  }
+
   public function sendMessage()
   {
-    if (empty($_COOKIE['PHPSESSID'])) {
-      http_response_code(401);
-      header('Content-Type: application/json');
-      echo json_encode([
-          'errorCode' => 'ERROR_0401',
-      ]);
-      exit;
-    }
-    session_start();
+    $this->sessionManager->authenticate();
 
     $stateService = new StateService();
     $username = $stateService->getPlayerName();
@@ -28,26 +27,17 @@ class ChatController
       ]
     ]);
 
-    echo json_encode([], JSON_PRETTY_PRINT);
+    echo json_encode([]);
   }
 
   public function getMessages()
   {
-    if (empty($_COOKIE['PHPSESSID'])) {
-      http_response_code(401);
-      header('Content-Type: application/json');
-      echo json_encode([
-          'errorCode' => 'ERROR_0401',
-      ]);
-      exit;
-    }
-    session_start();
+    $id = $this->sessionManager->authenticate();
 
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
 
-    $id = session_id();
     $chatMembersService->updateLastSeen($id);
 
     $lastMessageId = $stateService->getChatLastMessageId();

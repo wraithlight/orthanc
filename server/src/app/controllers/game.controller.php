@@ -2,20 +2,18 @@
 
 class GameController
 {
+  private $sessionManager;
+
+  public function __construct()
+  {
+    $this->sessionManager = new SessionManager();
+  }
 
   private const GOLD_WEIGHT = 1;
 
   public function startGame()
   {
-    if (empty($_COOKIE['PHPSESSID'])) {
-      http_response_code(401);
-      header('Content-Type: application/json');
-      echo json_encode([
-          'errorCode' => 'ERROR_0401',
-      ]);
-      exit;
-    }
-    session_start();
+    $id = $this->sessionManager->authenticate();
 
     $stateService = new StateService();
     $chatMembersService = new ChatMembersService();
@@ -23,7 +21,6 @@ class GameController
     $itemsOnMapManager = new ItemsOnMapManager();
     $maze = new Maze();
 
-    $id = session_id();
     $username = $stateService->getPlayerName();
     $location = $maze->getPlayerInitialLocation();
     $currentHits = $stateService->getPlayerMaxHits();
@@ -58,15 +55,8 @@ class GameController
 
   public function onAction()
   {
-    if (empty($_COOKIE['PHPSESSID'])) {
-      http_response_code(401);
-      header('Content-Type: application/json');
-      echo json_encode([
-          'errorCode' => 'ERROR_0401',
-      ]);
-      exit;
-    }
-    session_start();
+    $this->sessionManager->authenticate();
+
     $stateService = new StateService();
     $actionsManager = new ActionsManager();
 
@@ -199,7 +189,7 @@ class GameController
     if ($gameState === GameState::EndSuccess) {
       $hallOfFameService->addUser(
         $stateService->getPlayerName(),
-        session_id(),
+        $this->sessionManager->getSessionId(),
         $stateService->getStartTime()
       );
     }

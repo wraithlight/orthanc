@@ -2,17 +2,16 @@
 
 class CharacterCreationController
 {
+  private $sessionManager;
+
+  public function __construct()
+  {
+    $this->sessionManager = new SessionManager();
+  }
+
   public function generate()
   {
-    if (empty($_COOKIE['PHPSESSID'])) {
-      http_response_code(401);
-      header('Content-Type: application/json');
-      echo json_encode([
-          'errorCode' => 'ERROR_0401',
-      ]);
-      exit;
-    }
-    session_start();
+    $this->sessionManager->authenticate();
 
     $stateService = new StateService();
 

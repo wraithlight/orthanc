@@ -2,13 +2,16 @@
 
 class LoginController
 {
+  private $sessionManager;
+
+  public function __construct()
+  {
+    $this->sessionManager = new SessionManager();
+  }
+
   public function loginGuest()
   {
-    session_start([
-      "use_strict_mode" => 1,
-    ]);
-    session_regenerate_id(true);
-
+    $this->sessionManager->createNewSession();
     $stateService = new StateService();
 
     $username = 'guest_' . roll_d10k();
