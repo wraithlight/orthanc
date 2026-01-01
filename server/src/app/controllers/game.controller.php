@@ -444,7 +444,7 @@ class GameController
   private function isPlayerDead(): bool {
     $stateService = new StateService();
     $currentHits = $stateService->getPlayerCurHits();
-    $isAlive = $currentHits > 0;
+    $isAlive = $currentHits === 0;
     return $isAlive;
   }
 
