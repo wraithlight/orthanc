@@ -20,6 +20,7 @@ class SessionManager {
       "use_strict_mode" => 1,
     ]);
     session_regenerate_id(true);
+    $_SESSION = [];
   }
 
   public function getSessionId(): string {
