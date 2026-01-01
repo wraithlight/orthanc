@@ -7,8 +7,8 @@
   <div class="chat-messages">
     <!-- ko foreach: messages -->
     <div class="chat-message">
-      <span data-bind="text: '<' + sender + '>:'"></span>
-      <span data-bind="text: message"></span>
+      <span data-bind="text: '<' + payload.sender + '>:'"></span>
+      <span data-bind="text: payload.message"></span>
     </div>
     <!-- /ko -->
   </div>
