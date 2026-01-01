@@ -2,55 +2,33 @@
 
 class ChatController
 {
-  private $sessionManager;
+  private $_chatManager;
+  private $_sessionManager;
 
   public function __construct()
   {
-    $this->sessionManager = new SessionManager();
+    $this->_chatManager = new ChatManager();
+    $this->_sessionManager = new SessionManager();
   }
 
   public function sendMessage()
   {
-    $this->sessionManager->authenticate();
+    $this->_sessionManager->authenticate();
 
-    $stateService = new StateService();
-    $username = $stateService->getPlayerName();
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $message = $payload['message'];
 
-    $chatMessageService = new ChatMessagesService();
-    $chatMessageService->addMessage([
-      "payload" => [
-        'sender' => $username,
-        'message' => $message
-      ]
-    ]);
+    $this->_chatManager->sendMessage($message);
 
     echo json_encode([]);
   }
 
   public function getMessages()
   {
-    $id = $this->sessionManager->authenticate();
+    $id = $this->_sessionManager->authenticate();
+    $result = $this->_chatManager->onPoll($id);
 
-    $stateService = new StateService();
-    $chatMembersService = new ChatMembersService();
-    $chatMessageService = new ChatMessagesService();
-
-    $chatMembersService->updateLastSeen($id);
-
-    $lastMessageId = $stateService->getChatLastMessageId();
-
-    $messages = $chatMessageService->getMessagesSince($lastMessageId);
-    $members = $chatMembersService->getActiveMembers();
-
-    echo json_encode([
-      "payload" => [
-        'messages' => $messages,
-        'members' => $members
-      ]
-    ], JSON_UNESCAPED_UNICODE);
+    echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
 }
-?>

@@ -2,15 +2,17 @@
 
 class GameController
 {
-  private $_sessionManager;
   private $_actionsManager;
+  private $_chatManager;
   private $_itemsOnMapManager;
+  private $_sessionManager;
 
   public function __construct()
   {
-    $this->_sessionManager = new SessionManager();
     $this->_actionsManager = new ActionsManager();
+    $this->_chatManager = new ChatManager();
     $this->_itemsOnMapManager = new ItemsOnMapManager();
+    $this->_sessionManager = new SessionManager();
   }
 
   private const GOLD_WEIGHT = 1;
@@ -18,25 +20,21 @@ class GameController
   public function startGame()
   {
     $id = $this->_sessionManager->authenticate();
+    $this->_chatManager->addMember($id);
 
     $stateService = new StateService();
-    $chatMembersService = new ChatMembersService();
-    $chatMessageService = new ChatMessagesService();
     $maze = new Maze();
 
     $initialXp = 0;
     $initialLevel = $this->getLevel($initialXp);
     $maxSpellUnits = $this->getMaxSpellUnits($initialLevel);
 
-    $username = $stateService->getPlayerName();
     $location = $maze->getPlayerInitialLocation();
     $currentHits = $stateService->getPlayerMaxHits();
 
-    $chatMembersService->addMember($username, $id);
     $stateService->setPlayerPosition($location["x"], $location["y"]);
     $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
     $stateService->setPlayerCurHits($currentHits);
-    $stateService->setChatLastMessageId($chatMessageService->getLastMessageId());
     $stateService->setEquipmentSword("NORMAL");
     $stateService->setEquipmentShield("NORMAL");
     $stateService->setEquipmentArmor("NORMAL");
