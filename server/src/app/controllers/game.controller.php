@@ -476,7 +476,7 @@ class GameController
       $levelsAbove = $targetLevel - $THRESHOLD_LEVEL;
       return $levelsAbove * $THRESHOLD_XP;
     } else {
-      return pow(2, $targetLevel) * 500;
+      return pow(2, $currentLevel) * 500;
     }
   }
 
@@ -488,8 +488,11 @@ class GameController
       $levelsAbove = (int)floor($xp / $THRESHOLD_XP);
       return $levelsAbove + $THRESHOLD_LEVEL;
     } else {
-      $level = (int)floor(log(floor($xp / 500), 2));
-      return max($level, 1);
+      $lvlBase = floor($xp / 500);
+      return $lvlBase < 1
+        ? 1
+        : floor(log($lvlBase, 2)) + 1
+      ;
     }
   }
 
