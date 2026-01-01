@@ -26,6 +26,8 @@ require_once("./app/utils/maze.php");
 
 
 // TODO: Cleanup the imports above.
+require_once("./app/models/state-item.model.php");
+
 require_once("./app/states/_base.state.php");
 
 require_once("./app/managers/session.manager.php");
