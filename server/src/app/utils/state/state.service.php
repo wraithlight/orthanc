@@ -1,9 +1,6 @@
 <?php
 class StateService
 {
-
-  const POSITION_KEY_X = "PLAYER_POSITION_X";
-  const POSITION_KEY_Y = "PLAYER_POSITION_Y";
   const PLAYER_NAME = "PLAYER_NAME";
   const STAT_DEX = "PLAYER_STAT_DEX";
   const STAT_INT = "PLAYER_STAT_INT";
@@ -28,8 +25,6 @@ class StateService
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
   const GAME_START_TIME = "GAME_START_TIME";
-  const PREVIOUS_POSITION_X = "PREVIOUS_POSITION_X";
-  const PREVIOUS_POSITION_Y = "PREVIOUS_POSITION_Y";
   const FEEDBACK_EVENTS = "FEEDBACK_EVENTS";
 
   public function setFeedbackEvents(array $events): void {
@@ -40,21 +35,6 @@ class StateService
     return $this->readFromSessionState(self::FEEDBACK_EVENTS);
   }
 
-  public function getPlayerPreviousPosition(): array
-  {
-    $x = $this->readFromSessionState(self::PREVIOUS_POSITION_X);
-    $y = $this->readFromSessionState(self::PREVIOUS_POSITION_Y);
-    return [
-      "x" => $x,
-      "y" => $y
-    ];
-  }
-
-  public function setPlayerPreviousPosition($x, $y)
-  {
-    $this->writeToSessionState(self::PREVIOUS_POSITION_X, $x);
-    $this->writeToSessionState(self::PREVIOUS_POSITION_Y, $y);
-  }
   public function setStartTime(int $startTime) {
     $this->writeToSessionState(self::GAME_START_TIME, $startTime);
   }
@@ -261,30 +241,6 @@ class StateService
     return $this->readFromSessionState(self::PLAYER_NAME);
   }
 
-  public function moveNorth()
-  {
-    $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) - 1;
-    $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
-  }
-
-  public function moveEast()
-  {
-    $positionY = $this->readFromSessionState(self::POSITION_KEY_X) + 1;
-    $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
-  }
-
-  public function moveSouth()
-  {
-    $positionX = $this->readFromSessionState(self::POSITION_KEY_Y) + 1;
-    $this->writeToSessionState(self::POSITION_KEY_Y, $positionX);
-  }
-
-  public function moveWest()
-  {
-    $positionY = $this->readFromSessionState(self::POSITION_KEY_X) - 1;
-    $this->writeToSessionState(self::POSITION_KEY_X, $positionY);
-  }
-
   public function getHasOrb(): bool
   {
     return $this->readFromSessionState(self::INVENTORY_ORB);
@@ -321,21 +277,6 @@ class StateService
     return $this->writeToSessionState(self::MAP_NPCS, $npcs);
   }
 
-  public function getPlayerPosition(): array
-  {
-    $x = $this->readFromSessionState(self::POSITION_KEY_X);
-    $y = $this->readFromSessionState(self::POSITION_KEY_Y);
-    return [
-      "x" => $x,
-      "y" => $y
-    ];
-  }
-
-  public function setPlayerPosition($x, $y)
-  {
-    $this->writeToSessionState(self::POSITION_KEY_X, $x);
-    $this->writeToSessionState(self::POSITION_KEY_Y, $y);
-  }
 
   private function readFromSessionState($key)
   {
