@@ -38,6 +38,15 @@ class ItemsService {
    * @param string $id
    * @return State_Item[]
    */
+  public function getItem(string $id): object {
+    $items = $this->getItemsOnMap();
+    return (object)array_values(array_filter($items, fn($m) => $m->id !== $id))[0];
+  }
+
+  /**
+   * @param string $id
+   * @return State_Item[]
+   */
   public function removeItemFromMap(string $id): array {
     $items = $this->getItemsOnMap();
     $remainingItems = array_values(array_filter($items, fn($m) => $m->id !== $id));
