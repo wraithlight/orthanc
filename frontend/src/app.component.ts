@@ -22,7 +22,7 @@ export class Application {
 
   public async onLoginSuccessHandler(): Promise<void> {
     setTimeout(() => {
-      this.state(AppState.MODE_SELECT);
+      this.state(AppState.CHARACTER_CREATION);
     }, 500);
   }
 
@@ -41,7 +41,7 @@ export class Application {
 
   public async onBackFromCharacterCreationHandler(): Promise<void> {
     setTimeout(() => {
-      this.state(AppState.MODE_SELECT);
+      this.state(AppState.LOGIN);
     }, 500);
   }
 
