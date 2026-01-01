@@ -72,7 +72,7 @@ class PlayerLocationState extends BaseState {
   /**
    * @return State_Location
    */
-  public function getPlayerCurrentLocationCore(): object
+  private function getPlayerCurrentLocationCore(): object
   {
     return new State_Location(
       $this->readState(self::LOCATION_CURRENT_X_KEY),
@@ -83,7 +83,7 @@ class PlayerLocationState extends BaseState {
   /**
    * @return State_Location
    */
-  public function getPlayerInitialLocationCore(): object
+  private function getPlayerInitialLocationCore(): object
   {
     return new State_Location(
       $this->readState(self::LOCATION_INITIAL_X_KEY),
@@ -94,7 +94,7 @@ class PlayerLocationState extends BaseState {
   /**
    * @return State_Location
    */
-  public function getPlayerPreviousLocationCore(): object
+  private function getPlayerPreviousLocationCore(): object
   {
     return new State_Location(
       $this->readState(self::LOCATION_PREVIOUS_X_KEY),
