@@ -20,8 +20,6 @@ class StateService
   const CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
   const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
-  const MAP_ITEMS = "MAP_ITEMS";
-  const MAP_NPCS = "MAP_NPCS";
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
   const GAME_START_TIME = "GAME_START_TIME";
@@ -250,33 +248,6 @@ class StateService
   {
     return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
   }
-
-  /**
-   * @return Item[]
-   */
-  public function getItems(): array
-  {
-    return $this->readFromSessionState(self::MAP_ITEMS);
-  }
-
-  /**
-   * @param Item[] $items
-   */
-  public function setItems(array $items)
-  {
-    return $this->writeToSessionState(self::MAP_ITEMS, $items);
-  }
-
-  public function getNpcs(): array
-  {
-    return $this->readFromSessionState(self::MAP_NPCS);
-  }
-
-  public function setNpcs(array $npcs)
-  {
-    return $this->writeToSessionState(self::MAP_NPCS, $npcs);
-  }
-
 
   private function readFromSessionState($key)
   {
