@@ -21,6 +21,10 @@ class GameController
     $itemsOnMapManager = new ItemsOnMapManager();
     $maze = new Maze();
 
+    $initialXp = 0;
+    $initialLevel = $this->getLevel($initialXp);
+    $maxSpellUnits = $this->getMaxSpellUnits($initialLevel);
+
     $username = $stateService->getPlayerName();
     $location = $maze->getPlayerInitialLocation();
     $currentHits = $stateService->getPlayerMaxHits();
@@ -34,13 +38,13 @@ class GameController
     $stateService->setEquipmentShield("NORMAL");
     $stateService->setEquipmentArmor("NORMAL");
     $stateService->setEquipmentArrows(0);
-    $stateService->setCharacterXp(0);
-    $stateService->setCharacterXpFromKills(0);
+    $stateService->setCharacterXp($initialXp);
+    $stateService->setCharacterXpFromKills($initialXp);
     $stateService->setCharacterStatsMoney(0);
-    $stateService->setCharacterStatsLevel(1);
+    $stateService->setCharacterStatsLevel($initialLevel);
     $stateService->setCharacterStatsWeight(0);
-    $stateService->setCharacterSpellUnitsMax(4);
-    $stateService->setCharacterSpellUnitsCur(4);
+    $stateService->setCharacterSpellUnitsMax($maxSpellUnits);
+    $stateService->setCharacterSpellUnitsCur($maxSpellUnits);
     $stateService->setHasOrb(false);
     $stateService->setCharacterSpellsOn([]);
     $stateService->setMapFull($maze->getFullMaze());
@@ -158,8 +162,6 @@ class GameController
     $stateService = new StateService();
     $hallOfFameService = new HallOfFameService();
 
-    $nextLevelInXp = 1000; // TODO
-
     $sumXp = $stateService->getCharacterXp();
     $xpFromKills = $stateService->getCharacterXpFromKills();
     $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $sumXp) * 100;
@@ -181,7 +183,15 @@ class GameController
       $stateService->setCharacterStatsWeight($weight - $money * self::GOLD_WEIGHT);
 
       $xp = $stateService->getCharacterXp();
-      $stateService->setCharacterXp($xp + $money);
+      $newXp = $xp + $money;
+      $stateService->setCharacterXp($newXp);
+
+      $level = $this->getLevel($newXp);
+      $stateService->setCharacterStatsLevel($level);
+
+      $spellUnits = $this->getMaxSpellUnits($level);
+      $stateService->setCharacterSpellUnitsCur($spellUnits);
+      $stateService->setCharacterSpellUnitsMax($spellUnits);
     }
 
     $gameState = $this->getGameState();
@@ -254,7 +264,7 @@ class GameController
         "statistics" => [
           "experience" => $stateService->getCharacterXp(),
           "money" => $stateService->getCharacterStatsMoney(),
-          "nextLevelInXp" => $nextLevelInXp,
+          "nextLevelInXp" => $this->getXpForNextLevel($stateService->getCharacterStatsLevel()) - $stateService->getCharacterXp(),
           "weight" => $stateService->getCharacterStatsWeight(),
           "playerLevel" => $stateService->getCharacterStatsLevel(),
           "spellUnits" => [
@@ -452,6 +462,40 @@ class GameController
     $isAtStartPoint = $currentLocation === $initialLocation;
 
     return $hasWinItems && $isAlive && $isAtStartPoint;
+  }
+
+  private function getXpForNextLevel(
+    int $currentLevel
+  ): int {
+    $THRESHOLD_LEVEL = 8;
+    $THRESHOLD_XP = 128000;
+
+    $targetLevel = $currentLevel + 1;
+    if ($targetLevel > $THRESHOLD_LEVEL) {
+      $levelsAbove = $targetLevel - $THRESHOLD_LEVEL;
+      return $levelsAbove * $THRESHOLD_XP;
+    } else {
+      return pow(2, $targetLevel + 1) * 500;
+    }
+  }
+
+  private function getLevel(int $xp): int {
+    $THRESHOLD_LEVEL = 8;
+    $THRESHOLD_XP = 128000;
+
+    if ($xp > $THRESHOLD_XP) {
+      $levelsAbove = (int)floor($xp / $THRESHOLD_XP);
+      return $levelsAbove + $THRESHOLD_LEVEL;
+    } else {
+      $level = (int)floor(log(floor($xp / 500), 2));
+      return max($level, 1);
+    }
+  }
+
+  private function getMaxSpellUnits(
+    int $level
+  ): int {
+    return ($level + 1) * 2;
   }
 
 }
