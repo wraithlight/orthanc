@@ -23,6 +23,7 @@ class GameController
     $this->_chatManager->addMember($id);
 
     $stateService = new StateService();
+    $playerLocationService = new PlayerLocationService();
     $maze = new Maze();
 
     $initialXp = 0;
@@ -32,8 +33,10 @@ class GameController
     $location = $maze->getPlayerInitialLocation();
     $currentHits = $stateService->getPlayerMaxHits();
 
-    $stateService->setPlayerPosition($location["x"], $location["y"]);
-    $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
+    $playerLocationService->setPlayerCurrentLocation($location["x"], $location["y"]);
+    $playerLocationService->setPlayerInitialLocation($location["x"], $location["y"]);
+    $playerLocationService->setPlayerPreviousLocation($location["x"], $location["y"]);
+
     $stateService->setPlayerCurHits($currentHits);
     $stateService->setEquipmentSword("NORMAL");
     $stateService->setEquipmentShield("NORMAL");
@@ -63,14 +66,15 @@ class GameController
 
     $stateService = new StateService();
     $itemsService = new ItemsService();
+    $playerLocationService = new PlayerLocationService();
 
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $action = $payload['action'];
     $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
 
-    $location = $stateService->getPlayerPosition();
-    $tiles = $this->calculateTiles($location['x'], $location['y']);
+    $location = $playerLocationService->getPlayerCurrentLocation();
+    $tiles = $this->calculateTiles($location->coordX, $location->coordY);
     $possibleActions = $this->_actionsManager->getPossibleActions($tiles, $this->getGameState());
     $canDo = $this->_actionsManager->canDoAction($possibleActions, $action, $target);
 
@@ -98,9 +102,7 @@ class GameController
               ]
             );
           }
-          $previousPosition = $stateService->getPlayerPreviousPosition();
-          $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-          $stateService->setPlayerPosition($previousPosition["x"], $previousPosition["y"]);
+          $playerLocationService->moveToPreviousPosition();
           break;
         }
         case "PICKUP": {
@@ -152,16 +154,16 @@ class GameController
     $maze = new Maze();
     $stateService = new StateService();
     $hallOfFameService = new HallOfFameService();
+    $playerLocationService = new PlayerLocationService();
 
     $sumXp = $stateService->getCharacterXp();
     $xpFromKills = $stateService->getCharacterXpFromKills();
     $xpFromKillsPercentage = $xpFromKills === 0 ? 0 : ($xpFromKills / $sumXp) * 100;
 
-    $location = $stateService->getPlayerPosition();
+    $location = $playerLocationService->getPlayerCurrentLocation();
 
-    $tiles = $this->calculateTiles($location['x'], $location['y']);
-
-    $isAtStartPoint = $maze->getPlayerInitialLocation() === $location;
+    $tiles = $this->calculateTiles($location->coordX, $location->coordY);
+    $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
     if ($isAtStartPoint) {
       $maxHp = $stateService->getPlayerMaxHits();
@@ -223,7 +225,7 @@ class GameController
       }
     }
 
-    $minimapState[$location['y']][$location['x']] = "PLAYER";
+    $minimapState[$location->coordY][$location->coordX] = "PLAYER";
 
     $xp = $stateService->getCharacterXp();
     $level = $this->getLevel($xp);
@@ -440,17 +442,15 @@ class GameController
 
   private function areWinConditionsMet(): bool
   {
-    $maze = new Maze();
     $stateService = new StateService();
+    $playerLocationService = new PlayerLocationService();
 
     $hasOrb = $stateService->getHasOrb();
     $currentHits = $stateService->getPlayerCurHits();
-    $currentLocation = $stateService->getPlayerPosition();
-    $initialLocation = $maze->getPlayerInitialLocation();
 
     $hasWinItems = $hasOrb;
     $isAlive = $currentHits > 0;
-    $isAtStartPoint = $currentLocation === $initialLocation;
+    $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
     return $hasWinItems && $isAlive && $isAtStartPoint;
   }

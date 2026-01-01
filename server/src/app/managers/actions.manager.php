@@ -3,6 +3,12 @@
 class ActionsManager
 {
 
+  private $_playerLocationService;
+
+  public function __construct() {
+    $this->_playerLocationService = new PlayerLocationService();
+  }
+
   public function handleAction(
     string $action,
     string $target
@@ -29,7 +35,7 @@ class ActionsManager
     $visibleNpcs = array_values(array_filter(array_map(fn($m) => $m['occupiedBy'], $tiles), fn($m) => isset($m) && $m->key !== "CHARACTER"));
 
     $canFight = count($visibleNpcs) === 1;
-    $canRun = $canFight && ($stateService->getPlayerPosition() !== $stateService->getPlayerPreviousPosition());
+    $canRun = $canFight && $this->_playerLocationService->isPreviousAndCurrentSame();
     $canMove = count($visibleNpcs) === 0;
     $canCast = $stateService->getCharacterSpellUnitsCur() > 0;
     $canPickup = !empty($playerTile["containsItems"]);
@@ -89,28 +95,21 @@ class ActionsManager
 
   private function handleMovement(string $target): void
   {
-    $stateService = new StateService();
-    $location = $stateService->getPlayerPosition();
-
     switch ($target) {
       case $target === "DIRECTION_NORTH": {
-        $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-        $stateService->moveNorth();
+        $this->_playerLocationService->movePlayerNorth();
         break;
       }
       case $target === "DIRECTION_EAST": {
-        $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-        $stateService->moveEast();
+        $this->_playerLocationService->movePlayerEast();
         break;
       }
       case $target === "DIRECTION_SOUTH": {
-        $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-        $stateService->moveSouth();
+        $this->_playerLocationService->movePlayerSouth();
         break;
       }
       case $target === "DIRECTION_WEST": {
-        $stateService->setPlayerPreviousPosition($location["x"], $location["y"]);
-        $stateService->moveWest();
+        $this->_playerLocationService->movePlayerWest();
         break;
       }
     }
