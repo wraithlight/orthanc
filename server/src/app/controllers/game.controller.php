@@ -112,12 +112,8 @@ class GameController
           $itemsOnMap = array_values(array_filter($stateService->getItems(), fn($m) => $m->id !== $target));
           $stateService->setItems($itemsOnMap);
           $target = $currentItem->pickedupLabel;
-
-          if ($currentItem->key === "ITEM_GOLD") {
-            // TODO: This can be moved to general since Orb has 0 wealth.
-            $currentGold = $stateService->getCharacterStatsMoney();
-            $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
-          }
+          $currentGold = $stateService->getCharacterStatsMoney();
+          $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
 
           if ($currentItem->key === "ITEM_CHEST_ORB") {
             $stateService->setHasOrb(true);
