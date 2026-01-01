@@ -2,24 +2,24 @@
 
 class GameController
 {
-  private $sessionManager;
+  private $_sessionManager;
+  private $_itemsOnMapManager;
 
   public function __construct()
   {
-    $this->sessionManager = new SessionManager();
+    $this->_sessionManager = new SessionManager();
+    $this->_itemsOnMapManager = new ItemsOnMapManager();
   }
 
   private const GOLD_WEIGHT = 1;
 
   public function startGame()
   {
-    $id = $this->sessionManager->authenticate();
+    $id = $this->_sessionManager->authenticate();
 
     $stateService = new StateService();
-    $itemsService = new ItemsService();
     $chatMembersService = new ChatMembersService();
     $chatMessageService = new ChatMessagesService();
-    $itemsOnMapManager = new ItemsOnMapManager();
     $maze = new Maze();
 
     $initialXp = 0;
@@ -52,15 +52,14 @@ class GameController
     $stateService->setFeedbackEvents([]);
 
     $walkableTiles = $maze->getWalkableTiles();
-    $itemsOnMap = $itemsOnMapManager->getItemsOnMap($walkableTiles);
+    $this->_itemsOnMapManager->createItemsOnMap($walkableTiles);
 
-    $itemsService->setItemsOnMap($itemsOnMap);
     $this->sendBackState();
   }
 
   public function onAction()
   {
-    $this->sessionManager->authenticate();
+    $this->_sessionManager->authenticate();
 
     $stateService = new StateService();
     $itemsService = new ItemsService();
@@ -190,7 +189,7 @@ class GameController
     if ($gameState === GameState::EndSuccess) {
       $hallOfFameService->addUser(
         $stateService->getPlayerName(),
-        $this->sessionManager->getSessionId(),
+        $this->_sessionManager->getSessionId(),
         $stateService->getStartTime()
       );
     }

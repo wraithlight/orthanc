@@ -1,6 +1,7 @@
 <?php
 
-class ItemsOnMapManager {
+class ItemsOnMapManager
+{
   private const GOLD_WEIGHT = 1;
   private const ORB_WEIGHT = 1000;
   private const WEIGHT_SWORD = 100;
@@ -10,9 +11,16 @@ class ItemsOnMapManager {
   private const GOLD_PERCENTAGE_ON_MAP = 2;
   private const NUMBER_OF_ORBS = 1;
 
-  public function getItemsOnMap(
+  private $_itemsService;
+
+  public function __construct()
+  {
+    $this->_itemsService = new ItemsService();
+  }
+
+  public function createItemsOnMap(
     array $tileCoordinates
-  ): array {
+  ): void {
     $itemsInChests = [
       [
         "key" => "ITEM_CHEST_SWORD",
@@ -38,10 +46,12 @@ class ItemsOnMapManager {
     $orb = $this->getOrbsOnMap(self::NUMBER_OF_ORBS, $tileCoordinates);
     $chests = $this->getChestsOnMap($itemsInChests, $tileCoordinates);
 
-    return array_merge(
-      $gold,
-      $orb,
-      $chests
+    $this->_itemsService->setItemsOnMap(
+      [
+        ...$gold,
+        ...$orb,
+        ...$chests
+      ]
     );
   }
 
