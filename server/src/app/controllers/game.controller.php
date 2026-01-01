@@ -41,7 +41,6 @@ class GameController
     $stateService->setCharacterXp($initialXp);
     $stateService->setCharacterXpFromKills($initialXp);
     $stateService->setCharacterStatsMoney(0);
-    $stateService->setCharacterStatsLevel($initialLevel);
     $stateService->setCharacterStatsWeight(0);
     $stateService->setCharacterSpellUnitsMax($maxSpellUnits);
     $stateService->setCharacterSpellUnitsCur($maxSpellUnits);
@@ -187,8 +186,6 @@ class GameController
       $stateService->setCharacterXp($newXp);
 
       $level = $this->getLevel($newXp);
-      $stateService->setCharacterStatsLevel($level);
-
       $spellUnits = $this->getMaxSpellUnits($level);
       $stateService->setCharacterSpellUnitsCur($spellUnits);
       $stateService->setCharacterSpellUnitsMax($spellUnits);
@@ -237,6 +234,8 @@ class GameController
 
     $minimapState[$location['y']][$location['x']] = "PLAYER";
 
+    $level = $this->getLevel($stateService->getCharacterXp());
+
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
       "payload" => [
@@ -264,9 +263,9 @@ class GameController
         "statistics" => [
           "experience" => $stateService->getCharacterXp(),
           "money" => $stateService->getCharacterStatsMoney(),
-          "nextLevelInXp" => $this->getXpForNextLevel($stateService->getCharacterStatsLevel()) - $stateService->getCharacterXp(),
+          "nextLevelInXp" => $this->getXpForNextLevel($level) - $stateService->getCharacterXp(),
           "weight" => $stateService->getCharacterStatsWeight(),
-          "playerLevel" => $stateService->getCharacterStatsLevel(),
+          "playerLevel" => $level,
           "spellUnits" => [
             "current" => $stateService->getCharacterSpellUnitsCur(),
             "maximum" => $stateService->getCharacterSpellUnitsMax()

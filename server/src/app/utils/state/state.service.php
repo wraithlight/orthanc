@@ -19,7 +19,6 @@ class StateService
   const CHARACTER_STATS_EXPERIENCE = "CHARACTER_STATS_EXPERIENCE";
   const CHARACTER_STATS_EXPERIENCE_FROM_KILLS = "CHARACTER_STATS_EXPERIENCE_FROM_KILLS";
   const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
-  const CHARACTER_STATS_LEVEL = "CHARACTER_STATS_LEVEL";
   const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
   const CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
   const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
@@ -78,11 +77,6 @@ class StateService
     $this->writeToSessionState(self::CHARACTER_STATS_MONEY, $value);
   }
 
-  public function setCharacterStatsLevel($value)
-  {
-    $this->writeToSessionState(self::CHARACTER_STATS_LEVEL, $value);
-  }
-
   public function setCharacterStatsWeight($value)
   {
     $this->writeToSessionState(self::CHARACTER_STATS_WEIGHT, $value);
@@ -116,11 +110,6 @@ class StateService
   public function getCharacterStatsMoney()
   {
     return $this->readFromSessionState(self::CHARACTER_STATS_MONEY);
-  }
-
-  public function getCharacterStatsLevel()
-  {
-    return $this->readFromSessionState(self::CHARACTER_STATS_LEVEL);
   }
 
   public function getCharacterStatsWeight()
