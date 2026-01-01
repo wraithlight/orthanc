@@ -24,6 +24,10 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
+
+// TODO: Cleanup the imports above.
+require_once("./app/states/_base.state.php");
+
 require_once("./app/managers/session.manager.php");
 require_once("./app/managers/items-on-map.manager.php");
 require_once("./app/managers/npcs-on-map.manager.php");
