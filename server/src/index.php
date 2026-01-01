@@ -29,6 +29,7 @@ require_once("./app/utils/maze.php");
 require_once("./app/models/state-item.model.php");
 
 require_once("./app/states/_base.state.php");
+require_once("./app/states/items.state.php");
 
 require_once("./app/managers/session.manager.php");
 require_once("./app/managers/items-on-map.manager.php");
