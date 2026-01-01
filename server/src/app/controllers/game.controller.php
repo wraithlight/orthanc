@@ -39,7 +39,7 @@ class GameController
     $stateService->setEquipmentArmor("NORMAL");
     $stateService->setEquipmentArrows(0);
     $stateService->setCharacterXp($initialXp);
-    $stateService->setCharacterXpFromKills($initialXp);
+    $stateService->setCharacterXpFromKills(0);
     $stateService->setCharacterStatsMoney(0);
     $stateService->setCharacterStatsWeight(0);
     $stateService->setCharacterSpellUnitsMax($maxSpellUnits);
@@ -476,7 +476,7 @@ class GameController
       $levelsAbove = $targetLevel - $THRESHOLD_LEVEL;
       return $levelsAbove * $THRESHOLD_XP;
     } else {
-      return pow(2, $targetLevel + 1) * 500;
+      return pow(2, $targetLevel) * 500;
     }
   }
 
