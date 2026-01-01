@@ -40,7 +40,7 @@ class ItemsService {
    */
   public function getItem(string $id): object {
     $items = $this->getItemsOnMap();
-    return (object)array_values(array_filter($items, fn($m) => $m->id !== $id))[0];
+    return (object)array_values(array_filter($items, fn($m) => $m->id === $id))[0];
   }
 
   /**
