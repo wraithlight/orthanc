@@ -19,6 +19,7 @@ require_once("./app/utils/factories/npc/npc.factory.php");
 require_once("./app/utils/math/divide.php");
 require_once("./app/utils/dice/d6.php");
 require_once("./app/utils/dice/d8.php");
+require_once("./app/utils/dice/d150.php");
 require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
