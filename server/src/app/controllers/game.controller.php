@@ -245,8 +245,7 @@ class GameController
               "displayName" => "Levitation",
               "action" => [
                 "key" => "CAST",
-                "payload" => "b77cc1a0-91ec-4d64-bb6d-21717737ea3c",
-                "isClientSideOnly" => false
+                "payload" => "b77cc1a0-91ec-4d64-bb6d-21717737ea3c"
               ]
             ]
           ],
@@ -255,8 +254,7 @@ class GameController
               "displayName" => "Invisibility",
               "action" => [
                 "key" => "CAST",
-                "payload" => "9b3ea5f2-e43b-44d0-83f3-e2d97dfff065",
-                "isClientSideOnly" => false
+                "payload" => "9b3ea5f2-e43b-44d0-83f3-e2d97dfff065"
               ]
             ]
           ],
@@ -265,8 +263,7 @@ class GameController
               "displayName" => "Immortality",
               "action" => [
                 "key" => "CAST",
-                "payload" => "bdf61c73-d9e3-41e2-b05d-4433caf2e650",
-                "isClientSideOnly" => false
+                "payload" => "bdf61c73-d9e3-41e2-b05d-4433caf2e650"
               ]
             ]
           ],
@@ -275,8 +272,7 @@ class GameController
               "displayName" => "Teleportation",
               "action" => [
                 "key" => "CAST",
-                "payload" => "a012e1e0-59ad-4f0c-b230-d911d91086cd",
-                "isClientSideOnly" => false
+                "payload" => "a012e1e0-59ad-4f0c-b230-d911d91086cd"
               ]
             ]
           ]

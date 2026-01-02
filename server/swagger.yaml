@@ -272,9 +272,6 @@ components:
                             payload:
                               type: string
                               format: uuid
-                            isClientSideOnly:
-                              type: boolean
-                              example: false
                     level_2:
                       type: object
                       properties:
@@ -291,9 +288,6 @@ components:
                             payload:
                               type: string
                               format: uuid
-                            isClientSideOnly:
-                              type: boolean
-                              example: false
                     level_3:
                       type: object
                       properties:
@@ -310,9 +304,6 @@ components:
                             payload:
                               type: string
                               format: uuid
-                            isClientSideOnly:
-                              type: boolean
-                              example: false
                     level_4:
                       type: object
                       properties:
@@ -329,9 +320,6 @@ components:
                             payload:
                               type: string
                               format: uuid
-                            isClientSideOnly:
-                              type: boolean
-                              example: false
                 events:
                   type: array
                   items:
@@ -362,9 +350,6 @@ components:
                       payload:
                         type: string
                         format: uuid
-                      isClientSideOnly:
-                        type: boolean
-                        example: false
                 mapState:
                   type: array
                   minItems: 9

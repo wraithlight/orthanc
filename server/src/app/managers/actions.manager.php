@@ -63,20 +63,19 @@ class ActionsManager
           array_push($actions, [
             "label" => $item->pickupLabel,
             "key" => "PICKUP",
-            "payload" => $item->id,
-            "isClientSideOnly" => false
+            "payload" => $item->id
           ]);
         }
       }
     }
 
-    $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null, "isClientSideOnly" => false]);
-    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null, "isClientSideOnly" => false]);
-    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => MovementDirection::North->value, "isClientSideOnly" => false]);
-    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => MovementDirection::East->value, "isClientSideOnly" => false]);
-    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South->value, "isClientSideOnly" => false]);
-    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West->value, "isClientSideOnly" => false]);
-    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null, "isClientSideOnly" => true]);
+    $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null]);
+    $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null]);
+    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => MovementDirection::North->value]);
+    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => MovementDirection::East->value]);
+    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South->value]);
+    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West->value]);
+    $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
 
     return $actions;
   }
