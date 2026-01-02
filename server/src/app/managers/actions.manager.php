@@ -18,7 +18,8 @@ class ActionsManager
   ): void {
     switch ($action) {
       case "MOVE": {
-        $this->handleMovement($target);
+        $enum = MovementDirection::tryFrom($target);
+        $enum && $this->handleMovement($enum);
         break;
       }
       case "RUN": {
@@ -71,10 +72,10 @@ class ActionsManager
 
     $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null, "isClientSideOnly" => false]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null, "isClientSideOnly" => false]);
-    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => "DIRECTION_NORTH", "isClientSideOnly" => false]);
-    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => "DIRECTION_EAST", "isClientSideOnly" => false]);
-    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => "DIRECTION_SOUTH", "isClientSideOnly" => false]);
-    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => "DIRECTION_WEST", "isClientSideOnly" => false]);
+    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => MovementDirection::North, "isClientSideOnly" => false]);
+    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => MovementDirection::East, "isClientSideOnly" => false]);
+    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South, "isClientSideOnly" => false]);
+    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West, "isClientSideOnly" => false]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null, "isClientSideOnly" => true]);
 
     return $actions;
@@ -98,26 +99,14 @@ class ActionsManager
     return false;
   }
 
-  private function handleMovement(string $target): void
+  private function handleMovement(MovementDirection $target): void
   {
-    switch ($target) {
-      case $target === "DIRECTION_NORTH": {
-        $this->_playerLocationService->movePlayerNorth();
-        break;
-      }
-      case $target === "DIRECTION_EAST": {
-        $this->_playerLocationService->movePlayerEast();
-        break;
-      }
-      case $target === "DIRECTION_SOUTH": {
-        $this->_playerLocationService->movePlayerSouth();
-        break;
-      }
-      case $target === "DIRECTION_WEST": {
-        $this->_playerLocationService->movePlayerWest();
-        break;
-      }
-    }
+    match ($target) {
+      MovementDirection::North => $this->_playerLocationService->movePlayerNorth(),
+      MovementDirection::South => $this->_playerLocationService->movePlayerSouth(),
+      MovementDirection::East => $this->_playerLocationService->movePlayerEast(),
+      MovementDirection::West => $this->_playerLocationService->movePlayerWest(),
+    };
   }
 
   private function handleRun(): void
