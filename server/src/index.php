@@ -38,6 +38,7 @@ require_once("./app/models/state-item.model.php");
 require_once("./app/models/state-location.model.php");
 
 require_once("./app/states/_base.state.php");
+require_once("./app/states/feedback-events.state.php");
 require_once("./app/states/items.state.php");
 require_once("./app/states/player-location.state.php");
 
