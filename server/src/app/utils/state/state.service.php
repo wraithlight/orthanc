@@ -23,15 +23,6 @@ class StateService
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
   const GAME_START_TIME = "GAME_START_TIME";
-  const FEEDBACK_EVENTS = "FEEDBACK_EVENTS";
-
-  public function setFeedbackEvents(array $events): void {
-    $this->writeToSessionState(self::FEEDBACK_EVENTS, $events);
-  }
-
-  public function getFeedbackEvents(): array {
-    return $this->readFromSessionState(self::FEEDBACK_EVENTS);
-  }
 
   public function setStartTime(int $startTime) {
     $this->writeToSessionState(self::GAME_START_TIME, $startTime);
