@@ -4,12 +4,16 @@ class ActionsManager
 {
 
   private $_feedbackEventsService;
+  private $_itemsService;
   private $_playerLocationService;
+  private $_stateService;
 
   public function __construct()
   {
     $this->_feedbackEventsService = new FeedbackEventsService();
+    $this->_itemsService = new ItemsService();
     $this->_playerLocationService = new PlayerLocationService();
+    $this->_stateService = new StateService();
   }
 
   public function handleAction(
@@ -24,6 +28,11 @@ class ActionsManager
       }
       case "RUN": {
         $this->handleRun();
+        break;
+      }
+      case "PICKUP": {
+        $this->handlePickup($target);
+        break;
       }
     }
   }
@@ -117,5 +126,35 @@ class ActionsManager
       $this->_feedbackEventsService->addEvent(C_ACTION_RUN_SUCCESS_EVENT["key"], C_ACTION_RUN_SUCCESS_EVENT["label"]);
       $this->_playerLocationService->moveToPreviousPosition();
     }
+  }
+
+  private function handlePickup(string $target): void
+  {
+    $currentItem = $this->_itemsService->getItem($target);
+
+    $currentWeight = $this->_stateService->getCharacterStatsWeight();
+    $this->_stateService->setCharacterStatsWeight($currentWeight + $currentItem->sumWeight);
+    $this->_itemsService->removeItemFromMap($target);
+    $currentGold = $this->_stateService->getCharacterStatsMoney();
+    $this->_stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
+
+    if ($currentItem->key === "ITEM_CHEST_ORB") {
+      $this->_stateService->setHasOrb(true);
+      $spells = $this->_stateService->getCharacterSpellsOn();
+      array_push($spells, C_SPELL_ORB);
+      $this->_stateService->setCharacterSpellsOn($spells);
+    }
+
+    if ($currentItem->key === "ITEM_CHEST_SWORD") {
+      $this->_stateService->setEquipmentSword("EPIC");
+    }
+    if ($currentItem->key === "ITEM_CHEST_SHIELD") {
+      $this->_stateService->setEquipmentShield("EPIC");
+    }
+    if ($currentItem->key === "ITEM_CHEST_ARMOR") {
+      $this->_stateService->setEquipmentArmor("EPIC");
+    }
+
+    $this->_feedbackEventsService->addEvent("ITEM_PICKUP", $currentItem->pickedupLabel);
   }
 }

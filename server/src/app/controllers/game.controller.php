@@ -70,8 +70,6 @@ class GameController
   {
     $this->_sessionManager->authenticate();
 
-    $stateService = new StateService();
-    $itemsService = new ItemsService();
     $playerLocationService = new PlayerLocationService();
     $feedbackEventsService = new FeedbackEventsService();
 
@@ -86,39 +84,7 @@ class GameController
     $possibleActions = $this->_actionsManager->getPossibleActions($tiles, $this->getGameState());
     $canDo = $this->_actionsManager->canDoAction($possibleActions, $action, $target);
 
-    if ($canDo) {
-      $this->_actionsManager->handleAction($action, $target);
-      switch ($action) {
-        case "PICKUP": {
-          $currentItem = $itemsService->getItem($target);
-
-          $currentWeight = $stateService->getCharacterStatsWeight();
-          $stateService->setCharacterStatsWeight($currentWeight + $currentItem->sumWeight);
-          $itemsService->removeItemFromMap($target);
-          $currentGold = $stateService->getCharacterStatsMoney();
-          $stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
-
-          if ($currentItem->key === "ITEM_CHEST_ORB") {
-            $stateService->setHasOrb(true);
-            $spells = $stateService->getCharacterSpellsOn();
-            array_push($spells, C_SPELL_ORB);
-            $stateService->setCharacterSpellsOn($spells);
-          }
-
-          if ($currentItem->key === "ITEM_CHEST_SWORD") {
-            $stateService->setEquipmentSword("EPIC");
-          }
-          if ($currentItem->key === "ITEM_CHEST_SHIELD") {
-            $stateService->setEquipmentShield("EPIC");
-          }
-          if ($currentItem->key === "ITEM_CHEST_ARMOR") {
-            $stateService->setEquipmentArmor("EPIC");
-          }
-
-          $feedbackEventsService->addEvent("ITEM_PICKUP", $currentItem->pickedupLabel);
-        }
-      }
-    }
+    $canDo && $this->_actionsManager->handleAction($action, $target);
     $this->sendBackState();
   }
 
