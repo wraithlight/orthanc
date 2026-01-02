@@ -24,6 +24,7 @@ class GameController
 
     $stateService = new StateService();
     $playerLocationService = new PlayerLocationService();
+    $feedbackEventsService = new FeedbackEventsService();
     $maze = new Maze();
 
     $initialXp = 0;
@@ -37,8 +38,7 @@ class GameController
     $playerLocationService->setPlayerInitialLocation($location["x"], $location["y"]);
     $playerLocationService->setPlayerPreviousLocation($location["x"], $location["y"]);
 
-    // Events
-    $stateService->setFeedbackEvents([]);
+    $feedbackEventsService->startRound();
     // Modifiers
     $stateService->setCharacterSpellsOn([]);
     // Inventory
@@ -73,18 +73,19 @@ class GameController
     $stateService = new StateService();
     $itemsService = new ItemsService();
     $playerLocationService = new PlayerLocationService();
+    $feedbackEventsService = new FeedbackEventsService();
 
     $rawBody = file_get_contents('php://input');
     $payload = json_decode($rawBody, true);
     $action = $payload['action'];
     $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
 
+    $feedbackEventsService->startRound();
     $location = $playerLocationService->getPlayerCurrentLocation();
     $tiles = $this->calculateTiles($location->coordX, $location->coordY);
     $possibleActions = $this->_actionsManager->getPossibleActions($tiles, $this->getGameState());
     $canDo = $this->_actionsManager->canDoAction($possibleActions, $action, $target);
 
-    $feedbackEvents = [];
     if ($canDo) {
       $this->_actionsManager->handleAction($action, $target);
       switch ($action) {
@@ -114,16 +115,10 @@ class GameController
             $stateService->setEquipmentArmor("EPIC");
           }
 
-          array_push($feedbackEvents, [
-            "key" => "ITEM_PICKUP",
-            "label" => $currentItem->pickedupLabel
-          ]);
+          $feedbackEventsService->addEvent("ITEM_PICKUP", $currentItem->pickedupLabel);
         }
       }
     }
-
-    $stateService->setFeedbackEvents($feedbackEvents);
-
     $this->sendBackState();
   }
 
@@ -334,19 +329,19 @@ class GameController
   private function getEvents(
     array $tiles
   ): array {
-    $stateService = new StateService();
-    $events = $stateService->getFeedbackEvents();
-
-    $visibleItems = array_merge(...array_values(array_map(fn($m) => $m['containsItems'], $tiles)));
+    $feedbackEventsService = new FeedbackEventsService();
+    $visibleItems = array_merge(
+      ...array_filter(
+        array_map(fn($m) => $m['containsItems'], $tiles),
+        fn($items) => !empty($items)
+      )
+    );
 
     foreach ($visibleItems as $item) {
-      array_push($events, [
-        "key" => "ITEM_SEE",
-        "label" => $item->visibleLabel
-      ]);
+      $feedbackEventsService->addEvent("ITEM_SEE", $item->visibleLabel);
     }
 
-    return $events;
+    return $feedbackEventsService->getEvents();
   }
 
   private function getBorderType(

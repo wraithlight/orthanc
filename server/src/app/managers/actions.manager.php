@@ -3,13 +3,13 @@
 class ActionsManager
 {
 
+  private $_feedbackEventsService;
   private $_playerLocationService;
-  private $_stateService;
 
   public function __construct()
   {
+    $this->_feedbackEventsService = new FeedbackEventsService();
     $this->_playerLocationService = new PlayerLocationService();
-    $this->_stateService = new StateService();
   }
 
   public function handleAction(
@@ -72,10 +72,10 @@ class ActionsManager
 
     $canRun && array_push($actions, ["label" => "[R]un", "key" => "RUN", "payload" => null, "isClientSideOnly" => false]);
     $canFight && array_push($actions, ["label" => "[F]ight", "key" => "FIGHT", "payload" => null, "isClientSideOnly" => false]);
-    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => MovementDirection::North, "isClientSideOnly" => false]);
-    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => MovementDirection::East, "isClientSideOnly" => false]);
-    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South, "isClientSideOnly" => false]);
-    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West, "isClientSideOnly" => false]);
+    $canMove && $canMoveNorth && array_push($actions, ["label" => "[↑] North", "key" => "MOVE", "payload" => MovementDirection::North->value, "isClientSideOnly" => false]);
+    $canMove && $canMoveEast && array_push($actions, ["label" => "[→] East", "key" => "MOVE", "payload" => MovementDirection::East->value, "isClientSideOnly" => false]);
+    $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South->value, "isClientSideOnly" => false]);
+    $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West->value, "isClientSideOnly" => false]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null, "isClientSideOnly" => true]);
 
     return $actions;
@@ -111,14 +111,12 @@ class ActionsManager
 
   private function handleRun(): void
   {
-    $feedbackEvents = [];
     $isFailed = rand(0, 1) == 1;
     if ($isFailed) {
-      array_push($feedbackEvents, C_ACTION_RUN_FAIL_EVENT);
+      $this->_feedbackEventsService->addEvent(C_ACTION_RUN_FAIL_EVENT["key"], C_ACTION_RUN_FAIL_EVENT["label"]);
     } else {
-      array_push($feedbackEvents, C_ACTION_RUN_SUCCESS_EVENT);
+      $this->_feedbackEventsService->addEvent(C_ACTION_RUN_SUCCESS_EVENT["key"], C_ACTION_RUN_SUCCESS_EVENT["label"]);
+      $this->_playerLocationService->moveToPreviousPosition();
     }
-    $this->_playerLocationService->moveToPreviousPosition();
-    $this->_stateService->setFeedbackEvents($feedbackEvents);
   }
 }
