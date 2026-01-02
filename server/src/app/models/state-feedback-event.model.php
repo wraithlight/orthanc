@@ -6,8 +6,8 @@ class State_FeedbackEvent
   public string $label;
 
   public function __construct(
-    int $key,
-    int $label
+    string $key,
+    string $label
   ) {
     $this->key = $key;
     $this->label = $label;
