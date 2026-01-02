@@ -2,6 +2,9 @@
 require_once("./phpapi/api.php");
 
 require_once("./app/enums/game-state.enum.php");
+require_once("./app/enums/movement-direction.enum.php");
+
+// TODO: Cleanup range start.
 
 require_once("./app/file-persistence/io-service.php");
 require_once("./app/file-persistence/chat-members.service.php");
@@ -24,8 +27,8 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
+// TODO: Cleanup range end.
 
-// TODO: Cleanup the imports above.
 require_once("./app/constants/action-run-fail.const.php");
 require_once("./app/constants/action-run-success.const.php");
 require_once("./app/constants/spell-orb.const.php");
