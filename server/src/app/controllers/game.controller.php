@@ -37,24 +37,30 @@ class GameController
     $playerLocationService->setPlayerInitialLocation($location["x"], $location["y"]);
     $playerLocationService->setPlayerPreviousLocation($location["x"], $location["y"]);
 
-    $stateService->setPlayerCurHits($currentHits);
+    // Events
+    $stateService->setFeedbackEvents([]);
+    // Modifiers
+    $stateService->setCharacterSpellsOn([]);
+    // Inventory
     $stateService->setEquipmentSword("NORMAL");
     $stateService->setEquipmentShield("NORMAL");
     $stateService->setEquipmentArmor("NORMAL");
     $stateService->setEquipmentArrows(0);
+    $stateService->setHasOrb(false);
+    // Stats
+    $stateService->setPlayerCurHits($currentHits);
     $stateService->setCharacterXp($initialXp);
     $stateService->setCharacterXpFromKills(0);
     $stateService->setCharacterStatsMoney(0);
     $stateService->setCharacterStatsWeight(0);
+    // Spells
     $stateService->setCharacterSpellUnitsMax($maxSpellUnits);
     $stateService->setCharacterSpellUnitsCur($maxSpellUnits);
-    $stateService->setHasOrb(false);
-    $stateService->setCharacterSpellsOn([]);
+
     $stateService->setMapFull($maze->getFullMaze());
     $stateService->setStartTime(time());
-    $stateService->setFeedbackEvents([]);
 
-    $walkableTiles = $maze->getWalkableTiles();
+    $walkableTiles = $maze->getWalkableTiles(); // TODO: move this to manager layer.
     $this->_itemsOnMapManager->createItemsOnMap($walkableTiles);
 
     $this->sendBackState();
@@ -342,6 +348,7 @@ class GameController
 
     return $events;
   }
+
   private function getBorderType(
     $currentTile,
     $targetTile
