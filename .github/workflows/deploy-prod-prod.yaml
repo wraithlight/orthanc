@@ -6,25 +6,27 @@ on:
       deploy_be:
         description: 'Deploy BE'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       deploy_fe:
         description: 'Deploy FE'
         required: false
-        default: 'false'
+        default: false
         type: boolean
       deploy_maze:
         description: 'Deploy Maze'
         required: false
-        default: 'false'
+        default: false
         type: boolean
 
 jobs:
   dispatch:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Dispatch Backend Deploy
-        if: ${{ github.event.inputs.deploy_be == true }}
+        if: ${{ github.event.inputs.deploy_be == 'true' }}
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -32,7 +34,7 @@ jobs:
           event-type: deploy_prod_be
 
       - name: Dispatch Frontend Deploy
-        if: ${{ github.event.inputs.deploy_fe == true }}
+        if: ${{ github.event.inputs.deploy_fe == 'true' }}
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -40,7 +42,7 @@ jobs:
           event-type: deploy_prod_fe
 
       - name: Dispatch MAZE Deploy
-        if: ${{ github.event.inputs.deploy_maze == true }}
+        if: ${{ github.event.inputs.deploy_maze == 'true' }}
         uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
