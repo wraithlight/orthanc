@@ -40,6 +40,7 @@ require_once("./app/models/state-location.model.php");
 require_once("./app/states/_base.state.php");
 require_once("./app/states/feedback-events.state.php");
 require_once("./app/states/items.state.php");
+require_once("./app/states/level.state.php");
 require_once("./app/states/player-location.state.php");
 
 require_once("./app/services/feedback-events.service.php");
