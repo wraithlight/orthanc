@@ -13,11 +13,8 @@ class StateService
   const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
   const EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS";
   const EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR";
-  const CHARACTER_STATS_EXPERIENCE = "CHARACTER_STATS_EXPERIENCE";
-  const CHARACTER_STATS_EXPERIENCE_FROM_KILLS = "CHARACTER_STATS_EXPERIENCE_FROM_KILLS";
   const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
   const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
-  const CHARACTER_STATS_SPELL_UNITS_MAX = "CHARACTER_STATS_SPELL_UNITS_MAX";
   const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
   const MAP_FULL = "MAP_FULL";
@@ -40,16 +37,6 @@ class StateService
     return $this->readFromSessionState(self::MAP_FULL);
   }
 
-  public function setCharacterXp($value)
-  {
-    $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE, $value);
-  }
-
-  public function setCharacterXpFromKills($value)
-  {
-    $this->writeToSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS, $value);
-  }
-
   public function setCharacterStatsMoney($value)
   {
     $this->writeToSessionState(self::CHARACTER_STATS_MONEY, $value);
@@ -58,11 +45,6 @@ class StateService
   public function setCharacterStatsWeight($value)
   {
     $this->writeToSessionState(self::CHARACTER_STATS_WEIGHT, $value);
-  }
-
-  public function setCharacterSpellUnitsMax($value)
-  {
-    $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX, $value);
   }
 
   public function setCharacterSpellUnitsCur($value)
@@ -75,16 +57,6 @@ class StateService
     $this->writeToSessionState(self::CHARACTER_SPELLS_ON, $value);
   }
 
-  public function getCharacterXp()
-  {
-    return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE);
-  }
-
-  public function getCharacterXpFromKills()
-  {
-    return $this->readFromSessionState(self::CHARACTER_STATS_EXPERIENCE_FROM_KILLS);
-  }
-
   public function getCharacterStatsMoney()
   {
     return $this->readFromSessionState(self::CHARACTER_STATS_MONEY);
@@ -93,11 +65,6 @@ class StateService
   public function getCharacterStatsWeight()
   {
     return $this->readFromSessionState(self::CHARACTER_STATS_WEIGHT);
-  }
-
-  public function getCharacterSpellUnitsMax()
-  {
-    return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_MAX);
   }
 
   public function getCharacterSpellUnitsCur()
