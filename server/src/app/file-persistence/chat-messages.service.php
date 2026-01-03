@@ -2,7 +2,12 @@
 
 class ChatMessagesService extends BaseIOService
 {
-  protected string $filePath = __DIR__ . '/../../../data/chat_messages.json';
+  protected string $filePath;
+
+  public function __construct()
+  {
+    $this->filePath = __DIR__ . getenv("CHAT_MESSAGES_FILE_PATH") . "/chat_messages.json";
+  }
 
   public function addMessage(array $message): int
   {

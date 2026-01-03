@@ -9,4 +9,5 @@ docker run -it --rm \
   -d \
   -p 4100:80 \
   --name $CONTAINER_NAME \
+  --env-file .env.local \
   $CONTAINER_NAME
