@@ -9,7 +9,7 @@ docker run -it --rm \
   -d \
   -p 3100:80 \
   -v $ROOT_DIR/server/src:/var/www/html \
-  -v $ROOT_DIR/server/data:/var/www/data \
   -v $ROOT_DIR/server/game-data:/var/www/game-data \
+  --env-file .env.dev \
   --name $CONTAINER_NAME \
   $CONTAINER_NAME

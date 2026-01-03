@@ -1,7 +1,13 @@
 <?php
 class HallOfFameService extends BaseIOService
 {
-  protected string $filePath = __DIR__ . '/../../../data/hall_of_fame.json';
+  protected string $filePath;
+
+  public function __construct()
+  {
+    $this->filePath = __DIR__ . getenv("HALL_OF_FAME_FILE_PATH") . "/hall_of_fame.json";
+  }
+
 
   public function addUser(
     string $name,
