@@ -34,6 +34,17 @@ class ActionsManager
         $this->handlePickup($target);
         break;
       }
+      case "INITIAL_IN_GAME": {
+        break;
+      }
+      default: {
+        http_response_code(400);
+        header('Content-Type: application/json');
+        echo json_encode([
+          'errorCode' => 'ERROR_0001',
+        ]);
+      exit;
+      }
     }
   }
 

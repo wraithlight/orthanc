@@ -73,3 +73,7 @@ The following technologies are used during the development of this game:
 * Docker
 * yarn
 
+
+## Documentation
+The repository has a constantly growing documentation folder that can be found under `/docs`. Here is a quick overview of its content:
+* [Error Codes](./docs/ERROR-CODES.md)
