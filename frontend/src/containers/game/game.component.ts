@@ -51,7 +51,7 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
-    this.actionHandler("INITIAL", null);
+    this.actionHandler("INITIAL_IN_GAME", null);
 
     this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
     this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
