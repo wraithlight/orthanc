@@ -99,7 +99,11 @@ class PlayerLocationService {
   public function isAtInitialLocation(): bool {
     $currentLocation = $this->_playerLocationState->getPlayerCurrentLocation();
     $initialLocation = $this->_playerLocationState->getPlayerInitialLocation();
-    return $currentLocation === $initialLocation;
+
+    $sameX = $currentLocation->coordX === $initialLocation->coordX;
+    $sameY = $currentLocation->coordY === $initialLocation->coordY;
+
+    return $sameX && $sameY;
   }
 
   /**
