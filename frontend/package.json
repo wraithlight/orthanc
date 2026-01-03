@@ -4,6 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "gha:build:prod": "vite build -- --environment=production",
+    "gha:build:canary": "vite build -- --environment=canary",
+    "gha:build:development": "vite build -- --environment=development",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"

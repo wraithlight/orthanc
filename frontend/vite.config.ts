@@ -22,11 +22,18 @@ export default defineConfig({
       name: "update-config-json",
       apply: "build",
       writeBundle() {
+        const args = process.argv[4];
+        const environment = args
+          ? args.split("=")[1]
+          : "local-development"
+        ;
+
         const configFilePath = resolve(__dirname, join("dist", "config.json"));
         const gitHash = execSync("git rev-parse --short HEAD").toString().trim();
         const configContent = JSON.parse(readFileSync(configFilePath, "utf-8"));
         configContent.apiUrl = "";
         configContent.version += `-${gitHash}`;
+        configContent.environment = environment;
         writeFileSync(configFilePath, JSON.stringify(configContent), "utf-8");
       }
     }

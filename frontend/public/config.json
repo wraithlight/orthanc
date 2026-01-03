@@ -1,6 +1,7 @@
 {
   "apiUrl": "http://localhost:3100",
-  "version": "0.0.1",
+  "version": "0.0.1-uncommited",
+  "environment": "local-development",
   "isMemberLoginEnabled": false,
   "isKeyboardOnlyEnabled": false,
   "isKeyboardWithMouseEnabled": true,
