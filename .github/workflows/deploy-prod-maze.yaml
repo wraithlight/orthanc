@@ -1,9 +1,10 @@
-name: FTP - Deploy SERVER
+name: PROD FTP - Deploy MAZE
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+  repository_dispatch:
+    types:
+      - deploy_prod_maze
 
 jobs:
   deploy:
@@ -11,11 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Deploy to FTP
+      - name: Deploy to FTP (PROD)
         uses: ./.github/actions/deploy-ftp
         with:
           ftp_host: ${{ secrets.FTP_HOST }}
           ftp_user: ${{ secrets.FTP_USER }}
           ftp_pass: ${{ secrets.FTP_PASS }}
-          remote_dir: ${{ secrets.FTP_SERVER_FOLDER }}
-          local_dir: "./server/src"
+          remote_dir: ${{ secrets.FTP_MAZE_FOLDER }}
+          local_dir: "./server/game-data"
