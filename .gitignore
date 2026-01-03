@@ -1,7 +1,3 @@
-# TODO: to ignore /server/data folder that contains a bunch of files - will be removed once we have a DB
-server/data/*
-!server/data/.gitkeep
-
 # node modules
 node_modules/
 
