@@ -20,7 +20,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to repo folder
 sh init-repo.sh                                         # initialize server/data folder
-sh run-dev.sh                                           # run the server in docker
+sh run-dev.sh                                           # run the server in docker (port 3100)
 cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
 yarn dev                                                # start dev mode via yarn
@@ -38,10 +38,10 @@ open localhost:4100                                     # open the app in your b
 
 ```
 
-| Mode    | SH file         | Docker image name     | Docker container name | Port    |
-| :-:     | :-:             | :-:                   | :-:                   | :-:     |
-| `dev`   | `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`  | `3100`  |
-| `local` | `run-local-sh`  | `orthanc-game-local`  | `orthanc-game-local`  | `4100`  |
+| Mode    | SH file         | Docker image name     | Docker container name | BE Port   | FE Port     |
+| :-:     | :-:             | :-:                   | :-:                   | :-:       | :-:         |
+| `dev`   | `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`  | `3100`    | `3000`      |
+| `local` | `run-local-sh`  | `orthanc-game-local`  | `orthanc-game-local`  | `4100`    | self-hosted |
 
 ## Contribution
 
