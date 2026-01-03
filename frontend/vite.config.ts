@@ -29,7 +29,10 @@ export default defineConfig({
         ;
 
         const configFilePath = resolve(__dirname, join("dist", "config.json"));
-        const gitHash = execSync("git rev-parse --short HEAD").toString().trim();
+        let gitHash = "local";
+        try {
+          gitHash = execSync("git rev-parse --short HEAD").toString().trim();
+        } catch {};
         const configContent = JSON.parse(readFileSync(configFilePath, "utf-8"));
         configContent.apiUrl = "";
         configContent.version += `-${gitHash}`;
