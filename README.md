@@ -12,14 +12,13 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 **Requirements**
 * NodeJS installed
 * Docker installed
-* yarn
+* yarn installed
 
 **Local development mode**
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to repo folder
-sh init-repo.sh                                         # initialize server/data folder
 sh run-dev.sh                                           # run the server in docker (port 3100)
 cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
@@ -77,3 +76,4 @@ The following technologies are used during the development of this game:
 ## Documentation
 The repository has a constantly growing documentation folder that can be found under `/docs`. Here is a quick overview of its content:
 * [Error Codes](./docs/ERROR-CODES.md)
+* [File persistence](./docs/FILE-PERSISTENCE.md)
