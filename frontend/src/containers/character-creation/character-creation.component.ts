@@ -5,14 +5,12 @@ import { getConfig } from "../../state";
 interface CharacterCreationContainerParams {
   onBack: Subscribable;
   onNext: Subscribable;
-  characterImageUrl: string;
 }
 
 export class CharacterCreationContainer implements CharacterCreationContainerParams {
   public onBack: Subscribable;
   public onNext: Subscribable;
   public onGenerate: Subscribable;
-  public characterImageUrl: string;
   public readonly stats = observable<{ int: number; dex: number; str: number; con: number; maxHits: number; }>({
     int: 0,
     dex: 0,
@@ -26,7 +24,6 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   constructor(params: CharacterCreationContainerParams) {
     this.onBack = params.onBack;
     this.onNext = params.onNext;
-    this.characterImageUrl = params.characterImageUrl;
     this.onGenerate = new subscribable();
     this.onGenerate.subscribe(() => this.onGenerateHandler());
     this.stats

@@ -3,35 +3,13 @@
     ORTHANC LOGIN
   </div>
 
-  <!-- ko if: hasLoginError() && isMemberLoginEnabled -->
-  <div class="error-message">
-    INVALID USERNAME OR PASSWORD
-  </div>
-  <!-- /ko -->
-  <!-- ko if: hasLoginError() && !isMemberLoginEnabled -->
+  <!-- ko if: hasLoginError() -->
   <div class="error-message">
     ERROR WHILE LOGGING IN
   </div>
   <!-- /ko -->
 
-  <!-- ko if: isMemberLoginEnabled -->
-  <div class="field">
-    <label for="name">Name:</label>
-    <input type="text" id="name" data-bind="value: username">
-  </div>
-  <!-- /ko -->
-
-  <!-- ko if: isMemberLoginEnabled -->
-  <div class="field">
-    <label for="password">Password:</label>
-    <input type="password" id="password" data-bind="value: password">
-  </div>
-  <!-- /ko -->
-
   <div class="actions">
-    <!-- ko if: isMemberLoginEnabled -->
-    <button data-bind="click: onMemberLogin">ENTER</button>
-    <!-- /ko -->
     <button data-bind="click: onGuestLogin">ENTER as Guest</button>
   </div>
 </div>

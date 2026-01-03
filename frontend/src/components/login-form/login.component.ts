@@ -5,11 +5,9 @@ interface LoginFormComponentParams {
   loginAsGuestEvent: Subscribable;
   loginAsMemberEvent: Subscribable;
   hasLoginError: Observable<boolean>;
-  isMemberLoginEnabled: boolean;
 }
 
 export class LoginFormComponent implements LoginFormComponentParams {
-  public isMemberLoginEnabled: boolean;
   public username = observable<string>();
   public password = observable<string>();
   public hasLoginError: Observable<boolean>;
@@ -20,7 +18,6 @@ export class LoginFormComponent implements LoginFormComponentParams {
     this.loginAsGuestEvent = params.loginAsGuestEvent;
     this.loginAsMemberEvent = params.loginAsMemberEvent;
     this.hasLoginError = params.hasLoginError;
-    this.isMemberLoginEnabled = params.isMemberLoginEnabled;
   }
 
   public onMemberLogin(): void {
