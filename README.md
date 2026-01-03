@@ -46,6 +46,7 @@ open localhost:4100                                     # open the app in your b
 ## Contribution
 
 To contribute this project, the following tools and plugins are suggested:
+
 **Tools:**
 * Visual Studio Code
 * NodeJS
