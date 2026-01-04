@@ -66,9 +66,9 @@ The `package.json` file under `frontend` contains the following scripts:
 
 ```sh
 
-  gha:build:prod        - Runs the build with production env.
-  gha:build:canary      - Runs the build with canary env.
-  gha:build:development - Runs the build with development env.
+  gha:build:prod        - Runs the build with production env (used in GHA).
+  gha:build:canary      - Runs the build with canary env (used in GHA).
+  gha:build:development - Runs the build with development env (used in GHA).
   dev                   - Runs the FE locally on port 3000.
   build                 - Runs the build with local-development env.
 
