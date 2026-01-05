@@ -26,7 +26,7 @@ on:
         options:
           - PROD
           - CANARY
-          - TEST
+          - DEV
 
 jobs:
   dispatch:
@@ -38,7 +38,7 @@ jobs:
         id: env
         run: |
           if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
-            echo "DEPLOY_ENV=TEST" >> $GITHUB_ENV
+            echo "DEPLOY_ENV=DEV" >> $GITHUB_ENV
           else
             echo "DEPLOY_ENV=${{ github.event.inputs.env }}" >> $GITHUB_ENV
           fi
