@@ -20,6 +20,7 @@
 
 .chat-messages {
   flex-grow: 1;
+  overflow-y: scroll;
   max-width: 281px;
   padding: 4px;
 }
