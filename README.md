@@ -61,6 +61,19 @@ To contribute this project, the following tools and plugins are suggested:
 When the commits are being created, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)!
 During build the `run-dev.sh` script will create its own docker images name `orthanc-server-dev`. The script itself takes care of the cleanup, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image!
 
+### FE scripts
+The `package.json` file under `frontend` contains the following scripts:
+
+```sh
+
+  gha:build:prod        - Runs the build with production env.
+  gha:build:canary      - Runs the build with canary env.
+  gha:build:development - Runs the build with development env.
+  dev                   - Runs the FE locally on port 3000.
+  build                 - Runs the build with local-development env.
+
+```
+
 ### Technical details
 The following technologies are used during the development of this game:
 * typescript/javascript
