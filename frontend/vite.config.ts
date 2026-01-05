@@ -29,13 +29,15 @@ export default defineConfig({
         ;
 
         const configFilePath = resolve(__dirname, join("dist", "config.json"));
+        const packageJsonFilePath = resolve(__dirname, "package.json");
         let gitHash = "local";
         try {
           gitHash = execSync("git rev-parse --short HEAD").toString().trim();
         } catch {};
         const configContent = JSON.parse(readFileSync(configFilePath, "utf-8"));
+        const packageJsonContent = JSON.parse(readFileSync(packageJsonFilePath, "utf-8"));
         configContent.apiUrl = "";
-        configContent.version += `-${gitHash}`;
+        configContent.version += `${packageJsonContent.version}-${gitHash}`;
         configContent.environment = environment;
         writeFileSync(configFilePath, JSON.stringify(configContent), "utf-8");
       }
