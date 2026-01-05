@@ -1,14 +1,17 @@
-name: PROD FTP - Deploy FRONTEND
+name: FTP - Deploy FRONTEND
 
 on:
   workflow_dispatch:
   repository_dispatch:
     types:
-      - deploy_prod_fe
+      - deploy_fe
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.client_payload.env }}
+    env:
+      DEPLOY_ENV: ${{ github.event.client_payload.env }}
     steps:
       - uses: actions/checkout@v3
       
@@ -22,10 +25,17 @@ jobs:
         working-directory: ./frontend
 
       - name: Run build
-        run: yarn build
+        run: |
+          if [ "${DEPLOY_ENV}" = "PROD" ]; then
+            yarn gha:build:prod
+          elif [ "${DEPLOY_ENV}" = "CANARY" ]; then
+            yarn gha:build:canary
+          else
+            yarn gha:build:development
+          fi
         working-directory: ./frontend
 
-      - name: Deploy to FTP (PROD)
+      - name: Deploy to FTP
         uses: ./.github/actions/deploy-ftp
         with:
           ftp_host: ${{ secrets.FTP_HOST }}

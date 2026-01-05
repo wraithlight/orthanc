@@ -1,18 +1,19 @@
-name: PROD FTP - Deploy MAZE
+name: FTP - Deploy MAZE
 
 on:
   workflow_dispatch:
   repository_dispatch:
     types:
-      - deploy_prod_maze
+      - deploy_maze
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment: ${{ github.event.client_payload.env }}
     steps:
       - uses: actions/checkout@v3
 
-      - name: Deploy to FTP (PROD)
+      - name: Deploy to FTP
         uses: ./.github/actions/deploy-ftp
         with:
           ftp_host: ${{ secrets.FTP_HOST }}
