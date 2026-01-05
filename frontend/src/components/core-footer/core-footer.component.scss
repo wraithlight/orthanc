@@ -1,7 +1,17 @@
 .core-footer {
-  padding-top: 1px;
+  padding-top: 4px;
   width: 100%;
   font-size: 0.6rem;
   display: flex;
   justify-content: end;
+}
+
+.core-footer > a {
+  color: #FFA500;
+  text-decoration: none;
+}
+
+.core-footer > a::after {
+  content: "|";
+  padding-left: 2px;
 }
