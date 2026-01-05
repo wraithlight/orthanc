@@ -88,6 +88,11 @@ The following technologies are used during the development of this game:
 
 ## Documentation
 The repository has a constantly growing documentation folder that can be found under `/docs`. Here is a quick overview of its content:
+* [Deployment](./docs/DEPLOYMENT.md)
 * [Environment variables](./docs/ENVIRONMENT-VARIABLES.md)
+* [Environments](./docs/ENVIRONMENTS.md)
 * [Error Codes](./docs/ERROR-CODES.md)
 * [File persistence](./docs/FILE-PERSISTENCE.md)
+* [How to create a new environment](./docs/HOW-TO-CREATE-NEW-ENVIRONMENT.md)
+* [Repository environments](./docs/REPOSITORY-ENVS.md)
+* [Repository secrets](./docs/REPOSITORY-SECRETS.md)
