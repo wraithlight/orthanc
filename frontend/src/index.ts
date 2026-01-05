@@ -4,8 +4,8 @@ import { Application } from "./app.component";
 import { SELECTOR } from "./app.selector";
 import TEMPLATE from "./app.template.html?raw";
 
-import "./normalize.css";
-import "./global.css";
+import "./normalize.scss";
+import "./global.scss";
 import { setConfig } from "./state";
 
 import.meta.glob('./components/**/index.ts', { eager: true });
