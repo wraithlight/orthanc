@@ -81,6 +81,6 @@ Wrapper::RegisterPath("POST", "/api/v1/game/start", $gameControllerFactory, "sta
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
 Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
-Wrapper::Listen(true, true);
+Wrapper::Listen(true);
 
 ?>

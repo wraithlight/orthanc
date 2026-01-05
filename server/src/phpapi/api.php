@@ -69,12 +69,9 @@ namespace PhpAPI2 {
     }
 
     public static function Listen(
-      $enableCors = false,
       $enableJson = false
     ) {
-      if ($enableCors) {
-        Cors::Enable();
-      }
+      Cors::Use();
 
       if ($enableJson) {
         Json::Enable();
