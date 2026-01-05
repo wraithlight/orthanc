@@ -118,10 +118,15 @@ export class GameContainer {
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
         if (this.minimapState()[y][x] === 'WALL') ctx.fillStyle = '#ffa500';
-        else if (this.minimapState()[y][x] === 'PLAYER') ctx.fillStyle = 'red';
-        else ctx.fillStyle = 'black';
+        else if (this.minimapState()[y][x] === 'PLAYER') ctx.fillStyle = '#FF0000';
+        else ctx.fillStyle = '#000000';
 
         ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
+
+        if (this.minimapState()[y][x] === 'EMPTY') {
+          ctx.fillStyle = '#ffa500';
+          ctx.fillRect(x * cellWidth + cellWidth / 3, y * cellHeight + cellHeight / 3, cellWidth / 3, cellHeight / 3);
+        }
       }
     }
   }
