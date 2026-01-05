@@ -1,8 +1,17 @@
-FROM node:18.13.0 AS install
+FROM ubuntu:22.04 AS install
+
+RUN apt-get update && \
+    apt-get install -y curl git build-essential && \
+    rm -rf /var/lib/apt/lists/*
+RUN curl https://get.volta.sh | bash
+
+ENV VOLTA_HOME=/root/.volta
+ENV PATH=$VOLTA_HOME/bin:$PATH
 
 WORKDIR /temp
 COPY frontend /temp
-USER root
+
+RUN volta install node yarn
 RUN yarn --frozen-lockfile
 RUN yarn build
 

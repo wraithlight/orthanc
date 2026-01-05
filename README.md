@@ -12,7 +12,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 **Requirements**
 * NodeJS installed
 * Docker installed
-* yarn installed
+* yarn installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 
 **Local development mode**
 ```sh
@@ -84,6 +84,7 @@ The following technologies are used during the development of this game:
 * HTML Canvas with Typescript
 * Docker
 * yarn
+* volta
 
 
 ## Documentation
