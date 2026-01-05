@@ -34,6 +34,17 @@ class ChatManager
     ]);
   }
 
+  public function sendSystemMessage(
+    string $message
+  ) {
+    $this->_chatMessageService->addMessage([
+      "payload" => [
+        'sender' => "[PLATOSYS]",
+        'message' => $message
+      ]
+    ]);
+  }
+
   public function onPoll(
     string $id
   ): array

@@ -118,11 +118,13 @@ class GameController
     $gameState = $this->getGameState();
 
     if ($gameState === GameState::EndSuccess) {
+      $playerName = $stateService->getPlayerName();
       $hallOfFameService->addUser(
-        $stateService->getPlayerName(),
+        $playerName,
         $this->_sessionManager->getSessionId(),
         $stateService->getStartTime()
       );
+      $this->_chatManager->sendSystemMessage("$playerName just save the orb!"); 
     }
 
     $mapHeight = $maze->mazeHeight();
