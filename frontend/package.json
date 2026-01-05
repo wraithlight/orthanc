@@ -8,8 +8,7 @@
     "gha:build:canary": "vite build -- --environment=canary",
     "gha:build:development": "vite build -- --environment=development",
     "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "vite build"
   },
   "dependencies": {
     "knockout": "3.5.1"
