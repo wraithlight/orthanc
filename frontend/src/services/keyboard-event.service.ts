@@ -1,3 +1,5 @@
+import { KeyboardEventType } from "./keyboard-event.type";
+
 export class KeyboardEventService {
 
   private _isEmitEnabled = true;
@@ -28,7 +30,7 @@ export class KeyboardEventService {
   }
 
   public subscribe(
-    key: string,
+    key: KeyboardEventType,
     callback: () => void
   ): void {
     this._listeners[key.toLowerCase()] = callback;
