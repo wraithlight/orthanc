@@ -58,6 +58,16 @@ export class GameContainer {
     this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
     this._keyboardEventService.subscribe("ArrowUp", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
     this._keyboardEventService.subscribe("ArrowRight", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
+
+    this._keyboardEventService.subscribe("KeyA", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
+    this._keyboardEventService.subscribe("KeyS", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
+    this._keyboardEventService.subscribe("KeyW", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
+    this._keyboardEventService.subscribe("KeyD", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
+
+    this._keyboardEventService.subscribe("KeyH", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
+    this._keyboardEventService.subscribe("KeyJ", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
+    this._keyboardEventService.subscribe("KeyK", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
+    this._keyboardEventService.subscribe("KeyL", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
   }
 
   public onActionItemClick(
