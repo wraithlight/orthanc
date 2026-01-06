@@ -31,6 +31,7 @@ export class GameContainer {
   public readonly equipmentSword = observable("???");
   public readonly equipmentShield = observable("???");
   public readonly equipmentArmor = observable("???");
+  public readonly equipmentBow = observable("???");
   public readonly equipmentArrows = observable(0);
 
   public readonly statisticsExperience = observable(0);
@@ -81,6 +82,7 @@ export class GameContainer {
       this.equipmentSword(m.equipment.sword);
       this.equipmentShield(m.equipment.shield);
       this.equipmentArmor(m.equipment.armor);
+      this.equipmentBow(m.equipment.bow);
       this.equipmentArrows(m.equipment.arrows);
       this.statisticsExperience(m.statistics.experience);
       this.statisticsMoney(m.statistics.money);

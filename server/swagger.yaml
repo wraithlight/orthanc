@@ -223,6 +223,10 @@ components:
                     arrows:
                       type: number
                       example: 0
+                    bow:
+                      type: string
+                      enum: ["NORMAL", "EPIC"]
+                      example: "NORMAL"
                 statistics:
                   type: object
                   properties:

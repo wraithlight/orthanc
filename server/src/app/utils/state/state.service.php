@@ -13,6 +13,7 @@ class StateService
   const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
   const EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS";
   const EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR";
+  const EQUIPMENT_BOW = "EQUIPMENT_BOW";
   const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
   const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
   const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
@@ -115,6 +116,16 @@ class StateService
   public function getEquipmentArmor()
   {
     return $this->readFromSessionState(self::EQUIPMENT_ARMOR);
+  }
+
+  public function setEquipmentBow($value)
+  {
+    $this->writeToSessionState(self::EQUIPMENT_BOW, $value);
+  }
+
+  public function getEquipmentBow()
+  {
+    return $this->readFromSessionState(self::EQUIPMENT_BOW);
   }
 
   public function getPlayerMaxHits()

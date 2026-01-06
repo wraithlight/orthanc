@@ -4,9 +4,10 @@ class ItemsOnMapManager
 {
   private const GOLD_WEIGHT = 1;
   private const ORB_WEIGHT = 1000;
-  private const WEIGHT_SWORD = 100;
-  private const WEIGHT_SHIELD = 100;
+  private const WEIGHT_SWORD = 20;
+  private const WEIGHT_SHIELD = 50;
   private const WEIGHT_ARMOR = 100;
+  private const WEIGHT_BOW = 10;
 
   private const GOLD_PERCENTAGE_ON_MAP = 2;
   private const NUMBER_OF_ORBS = 1;
@@ -36,6 +37,11 @@ class ItemsOnMapManager
         "key" => "ITEM_CHEST_ARMOR",
         "weight" => self::WEIGHT_ARMOR,
         "pickedupLabel" => "You picked up an armor from the chest."
+      ],
+      [
+        "key" => "ITEM_CHEST_BOW",
+        "weight" => self::WEIGHT_BOW,
+        "pickedupLabel" => "You picked up a bow from the chest."
       ],
     ];
 

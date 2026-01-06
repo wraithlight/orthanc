@@ -171,6 +171,9 @@ class ActionsManager
     if ($currentItem->key === "ITEM_CHEST_ARMOR") {
       $this->_stateService->setEquipmentArmor("EPIC");
     }
+    if ($currentItem->key === "ITEM_CHEST_BOW") {
+      $this->_stateService->setEquipmentBow("EPIC");
+    }
 
     $this->_feedbackEventsService->addEvent("ITEM_PICKUP", $currentItem->pickedupLabel);
   }
