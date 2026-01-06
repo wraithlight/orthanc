@@ -8,7 +8,9 @@ import "./game-chat.component.scss";
 ko.components.register(
   SELECTOR,
   {
-    viewModel: GameChatComponent,
+    viewModel: {
+      createViewModel: (params: any, componentInfo: any) => new GameChatComponent(params, componentInfo)
+    },
     template: TEMPLATE
   }
 );

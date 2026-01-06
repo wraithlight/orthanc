@@ -11,7 +11,7 @@ export class LoginContainer implements LoginContainerParams {
   public loginAsGuestEvent = new subscribable<LoginAsGuestEvent>();
   public loginAsMemberEvent = new subscribable<LoginAsMemberEvent>();
   public hasLoginError = observable(false);
-  public onLoginSuccess: Subscribable;
+  public onLoginSuccess: Subscribable<{ playerName: string }>;
 
   private readonly _loginClient = new LoginClient(getConfig().apiUrl);
 
@@ -21,8 +21,8 @@ export class LoginContainer implements LoginContainerParams {
   }
 
   private async loginAsGuestEventHandler(): Promise<void> {
-    await this._loginClient.loginGuest();
-    this.onLoginSuccess.notifySubscribers()
+    const result = await this._loginClient.loginGuest();
+    this.onLoginSuccess.notifySubscribers({ playerName: result.username });
   }
 
 }

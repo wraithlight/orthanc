@@ -20,7 +20,6 @@ class GameController
   public function startGame()
   {
     $id = $this->_sessionManager->authenticate();
-    $this->_chatManager->addMember($id);
 
     $maze = new Maze();
     $stateService = new StateService();

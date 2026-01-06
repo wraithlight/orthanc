@@ -15,12 +15,13 @@ class SessionManager {
     return session_id();
   }
 
-  public function createNewSession(): void {
+  public function createNewSession(): string {
     session_start([
       "use_strict_mode" => 1,
     ]);
     session_regenerate_id(true);
     $_SESSION = [];
+    return session_id();
   }
 
   public function getSessionId(): string {
