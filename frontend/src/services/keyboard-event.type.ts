@@ -1,6 +1,14 @@
-export type KeyboardEventType = 
-  | "ArrowLeft"
+export type KeyboardEventType =
   | "ArrowDown"
-  | "ArrowUp"
+  | "ArrowLeft"
   | "ArrowRight"
-;
+  | "ArrowUp"
+  | "KeyA"
+  | "KeyD"
+  | "KeyS"
+  | "KeyH"
+  | "KeyJ"
+  | "KeyK"
+  | "KeyL"
+  | "KeyW"
+  ;
