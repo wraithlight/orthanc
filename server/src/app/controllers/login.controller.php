@@ -2,20 +2,23 @@
 
 class LoginController
 {
-  private $sessionManager;
+  private $_chatManager;
+  private $_sessionManager;
 
   public function __construct()
   {
-    $this->sessionManager = new SessionManager();
+    $this->_chatManager = new ChatManager();
+    $this->_sessionManager = new SessionManager();
   }
 
   public function loginGuest()
   {
-    $this->sessionManager->createNewSession();
+    $id = $this->_sessionManager->createNewSession();
     $stateService = new StateService();
 
     $username = 'guest_' . roll_d10k();
     $stateService->setPlayerName($username);
+    $this->_chatManager->addMember($id);
     echo json_encode([
       "payload" => [
         'username' => $username
@@ -23,4 +26,3 @@ class LoginController
     ], JSON_PRETTY_PRINT);
   }
 }
-?>

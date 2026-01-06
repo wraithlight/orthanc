@@ -1,8 +1,22 @@
-<character-creation params="{
-    onBack: onBack,
-    onNext: onNext,
-    onGenerate: onGenerate,
-    stats: stats
-  }">
-</character-creation>
-<core-footer />
+<div class="character-creation__page">
+  <div class="character-creation__content">
+    <character-creation params="{
+      onBack: onBack,
+      onNext: onNext,
+      onGenerate: onGenerate,
+      stats: stats
+    }">
+    </character-creation>
+    <core-footer></core-footer>
+  </div>
+  <div class="character-creation__chat">
+    <game-chat params="{
+      members: chatMembers,
+      messages: chatMessages,
+      toPoll: onChatPoll,
+      toSendMessage: onSendChatMessage,
+      playerName: playerName
+    }">
+    </game-chat>
+  </div>
+</div>

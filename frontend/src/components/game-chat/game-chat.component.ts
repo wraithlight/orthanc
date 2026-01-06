@@ -1,4 +1,4 @@
-import { observable, Observable, ObservableArray, Subscribable } from "knockout";
+import ko, { observable, Observable, ObservableArray, Subscribable } from "knockout";
 
 import { KeyboardEventService } from "../../services";
 
@@ -21,7 +21,7 @@ export class GameChatComponent implements GameChatComponentParams {
 
   public message = observable();
 
-  constructor(params: GameChatComponentParams) {
+  constructor(params: GameChatComponentParams, componentInfo: { element: Node }) {
     this.toPoll = params.toPoll;
     this.toSendMessage = params.toSendMessage;
     this.members = params.members;
@@ -35,7 +35,10 @@ export class GameChatComponent implements GameChatComponentParams {
         ;
     });
 
-    setInterval(() => this.toPoll.notifySubscribers(), 1_000);
+    const interval = setInterval(() => this.toPoll.notifySubscribers(), 1_000);
+    ko.utils.domNodeDisposal.addDisposeCallback(componentInfo.element, () => {
+      clearInterval(interval);
+    });
   }
 
   public onSendClick(): void {
