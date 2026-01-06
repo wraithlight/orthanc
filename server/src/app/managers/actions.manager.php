@@ -48,6 +48,9 @@ class ActionsManager
       exit;
       }
     }
+    if ($action !== "MOVE") {
+      $this->_userInteractionsService->incrementActions();
+    }
   }
 
   public function getPossibleActions(
