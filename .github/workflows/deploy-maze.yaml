@@ -1,7 +1,6 @@
 name: FTP - Deploy MAZE
 
 on:
-  workflow_dispatch:
   repository_dispatch:
     types:
       - deploy_maze

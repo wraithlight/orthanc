@@ -1,6 +1,10 @@
 name: Deployment Train
 
 on:
+  push:
+    branches:
+      - main
+
   workflow_dispatch:
     inputs:
       deploy_be:
