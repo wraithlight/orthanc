@@ -21,6 +21,15 @@ class StateService
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
   const GAME_START_TIME = "GAME_START_TIME";
+  const PREVIOUS_GAME_STATE_KEY = "GAME_STATE_PREVIOUS";
+
+  public function setPreviousGameState(GameState $state) {
+    $this->writeToSessionState(self::PREVIOUS_GAME_STATE_KEY, $state);
+  }
+
+  public function getPreviousGameState(): GameState {
+    return $this->readFromSessionState(self::PREVIOUS_GAME_STATE_KEY);
+  }
 
   public function setStartTime(int $startTime) {
     $this->writeToSessionState(self::GAME_START_TIME, $startTime);

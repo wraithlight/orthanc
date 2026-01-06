@@ -65,6 +65,7 @@ class GameController
     $walkableTiles = $maze->getWalkableTiles(); // TODO: move this to manager layer.
     $this->_itemsOnMapManager->createItemsOnMap($walkableTiles);
 
+    $stateService->setPreviousGameState($this->getGameState());
     $this->sendBackState();
   }
 
@@ -119,8 +120,9 @@ class GameController
     }
 
     $gameState = $this->getGameState();
+    $previousGameState = $stateService->getPreviousGameState();
 
-    if ($gameState === GameState::EndSuccess) {
+    if ($gameState === GameState::EndSuccess && $previousGameState !== GameState::EndSuccess) {
       $playerName = $stateService->getPlayerName();
       $hallOfFameService->addUser(
         $playerName,
@@ -162,6 +164,7 @@ class GameController
     }
 
     $minimapState[$location->coordY][$location->coordX] = "PLAYER";
+    $stateService->setPreviousGameState($gameState);
 
     $mapSize = min($mapHeight, $mapWidth);
     echo json_encode([
@@ -239,7 +242,7 @@ class GameController
           ]
         ],
         "events" => $this->getEvents($tiles),
-        "possibleActions" => $this->_actionsManager->getPossibleActions($tiles, $this->getGameState()),
+        "possibleActions" => $this->_actionsManager->getPossibleActions($tiles, $gameState),
         "mapState" => array_map(
           fn($m) => [
             "top" => $m["top"],
