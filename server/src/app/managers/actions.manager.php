@@ -7,6 +7,7 @@ class ActionsManager
   private $_itemsService;
   private $_playerLocationService;
   private $_stateService;
+  private $_userInteractionsService;
 
   public function __construct()
   {
@@ -14,6 +15,7 @@ class ActionsManager
     $this->_itemsService = new ItemsService();
     $this->_playerLocationService = new PlayerLocationService();
     $this->_stateService = new StateService();
+    $this->_userInteractionsService = new UserInteractionsService();
   }
 
   public function handleAction(
@@ -126,6 +128,7 @@ class ActionsManager
       MovementDirection::East => $this->_playerLocationService->movePlayerEast(),
       MovementDirection::West => $this->_playerLocationService->movePlayerWest(),
     };
+    $this->_userInteractionsService->incrementMoves();
   }
 
   private function handleRun(): void

@@ -27,6 +27,7 @@ class GameController
     $levelService = new LevelService();
     $playerLocationService = new PlayerLocationService();
     $feedbackEventsService = new FeedbackEventsService();
+    $userInteractionsService = new UserInteractionsService();
 
     $levelService->setCurrentAllXp(0);
     $levelService->setCurrentKillsXp(0);
@@ -41,6 +42,7 @@ class GameController
     $playerLocationService->setPlayerPreviousLocation($location["x"], $location["y"]);
 
     $feedbackEventsService->startRound();
+    $userInteractionsService->reset();
     // Modifiers
     $stateService->setCharacterSpellsOn([]);
     // Inventory
