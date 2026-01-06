@@ -42,6 +42,7 @@ require_once("./app/states/feedback-events.state.php");
 require_once("./app/states/items.state.php");
 require_once("./app/states/level.state.php");
 require_once("./app/states/player-location.state.php");
+require_once("./app/states/user-interactions.state.php");
 
 require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
