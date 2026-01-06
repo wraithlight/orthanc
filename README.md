@@ -10,15 +10,15 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 ## Get started
 
 **Requirements**
-* NodeJS installed
 * Docker installed
+* NodeJS installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 * yarn installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 
 **Local development mode**
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
-cd orthanc                                              # navigate to repo folder
+cd orthanc                                              # navigate to the repo
 sh run-dev.sh                                           # run the server in docker (port 3100)
 cd frontend                                             # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
@@ -31,7 +31,7 @@ open localhost:3000                                     # open the app in your b
 ```sh
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
-cd orthanc                                              # navigate to repo folder
+cd orthanc                                              # navigate to the repo
 sh run-local.sh                                         # run the app in docker
 open localhost:4100                                     # open the app in your browser
 
@@ -48,9 +48,9 @@ To contribute this project, the following tools and plugins are suggested:
 
 **Tools:**
 * Visual Studio Code
-* NodeJS
 * Docker Desktop
-* yarn
+* NodeJS **OR** volta
+* yarn **OR** volta
 
 **Plugins:**
 * Composer (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.composer-php-vscode)
@@ -58,8 +58,16 @@ To contribute this project, the following tools and plugins are suggested:
 * PHP (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)
 * PHP Profiler (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.profiler-php-vscode)
 
-When the commits are being created, please follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/)!
-During build the `run-dev.sh` script will create its own docker images name `orthanc-server-dev`. The script itself takes care of the cleanup, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image!
+When your create a commit, please do follow the [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/) guideline to make changelog friendly and easy-to-track commit history!
+
+During Docker build, the `run-dev.sh` script will create its own docker image named `orthanc-server-dev`. The script itself takes care of the cleanup in case of rebuild/rerun, only one image and container will be present at the same time. But if you'd like to clean up your machine, do not forget to delete the docker image! The same applies for the `run-local.sh` file.
+
+| SH file name    | Docker Image name     | Docker Container name   |
+| :--             | :--                   | :--                     |
+| `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`    |
+| `run-local.sh`  | `orthanc-game-local`  | `orthanc-game-local`    |
+
+As you may see the Docker Image and the Docker Container have the same name.
 
 ### FE scripts
 The `package.json` file under `frontend` contains the following scripts:
@@ -76,15 +84,15 @@ The `package.json` file under `frontend` contains the following scripts:
 
 ### Technical details
 The following technologies are used during the development of this game:
-* typescript/javascript
 * CSS
-* HTML
-* Vite
-* PHP
-* HTML Canvas with Typescript
 * Docker
-* yarn
+* HTML
+* HTML Canvas with Typescript
+* PHP
+* typescript/javascript
+* Vite
 * volta
+* yarn
 
 
 ## Documentation
