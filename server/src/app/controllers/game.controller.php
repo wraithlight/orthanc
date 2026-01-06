@@ -127,7 +127,7 @@ class GameController
         $this->_sessionManager->getSessionId(),
         $stateService->getStartTime()
       );
-      $this->_chatManager->sendSystemMessage("$playerName just save the orb!"); 
+      $this->_chatManager->sendSystemMessage("All hail to $playerName who is just conquered the dungeon!"); 
     }
 
     $mapHeight = $maze->mazeHeight();
