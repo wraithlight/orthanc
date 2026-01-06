@@ -17,7 +17,7 @@ jobs:
       - name: Install Volta
         run: |
           curl https://get.volta.sh | bash
-          echo "::add-path::$HOME/.volta/bin"
+          echo "$HOME/.volta/bin" >> $GITHUB_PATH
 
       - name: Install packages
         run: |
