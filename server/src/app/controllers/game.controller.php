@@ -49,6 +49,7 @@ class GameController
     $stateService->setEquipmentSword("NORMAL");
     $stateService->setEquipmentShield("NORMAL");
     $stateService->setEquipmentArmor("NORMAL");
+    $stateService->setEquipmentBow("NORMAL");
     $stateService->setEquipmentArrows(0);
     $stateService->setHasOrb(false);
     // Stats
@@ -184,7 +185,8 @@ class GameController
           "sword" => $stateService->getEquipmentSword(),
           "shield" => $stateService->getEquipmentShield(),
           "armor" => $stateService->getEquipmentArmor(),
-          "arrows" => $stateService->getEquipmentArrows()
+          "arrows" => $stateService->getEquipmentArrows(),
+          "bow" => $stateService->getEquipmentBow(),
         ],
         "statistics" => [
           "experience" => $levelService->getCurrentXp(),
