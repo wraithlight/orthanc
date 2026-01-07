@@ -14,7 +14,13 @@
   </div>
   <div class="chat-actions">
     <form data-bind="submit: onSendClick">
-      <input name="chat-message" type="text" data-bind="value: message, hasFocus: inputHasFocus">
+      <input
+        class="chat-actions__input"
+        data-bind="value: message, hasFocus: inputHasFocus"
+        name="chat-message"
+        placeholder="Enter your message..."
+        type="text"
+      >
       <button name="chat-send" type="submit">Send</button>
     </form>
   </div>
