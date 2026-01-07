@@ -1,19 +1,13 @@
-import { Observable, observable, observableArray, Subscribable, subscribable } from "knockout";
+import { observable, observableArray, Subscribable, subscribable } from "knockout";
 
 import { GameChatClient } from "../game/game-chat.client";
-import { getConfig } from "../../state";
+import { getConfig, getPlayerName } from "../../state";
 
 import { CharacterCreationClient } from "./character-creation.client";
 
-interface CharacterCreationContainerParams {
-  onBack: Subscribable;
-  onNext: Subscribable;
-  playerName: Observable<string>;
-}
+interface CharacterCreationContainerParams { }
 
 export class CharacterCreationContainer implements CharacterCreationContainerParams {
-  public onBack: Subscribable;
-  public onNext: Subscribable;
   public onGenerate: Subscribable;
   public readonly stats = observable<{ int: number; dex: number; str: number; con: number; maxHits: number; }>({
     int: 0,
@@ -23,20 +17,19 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
     maxHits: 0
   });
 
+  public readonly onBack = new subscribable();
+  public readonly onNext = new subscribable();
   public readonly onChatPoll = new subscribable();
   public readonly onSendChatMessage = new subscribable<string>();
 
-  public readonly playerName: Observable<string>;
+  public readonly playerName = observable(getPlayerName());
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
 
   private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
   private readonly _characterCreationClient = new CharacterCreationClient(getConfig().apiUrl);
 
-  constructor(params: CharacterCreationContainerParams) {
-    this.onBack = params.onBack;
-    this.onNext = params.onNext;
-    this.playerName = params.playerName;
+  constructor() {
     this.onGenerate = new subscribable();
     this.onGenerate.subscribe(() => this.onGenerateHandler());
     this.stats
@@ -51,6 +44,9 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
     });
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
+
+    this.onBack.subscribe(() => window.dispatchEvent(new CustomEvent("ON_BACK_FROM_CHARACTER_CREATION", { detail: { } })));
+    this.onNext.subscribe(() => window.dispatchEvent(new CustomEvent("ON_NEXT_FROM_CHARACTER_CREATION", { detail: { } })));
   }
 
   public async onGenerateHandler(): Promise<void> {

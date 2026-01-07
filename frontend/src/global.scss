@@ -16,10 +16,21 @@ orthanc {
   align-items: center;
 }
 
-orthanc>game-screen {
+orthanc > router {
   width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+orthanc > router > div {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* Globals */
 
