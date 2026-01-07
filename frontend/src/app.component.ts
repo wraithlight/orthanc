@@ -1,51 +1,37 @@
-import { observable, subscribable } from "knockout";
+import { Router } from "@profiscience/knockout-contrib-router";
+import { observable } from "knockout";
+
+import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-creation/character-creation.selector';
+import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
+import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
+
 import { AppState } from "./model";
 import { getConfig } from "./state";
 
 export class Application {
   public mode = observable<"KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE">();
   public state = observable<AppState>(AppState.LOGIN);
-  public onLoginSuccess = new subscribable<{ playerName: string }>();
-  public onModeSelected = new subscribable<"KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE">();
-  public onBackFromModeSelect = new subscribable();
-  public onBackFromCharacterCreation = new subscribable();
-  public onNextFromCharacterCreation = new subscribable();
   public readonly config = getConfig();
 
   public readonly playerName = observable("");
 
   constructor() {
-    this.onLoginSuccess.subscribe((m) => this.onLoginSuccessHandler(m.playerName));
-    this.onModeSelected.subscribe((mode) => this.modeSelected(mode));
-    this.onBackFromModeSelect.subscribe(() => this.onBackFromModeSelectHandler());
-    this.onBackFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
-    this.onNextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
+    window.addEventListener("LOGIN_SUCCESS", ((event: CustomEvent) => { this.onLoginSuccessHandler(event.detail.playerName); }) as EventListener);
+    window.addEventListener("ON_BACK_FROM_CHARACTER_CREATION", ((_event: CustomEvent) => { this.onBackFromCharacterCreationHandler(); }) as EventListener);
+    window.addEventListener("ON_NEXT_FROM_CHARACTER_CREATION", ((_event: CustomEvent) => { this.onNextFromCharacterCreationHandler(); }) as EventListener);
   }
 
   public async onLoginSuccessHandler(playerName: string): Promise<void> {
     setTimeout(() => {
       this.playerName(playerName);
-      this.state(AppState.CHARACTER_CREATION);
-    }, 500);
-  }
-
-  public async modeSelected(mode: "KEYBOARD_ONLY" | "KEYBOARD_WITH_MOUSE"): Promise<void> {
-    this.mode(mode);
-    setTimeout(() => {
-      this.state(AppState.CHARACTER_CREATION);
-    }, 500);
-  }
-
-  public async onBackFromModeSelectHandler(): Promise<void> {
-    setTimeout(() => {
-      this.state(AppState.LOGIN);
+      Router.update(`/${CHARACTER_CREATION_SELECTOR}`);
     }, 500);
   }
 
   public async onBackFromCharacterCreationHandler(): Promise<void> {
     setTimeout(() => {
       this.playerName("");
-      this.state(AppState.LOGIN);
+      Router.update(`/${LOGIN_SELECTOR}`);
     }, 500);
   }
 
@@ -57,6 +43,7 @@ export class Application {
         credentials: "include"
       }
     );
-    this.state(AppState.INGAME);
+    this.playerName("");
+    Router.update(`/${GAME_SELECTOR}`);
   }
 }

@@ -1,28 +1,24 @@
-import { observable, Subscribable, subscribable } from "knockout";
+import { observable, subscribable } from "knockout";
 import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
 import { LoginClient } from "./login.client";
 import { getConfig } from "../../state";
 
-interface LoginContainerParams {
-  onLoginSuccess: Subscribable
-}
+interface LoginContainerParams { }
 
 export class LoginContainer implements LoginContainerParams {
   public loginAsGuestEvent = new subscribable<LoginAsGuestEvent>();
   public loginAsMemberEvent = new subscribable<LoginAsMemberEvent>();
   public hasLoginError = observable(false);
-  public onLoginSuccess: Subscribable<{ playerName: string }>;
 
   private readonly _loginClient = new LoginClient(getConfig().apiUrl);
 
   constructor(params: LoginContainerParams) {
-    this.onLoginSuccess = params.onLoginSuccess;
     this.loginAsGuestEvent.subscribe((_m) => this.loginAsGuestEventHandler());
   }
 
   private async loginAsGuestEventHandler(): Promise<void> {
     const result = await this._loginClient.loginGuest();
-    this.onLoginSuccess.notifySubscribers({ playerName: result.username });
+    window.dispatchEvent(new CustomEvent("LOGIN_SUCCESS", { detail: { playerName: result.username } }));
   }
 
 }
