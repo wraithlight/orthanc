@@ -35,8 +35,11 @@
   border-bottom: 0 !important;
 }
 
-.chat-actions>form>input {
+.chat-actions__input {
   border-left: 0;
   border-right: 0;
   border-bottom: 0;
+}
+.chat-actions__input::placeholder {
+  color: #ffa500;
 }
