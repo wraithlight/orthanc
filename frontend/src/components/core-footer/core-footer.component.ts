@@ -1,4 +1,4 @@
-import { getConfig } from "../../state";
+import { State } from "../../state";
 
 interface CoreFooterComponentProps { }
 
@@ -7,8 +7,8 @@ export class CoreFooterComponent implements CoreFooterComponentProps {
   public environment: string;
 
   constructor() {
-    this.version = getConfig().version;
-    this.environment = getConfig().environment;
+    this.version = State.config()!.version;
+    this.environment = State.config()!.environment;
   }
 
 }

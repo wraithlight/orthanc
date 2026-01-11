@@ -1,4 +1,3 @@
-let _playerName: string;
+import { observable } from "knockout";
 
-export const setPlayerName = (playerName: string): void => { _playerName = playerName };
-export const getPlayerName = (): string => _playerName;
+export const STATE_NAME = observable<string>();
