@@ -1,7 +1,7 @@
 import { observable, subscribable } from "knockout";
 import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
 import { LoginClient } from "./login.client";
-import { getConfig } from "../../state";
+import { State } from "../../state";
 
 interface LoginContainerParams { }
 
@@ -10,15 +10,15 @@ export class LoginContainer implements LoginContainerParams {
   public loginAsMemberEvent = new subscribable<LoginAsMemberEvent>();
   public hasLoginError = observable(false);
 
-  private readonly _loginClient = new LoginClient(getConfig().apiUrl);
+  private readonly _loginClient = new LoginClient(State.config()!.apiUrl);
 
-  constructor(params: LoginContainerParams) {
+  constructor() {
     this.loginAsGuestEvent.subscribe((_m) => this.loginAsGuestEventHandler());
   }
 
   private async loginAsGuestEventHandler(): Promise<void> {
-    const result = await this._loginClient.loginGuest();
-    window.dispatchEvent(new CustomEvent("LOGIN_SUCCESS", { detail: { playerName: result.username } }));
+    await this._loginClient.loginGuest();
+    State.events.loginSuccess.notifySubscribers();
   }
 
 }

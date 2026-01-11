@@ -1,7 +1,7 @@
 import { observable, observableArray, Subscribable, subscribable } from "knockout";
 
 import { GameChatClient } from "../game/game-chat.client";
-import { getConfig, getPlayerName } from "../../state";
+import { State } from "../../state";
 
 import { CharacterCreationClient } from "./character-creation.client";
 
@@ -22,12 +22,12 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   public readonly onChatPoll = new subscribable();
   public readonly onSendChatMessage = new subscribable<string>();
 
-  public readonly playerName = observable(getPlayerName());
+  public readonly playerName = State.name;
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
 
-  private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
-  private readonly _characterCreationClient = new CharacterCreationClient(getConfig().apiUrl);
+  private readonly _gameChatClient = new GameChatClient(State.config()!.apiUrl);
+  private readonly _characterCreationClient = new CharacterCreationClient(State.config()!.apiUrl);
 
   constructor() {
     this.onGenerate = new subscribable();
@@ -45,8 +45,8 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
 
-    this.onBack.subscribe(() => window.dispatchEvent(new CustomEvent("ON_BACK_FROM_CHARACTER_CREATION", { detail: { } })));
-    this.onNext.subscribe(() => window.dispatchEvent(new CustomEvent("ON_NEXT_FROM_CHARACTER_CREATION", { detail: { } })));
+    this.onBack.subscribe(() => State.events.backFromCharacterCreation());
+    this.onNext.subscribe(() => State.events.nextFromCharacterCreation());
   }
 
   public async onGenerateHandler(): Promise<void> {

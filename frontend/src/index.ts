@@ -8,7 +8,7 @@ import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 import { Application } from "./app.component";
 import { SELECTOR } from "./app.selector";
 import TEMPLATE from "./app.template.html?raw";
-import { setConfig } from "./state";
+import { State } from "./state";
 
 import "./normalize.scss";
 import "./global.scss";
@@ -37,7 +37,7 @@ async function bootstrap() {
   if (!response.ok) throw new Error('Failed to load configuration');
   const config = await response.json();
 
-  setConfig(config);
+  State.config(config);
   ko.applyBindings("body");
 }
 

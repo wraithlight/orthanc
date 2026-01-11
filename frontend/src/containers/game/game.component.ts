@@ -1,7 +1,7 @@
 import { observable, observableArray, subscribable } from "knockout";
 
 import { KeyboardEventService } from "../../services";
-import { getConfig } from "../../state";
+import { State } from "../../state";
 
 import { GameChatClient } from "./game-chat.client";
 import { GameActionClient } from "./game-action.client";
@@ -46,8 +46,8 @@ export class GameContainer {
   public readonly activeSpells = observableArray([]);
 
   private readonly _keyboardEventService = KeyboardEventService.getInstance();
-  private readonly _gameChatClient = new GameChatClient(getConfig().apiUrl);
-  private readonly _gameActionClient = new GameActionClient(getConfig().apiUrl);
+  private readonly _gameChatClient = new GameChatClient(State.config()!.apiUrl);
+  private readonly _gameActionClient = new GameActionClient(State.config()!.apiUrl);
 
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
