@@ -15,8 +15,8 @@ export class Application {
 
   constructor() {
     State.events.loginSuccess.subscribe(() => this.onLoginSuccessHandler());
-    State.events.nextFromCharacterCreation(() => this.onNextFromCharacterCreationHandler);
-    State.events.backFromCharacterCreation(() => this.onBackFromCharacterCreationHandler);
+    State.events.nextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler);
+    State.events.backFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler);
   }
 
   public async onLoginSuccessHandler(): Promise<void> {

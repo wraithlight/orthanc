@@ -45,8 +45,8 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
 
-    this.onBack.subscribe(() => State.events.backFromCharacterCreation());
-    this.onNext.subscribe(() => State.events.nextFromCharacterCreation());
+    this.onBack.subscribe(() => State.events.backFromCharacterCreation.notifySubscribers());
+    this.onNext.subscribe(() => State.events.nextFromCharacterCreation.notifySubscribers());
   }
 
   public async onGenerateHandler(): Promise<void> {
