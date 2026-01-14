@@ -12,15 +12,29 @@ class HallOfFameService extends BaseIOService
   public function addUser(
     string $name,
     string $id,
-    int $startTime
+    int $sessionStartTime,
+    int $sumXp,
+    int $xpFromKillsPercentage,
+    int $numberOfMoves,
+    int $numberOfActions,
+    int $characterLevel,
+    string $gameVersion,
   ): string
   {
     $members = $this->read();
+    $now = time();
     $member = [
       'name' => $name,
       'id' => $id,
-      'started' => $startTime,
-      'finished' => time()
+      'started' => $sessionStartTime,
+      'finished' => $now,
+      'duration' => $now - $sessionStartTime,
+      'sumXp' => $sumXp,
+      'xpFromKillsPercentage' => $xpFromKillsPercentage,
+      'numberOfMoves' => $numberOfMoves,
+      'numberOfActions' => $numberOfActions,
+      'characterLevel' => $characterLevel,
+      'gameVersion' => $gameVersion,
     ];
     $members[] = $member;
     $this->write($members);

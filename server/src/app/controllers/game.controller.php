@@ -122,11 +122,20 @@ class GameController
     $previousGameState = $stateService->getPreviousGameState();
 
     if ($gameState === GameState::EndSuccess && $previousGameState !== GameState::EndSuccess) {
+      $configService = new ConfigService();
+      $userInteractionsService = new UserInteractionsService();
+
       $playerName = $stateService->getPlayerName();
       $hallOfFameService->addUser(
         $playerName,
         $this->_sessionManager->getSessionId(),
-        $stateService->getStartTime()
+        $stateService->getStartTime(),
+        $levelService->getCurrentXp(),
+        $levelService->getXpPercentageFromKills(),
+        $userInteractionsService->getMoves(),
+        $userInteractionsService->getActions(),
+        $levelService->getLevel(),
+        $configService->getVersion()
       );
       $this->_chatManager->sendSystemMessage("All hail to $playerName who is just conquered the dungeon!"); 
     }
