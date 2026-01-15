@@ -267,7 +267,7 @@ components:
                           type: string
                           example: "Teleportation"
                         action:
-                          type: object;
+                          type: object
                           properties:
                             key:
                               type: string
@@ -283,7 +283,7 @@ components:
                           type: string
                           example: "Teleportation"
                         action:
-                          type: object;
+                          type: object
                           properties:
                             key:
                               type: string
@@ -299,7 +299,7 @@ components:
                           type: string
                           example: "Teleportation"
                         action:
-                          type: object;
+                          type: object
                           properties:
                             key:
                               type: string
@@ -315,7 +315,7 @@ components:
                           type: string
                           example: "Teleportation"
                         action:
-                          type: object;
+                          type: object
                           properties:
                             key:
                               type: string
