@@ -113,6 +113,51 @@ components:
                   type: string
                   example: "guest_301"
 
+    HallOfFameSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                items:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        example: "zsozsi"
+                      level:
+                        type: number
+                        example: 13
+                      sessionStartAtUtc:
+                        type: string
+                        pattern: "YYYY-MM-DD"
+                        example: "2000-01-01"
+                      sessionEndAtUtc:
+                        type: string
+                        pattern: "YYYY-MM-DD"
+                        example: "1999-12-31"
+                      sessionLengthInMs:
+                        type: number
+                        example: 918273645
+                      experiencePoints:
+                        type: number
+                        example: 56135
+                      experienceFromKillsPercentage:
+                        type: number
+                        example: 13
+                      gameVersion:
+                        type: string
+                      numberOfMoves:
+                        type: number
+                        example: 5
+                      numberOfActions:
+                        type: number
+                        example: 10
+
     CharacterGenerateSuccessResponse:
       allOf:
         - $ref: '#/components/schemas/BaseSuccessResponse'
@@ -473,8 +518,30 @@ tags:
     description: Endpoints for game actions, character creation, and game start
   - name: chat
     description: Endpoints for chat messaging and polling
+  - name: main
+    description: Endpoints that are being called from the main menu.
 
 paths:
+  /api/v1/main/hall-of-fame:
+    get:
+      summary: Get Hall of Fame stats
+      operationId: getHallOfFame
+      tags:
+        - main
+      responses:
+        '200':
+          description: Successfully fetched the hall of fame
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HallOfFameSuccessResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /api/v1/login/guest:
     post:
       summary: Login as GUEST
