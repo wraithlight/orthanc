@@ -153,6 +153,14 @@ td:nth-of-type(2) {
   padding: 10px 0;
 }
 
+.popup-actions {
+  display: flex;
+}
+
+.popup-actions > button {
+  border: 2px solid #ffa500;
+}
+
 img.character-tile {
   width: 40px;
   height: 61px;

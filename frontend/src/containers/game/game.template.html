@@ -168,3 +168,20 @@
   </div>
 </div>
 <!-- /ko -->
+<!-- ko if: shouldOpenRetireDialog() -->
+<div class="popup-overlay">
+  <div class="popup">
+    <div class="popup-title">
+      Retire?
+    </div>
+    <div class="popup-message">
+      Would you really like to retire from this session?<br />
+      All progress will be lost!<br />
+    </div>
+    <div class="popup-actions">
+      <button data-bind="click: closeRetireDialog">No</button>
+      <button data-bind="click: restartGame">Yes</button>
+    </div>
+  </div>
+</div>
+<!-- /ko -->

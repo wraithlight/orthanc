@@ -1,7 +1,9 @@
+import { Router } from "@profiscience/knockout-contrib-router";
 import { observable, observableArray, subscribable } from "knockout";
 
 import { KeyboardEventService } from "../../services";
 import { State } from "../../state";
+import { SELECTOR } from "../character-creation/character-creation.selector";
 
 import { GameChatClient } from "./game-chat.client";
 import { GameActionClient } from "./game-action.client";
@@ -13,12 +15,14 @@ export class GameContainer {
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
 
+  public readonly shouldOpenEndDialog = observable(false);
+  public readonly shouldOpenRetireDialog = observable(false);
+
   public readonly tiles = observableArray<unknown>();
   public readonly minimapState = observableArray<ReadonlyArray<unknown>>();
 
   public readonly playerName = observable();
   public readonly gameState = observable("GAME_RUNNING");
-  public readonly shouldOpenEndDialog = observable(true);
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
   public readonly events = observableArray([]);
@@ -81,6 +85,15 @@ export class GameContainer {
     action: string,
     payload: string | null
   ): void {
+    if (this.shouldOpenRetireDialog() || this.shouldOpenEndDialog()) {
+      return;
+    }
+
+    if (action === "EVENT_RETIRE") {
+      this.shouldOpenRetireDialog(true);
+      return;
+    }
+
     this._gameActionClient.onAction(action, payload).then(m => {
       this.tiles(m.mapState);
       this.maxHits(m.maxHits);
@@ -108,6 +121,11 @@ export class GameContainer {
       this.gameState(m.gameState);
       this.events(m.events);
       this.minimapState(m.minimapState);
+
+      if (this.gameState() !== "GAME_RUNNING") {
+        this.shouldOpenEndDialog(true);
+      }
+
       this.renderMinimap();
     });
   }
@@ -147,6 +165,13 @@ export class GameContainer {
     this.shouldOpenEndDialog(false);
   }
 
+  public restartGame() {
+    Router.update(`/${SELECTOR}`);
+  }
+
+  public closeRetireDialog() {
+    this.shouldOpenRetireDialog(false);
+  }
 
   private async pollChat(): Promise<void> {
     const result = await this._gameChatClient.poll();
