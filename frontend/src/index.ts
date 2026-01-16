@@ -28,6 +28,7 @@ const createRoute = (selector: string) => `/${selector}`;
 
 Router.useRoutes([
   new Route('/', LOGIN_SELECTOR),
+  new Route(createRoute(LOGIN_SELECTOR), LOGIN_SELECTOR),
   new Route(createRoute(CHARACTER_CREATION_SELECTOR), CHARACTER_CREATION_SELECTOR),
   new Route(createRoute(GAME_SELECTOR), GAME_SELECTOR),
 ]);
