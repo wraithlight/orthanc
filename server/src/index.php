@@ -50,6 +50,7 @@ require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
 require_once("./app/services/player-location.service.php");
+require_once("./app/services/player.service.php");
 require_once("./app/services/user-interactions.service.php");
 
 require_once("./app/managers/actions.manager.php");
