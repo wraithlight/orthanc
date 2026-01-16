@@ -70,6 +70,8 @@ class ActionsManager
     $canMove = count($visibleNpcs) === 0;
     $canCast = $stateService->getCharacterSpellUnitsCur() > 0;
     $canPickup = !empty($playerTile["containsItems"]);
+    $canRestart = $gameState === GameState::Running;
+    $canRetire = $gameState === GameState::Running;
 
     $canMoveNorth = $playerTile["top"] === "TILE_OPEN";
     $canMoveEast = $playerTile["right"] === "TILE_OPEN";
@@ -101,6 +103,7 @@ class ActionsManager
     $canMove && $canMoveSouth && array_push($actions, ["label" => "[↓] South", "key" => "MOVE", "payload" => MovementDirection::South->value]);
     $canMove && $canMoveWest && array_push($actions, ["label" => "[←] West", "key" => "MOVE", "payload" => MovementDirection::West->value]);
     $canCast && array_push($actions, ["label" => "[C]ast a spell", "key" => "CAST_SPELL", "payload" => null]);
+    $canRetire && array_push($actions, ["label" => "[R]etire", "key" => "EVENT_RETIRE", "payload" => null]);
 
     return $actions;
   }
