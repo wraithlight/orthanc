@@ -32,7 +32,6 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   constructor() {
     this.onGenerate = new subscribable();
     this.onGenerate.subscribe(() => this.onGenerateHandler());
-    this.stats
     this._characterCreationClient.generateStats().then(m => {
       this.stats({
         int: m.stats.int,
