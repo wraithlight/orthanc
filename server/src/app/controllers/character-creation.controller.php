@@ -13,6 +13,7 @@ class CharacterCreationController
   {
     $this->sessionManager->authenticate();
 
+    $playerService = new PlayerService();
     $stateService = new StateService();
 
     $str = roll_d8() + roll_d8();
@@ -26,7 +27,7 @@ class CharacterCreationController
     $stateService->setPlayerIntelligence($int);
     $stateService->setPlayerDexterity($dex);
     $stateService->setPlayerConstitution($con);
-    $stateService->setPlayerMaxHits($hits);
+    $playerService->setMaxHits($hits);
 
     echo json_encode([
       "payload" => [

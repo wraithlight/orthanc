@@ -6,6 +6,7 @@ class ActionsManager
   private $_feedbackEventsService;
   private $_itemsService;
   private $_playerLocationService;
+  private $_playerService;
   private $_stateService;
   private $_userInteractionsService;
 
@@ -14,6 +15,7 @@ class ActionsManager
     $this->_feedbackEventsService = new FeedbackEventsService();
     $this->_itemsService = new ItemsService();
     $this->_playerLocationService = new PlayerLocationService();
+    $this->_playerService = new PlayerService();
     $this->_stateService = new StateService();
     $this->_userInteractionsService = new UserInteractionsService();
   }
@@ -61,16 +63,14 @@ class ActionsManager
     if ($gameState !== GameState::Running) {
       return $actions;
     }
-    $stateService = new StateService();
     $playerTile = $tiles[(int) floor(count($tiles) / 2)];
     $visibleNpcs = array_values(array_filter(array_map(fn($m) => $m['occupiedBy'], $tiles), fn($m) => isset($m) && $m->key !== "CHARACTER"));
 
     $canFight = count($visibleNpcs) === 1;
     $canRun = $canFight && $this->_playerLocationService->isPreviousAndCurrentSame();
     $canMove = count($visibleNpcs) === 0;
-    $canCast = $stateService->getCharacterSpellUnitsCur() > 0;
+    $canCast = $this->_playerService->hasSpellUnits();
     $canPickup = !empty($playerTile["containsItems"]);
-    $canRestart = $gameState === GameState::Running;
     $canRetire = $gameState === GameState::Running;
 
     $canMoveNorth = $playerTile["top"] === "TILE_OPEN";

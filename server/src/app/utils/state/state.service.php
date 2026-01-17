@@ -6,8 +6,6 @@ class StateService
   const STAT_INT = "PLAYER_STAT_INT";
   const STAT_STR = "PLAYER_STAT_STR";
   const STAT_CON = "PLAYER_STAT_CON";
-  const HITS_CUR = "PLAYER_HITS_CUR";
-  const HITS_MAX = "PLAYER_HITS_MAX";
   const CHAT_LAST_MESSAGE_ID = "CHAT_LAST_MESSAGE_ID";
   const EQUIPMENT_SWORD = "EQUIPMENT_SWORD";
   const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
@@ -16,7 +14,6 @@ class StateService
   const EQUIPMENT_BOW = "EQUIPMENT_BOW";
   const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
   const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
-  const CHARACTER_STATS_SPELL_UNITS_CUR = "CHARACTER_STATS_SPELL_UNITS_CUR";
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
@@ -57,11 +54,6 @@ class StateService
     $this->writeToSessionState(self::CHARACTER_STATS_WEIGHT, $value);
   }
 
-  public function setCharacterSpellUnitsCur($value)
-  {
-    $this->writeToSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR, $value);
-  }
-
   public function setCharacterSpellsOn($value)
   {
     $this->writeToSessionState(self::CHARACTER_SPELLS_ON, $value);
@@ -75,11 +67,6 @@ class StateService
   public function getCharacterStatsWeight()
   {
     return $this->readFromSessionState(self::CHARACTER_STATS_WEIGHT);
-  }
-
-  public function getCharacterSpellUnitsCur()
-  {
-    return $this->readFromSessionState(self::CHARACTER_STATS_SPELL_UNITS_CUR);
   }
 
   public function getCharacterSpellsOn()
@@ -137,29 +124,9 @@ class StateService
     return $this->readFromSessionState(self::EQUIPMENT_BOW);
   }
 
-  public function getPlayerMaxHits()
-  {
-    return $this->readFromSessionState(self::HITS_MAX);
-  }
-
-  public function getPlayerCurHits()
-  {
-    return $this->readFromSessionState(self::HITS_CUR);
-  }
-
   public function getChatLastMessageId()
   {
     return $this->readFromSessionState(self::CHAT_LAST_MESSAGE_ID);
-  }
-
-  public function setPlayerMaxHits($value)
-  {
-    $this->writeToSessionState(self::HITS_MAX, $value);
-  }
-
-  public function setPlayerCurHits($value)
-  {
-    $this->writeToSessionState(self::HITS_CUR, $value);
   }
 
   public function setChatLastMessageId($value)
