@@ -1,5 +1,8 @@
-#mac
+# mac
 .DS_Store
+
+# local docker mount issues
+fe-assets
 
 # node modules
 node_modules/
