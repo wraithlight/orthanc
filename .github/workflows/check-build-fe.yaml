@@ -3,7 +3,7 @@ run-name: "Build Frontend"
 on: [push, workflow_dispatch]
 
 jobs:
-  appsBuild:
+  frontendBuildProd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
