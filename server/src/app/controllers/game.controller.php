@@ -365,21 +365,14 @@ class GameController
 
   private function getGameState(): GameState
   {
-    if ($this->isPlayerDead()) {
+    $playerService = new PlayerService();
+    if ($playerService->isDead()) {
       return GameState::EndFail;
     }
     if ($this->areWinConditionsMet()) {
       return GameState::EndSuccess;
     }
     return GameState::Running;
-  }
-
-  private function isPlayerDead(): bool
-  {
-    $playerService = new PlayerService();
-    $currentHits = $playerService->getCurrentHits();
-    $isAlive = $currentHits <= 0;
-    return $isAlive;
   }
 
   private function areWinConditionsMet(): bool
@@ -389,14 +382,12 @@ class GameController
     $playerLocationService = new PlayerLocationService();
 
     $hasOrb = $stateService->getHasOrb();
-    $currentHits = $playerService->getCurrentHits();
 
     $hasWinItems = $hasOrb;
-    $isAlive = $currentHits > 0;
+    $isAlive = $playerService->isAlive();
     $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
     return $hasWinItems && $isAlive && $isAtStartPoint;
   }
 
 }
-?>

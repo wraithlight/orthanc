@@ -18,6 +18,14 @@ class PlayerService {
     return $this->_playerState->setCurrentHits($maxHits);
   }
 
+  public function isAlive(): bool {
+    return $this->_playerState->getCurrentHits() > 0;
+  }
+
+  public function isDead(): bool {
+    return $this->_playerState->getCurrentHits() <= 0;
+  }
+
   public function getCurrentHits(): int {
     return $this->_playerState->getCurrentHits();
   }
