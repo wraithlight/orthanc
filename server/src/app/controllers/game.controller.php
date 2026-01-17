@@ -19,11 +19,12 @@ class GameController
 
   public function startGame()
   {
-    $id = $this->_sessionManager->authenticate();
+    $this->_sessionManager->authenticate();
 
     $maze = new Maze();
     $stateService = new StateService();
     $levelService = new LevelService();
+    $playerService = new PlayerService();
     $playerLocationService = new PlayerLocationService();
     $feedbackEventsService = new FeedbackEventsService();
     $userInteractionsService = new UserInteractionsService();
@@ -34,7 +35,6 @@ class GameController
     $maxSpellUnits = $levelService->getMaxSpellUnits();
 
     $location = $maze->getPlayerInitialLocation();
-    $currentHits = $stateService->getPlayerMaxHits();
 
     $playerLocationService->setPlayerCurrentLocation($location["x"], $location["y"]);
     $playerLocationService->setPlayerInitialLocation($location["x"], $location["y"]);
@@ -52,11 +52,11 @@ class GameController
     $stateService->setEquipmentArrows(0);
     $stateService->setHasOrb(false);
     // Stats
-    $stateService->setPlayerCurHits($currentHits);
+    $playerService->setCurrentHitsToMax();
     $stateService->setCharacterStatsMoney(0);
     $stateService->setCharacterStatsWeight(0);
     // Spells
-    $stateService->setCharacterSpellUnitsCur($maxSpellUnits);
+    $playerService->setCurrentSpellUnits($maxSpellUnits);
 
     $stateService->setMapFull($maze->getFullMaze());
     $stateService->setStartTime(time());
@@ -93,6 +93,7 @@ class GameController
   private function sendBackState()
   {
     $maze = new Maze();
+    $playerService = new PlayerService();
     $stateService = new StateService();
     $levelService = new LevelService();
     $hallOfFameService = new HallOfFameService();
@@ -104,8 +105,7 @@ class GameController
     $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
     if ($isAtStartPoint) {
-      $maxHp = $stateService->getPlayerMaxHits();
-      $maxHp > 0 ?? $stateService->setPlayerCurHits($maxHp);
+      $playerService->setCurrentHitsToMax();
 
       $money = $stateService->getCharacterStatsMoney();
       $weight = $stateService->getCharacterStatsMoney();
@@ -115,7 +115,7 @@ class GameController
 
       $levelService->addXp($money);
       $spellUnits = $levelService->getMaxSpellUnits();
-      $stateService->setCharacterSpellUnitsCur($spellUnits);
+      $playerService->setCurrentSpellUnits($spellUnits);
     }
 
     $gameState = $this->getGameState();
@@ -189,8 +189,8 @@ class GameController
           "constitution" => $stateService->getPlayerConstitution()
         ],
         "playerName" => $stateService->getPlayerName(),
-        "hits" => $stateService->getPlayerCurHits(),
-        "maxHits" => $stateService->getPlayerMaxHits(),
+        "hits" => $playerService->getCurrentHits(),
+        "maxHits" => $playerService->getMaxHits(),
         "activeSpells" => $stateService->getCharacterSpellsOn(),
         "equipment" => [
           "sword" => $stateService->getEquipmentSword(),
@@ -206,7 +206,7 @@ class GameController
           "weight" => $stateService->getCharacterStatsWeight(),
           "playerLevel" => $levelService->getLevel(),
           "spellUnits" => [
-            "current" => $stateService->getCharacterSpellUnitsCur(),
+            "current" => $playerService->getCurrentSpellUnits(),
             "maximum" => $levelService->getMaxSpellUnits()
           ],
           "xpPercentageFromKills" => $levelService->getXpPercentageFromKills()
@@ -376,19 +376,20 @@ class GameController
 
   private function isPlayerDead(): bool
   {
-    $stateService = new StateService();
-    $currentHits = $stateService->getPlayerCurHits();
+    $playerService = new PlayerService();
+    $currentHits = $playerService->getCurrentHits();
     $isAlive = $currentHits <= 0;
     return $isAlive;
   }
 
   private function areWinConditionsMet(): bool
   {
+    $playerService = new PlayerService();
     $stateService = new StateService();
     $playerLocationService = new PlayerLocationService();
 
     $hasOrb = $stateService->getHasOrb();
-    $currentHits = $stateService->getPlayerCurHits();
+    $currentHits = $playerService->getCurrentHits();
 
     $hasWinItems = $hasOrb;
     $isAlive = $currentHits > 0;

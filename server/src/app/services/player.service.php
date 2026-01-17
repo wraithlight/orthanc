@@ -39,6 +39,10 @@ class PlayerService {
     return $this->_playerState->setCurrentSpellUnits($spellUnits);
   }
 
+  public function hasSpellUnits(): bool {
+    return $this->_playerState->getCurrentSpellUnits() > 0;
+  }
+
   public function getCurrentSpellUnits(): int {
     return $this->_playerState->getCurrentSpellUnits();
   }
