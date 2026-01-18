@@ -45,6 +45,7 @@ require_once("./app/states/items.state.php");
 require_once("./app/states/level.state.php");
 require_once("./app/states/player-location.state.php");
 require_once("./app/states/player.state.php");
+require_once("./app/states/session.state.php");
 require_once("./app/states/user-interactions.state.php");
 
 require_once("./app/services/feedback-events.service.php");
@@ -52,6 +53,7 @@ require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
 require_once("./app/services/player-location.service.php");
 require_once("./app/services/player.service.php");
+require_once("./app/services/session.service.php");
 require_once("./app/services/user-interactions.service.php");
 
 require_once("./app/managers/actions.manager.php");

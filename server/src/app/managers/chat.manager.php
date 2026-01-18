@@ -4,23 +4,23 @@ class ChatManager
 
   private $_chatMembersService;
   private $_chatMessageService;
-  private $_stateService;
+  private $_sessionService;
 
   public function __construct()
   {
     $this->_chatMembersService = new ChatMembersService();
     $this->_chatMessageService = new ChatMessagesService();
-    $this->_stateService = new StateService();
+    $this->_sessionService = new SessionService();
   }
 
   public function addMember(
     string $id
   ) {
-    $username = $this->_stateService->getPlayerName();
+    $username = $this->_sessionService->getPlayerName();
     $lastMessageId = $this->_chatMessageService->getLastMessageId();
 
     $this->_chatMembersService->addMember($username, $id);
-    $this->_stateService->setChatLastMessageId($lastMessageId);
+    $this->_sessionService->setLastChatMessageId($lastMessageId);
   }
 
   public function sendMessage(
@@ -28,7 +28,7 @@ class ChatManager
   ) {
     $this->_chatMessageService->addMessage([
       "payload" => [
-        'sender' => $this->_stateService->getPlayerName(),
+        'sender' => $this->_sessionService->getPlayerName(),
         'message' => $message
       ]
     ]);
@@ -49,7 +49,7 @@ class ChatManager
     string $id
   ): array
   {
-    $lastMessageId = $this->_stateService->getChatLastMessageId();
+    $lastMessageId = $this->_sessionService->getLastChatMessageId();
 
     $this->_chatMembersService->updateLastSeen($id);
     $members = $this->_chatMembersService->getActiveMembers();

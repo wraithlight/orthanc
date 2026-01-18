@@ -96,6 +96,7 @@ class GameController
     $maze = new Maze();
     $playerService = new PlayerService();
     $stateService = new StateService();
+    $sessionService = new SessionService();
     $levelService = new LevelService();
     $hallOfFameService = new HallOfFameService();
     $playerLocationService = new PlayerLocationService();
@@ -126,7 +127,7 @@ class GameController
       $configService = new ConfigService();
       $userInteractionsService = new UserInteractionsService();
 
-      $playerName = $stateService->getPlayerName();
+      $playerName = $sessionService->getPlayerName();
       $hallOfFameService->addUser(
         $playerName,
         $this->_sessionManager->getSessionId(),
@@ -189,7 +190,7 @@ class GameController
           "strength" => $stateService->getPlayerStrength(),
           "constitution" => $stateService->getPlayerConstitution()
         ],
-        "playerName" => $stateService->getPlayerName(),
+        "playerName" => $playerName,
         "hits" => $playerService->getCurrentHits(),
         "maxHits" => $playerService->getMaxHits(),
         "activeSpells" => $stateService->getCharacterSpellsOn(),

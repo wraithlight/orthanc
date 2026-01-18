@@ -1,25 +1,24 @@
 <?php
 class StateService
 {
-  const PLAYER_NAME = "PLAYER_NAME";
-  const STAT_DEX = "PLAYER_STAT_DEX";
-  const STAT_INT = "PLAYER_STAT_INT";
-  const STAT_STR = "PLAYER_STAT_STR";
-  const STAT_CON = "PLAYER_STAT_CON";
-  const CHAT_LAST_MESSAGE_ID = "CHAT_LAST_MESSAGE_ID";
-  const EQUIPMENT_SWORD = "EQUIPMENT_SWORD";
-  const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD";
-  const EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS";
-  const EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR";
-  const EQUIPMENT_BOW = "EQUIPMENT_BOW";
-  const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY";
-  const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT";
-  const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
-  const MAP_FULL = "MAP_FULL";
-  const INVENTORY_ORB = "INVENTORY_ORB";
-  const INVENTORY_GRAIL = "INVENTORY_GRAIL";
-  const GAME_START_TIME = "GAME_START_TIME";
-  const PREVIOUS_GAME_STATE_KEY = "GAME_STATE_PREVIOUS";
+  const STAT_DEX = "PLAYER_STAT_DEX"; // stats
+  const STAT_INT = "PLAYER_STAT_INT"; // stats
+  const STAT_STR = "PLAYER_STAT_STR"; // stats
+  const STAT_CON = "PLAYER_STAT_CON"; // stats
+  const EQUIPMENT_SWORD = "EQUIPMENT_SWORD"; // equipment
+  const EQUIPMENT_SHIELD = "EQUIPMENT_SHIELD"; // equipment
+  const EQUIPMENT_ARROWS = "EQUIPMENT_ARROWS"; // equipment
+  const EQUIPMENT_ARMOR = "EQUIPMENT_ARMOR"; // equipment
+  const EQUIPMENT_BOW = "EQUIPMENT_BOW"; // equipment
+  const CHARACTER_STATS_MONEY = "CHARACTER_STATS_MONEY"; // iventory
+  const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT"; // on-demand calculation (inventory + equipment)
+  const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON"; // spells
+  const MAP_FULL = "MAP_FULL"; // map
+  const INVENTORY_ORB = "INVENTORY_ORB"; // inventory
+  const INVENTORY_GRAIL = "INVENTORY_GRAIL"; // inventory
+  const GAME_START_TIME = "GAME_START_TIME"; // session
+  const PREVIOUS_GAME_STATE_KEY = "GAME_STATE_PREVIOUS"; // game state
+
 
   public function setPreviousGameState(GameState $state) {
     $this->writeToSessionState(self::PREVIOUS_GAME_STATE_KEY, $state);
@@ -125,16 +124,6 @@ class StateService
     return $this->readFromSessionState(self::EQUIPMENT_BOW);
   }
 
-  public function getChatLastMessageId()
-  {
-    return $this->readFromSessionState(self::CHAT_LAST_MESSAGE_ID);
-  }
-
-  public function setChatLastMessageId($value)
-  {
-    $this->writeToSessionState(self::CHAT_LAST_MESSAGE_ID, $value);
-  }
-
   public function getPlayerDexterity()
   {
     return $this->readFromSessionState(self::STAT_DEX);
@@ -173,16 +162,6 @@ class StateService
   public function setPlayerConstitution($value)
   {
     return $this->writeToSessionState(self::STAT_CON, $value);
-  }
-
-  public function setPlayerName($name)
-  {
-    $this->writeToSessionState(self::PLAYER_NAME, $name);
-  }
-
-  public function getPlayerName()
-  {
-    return $this->readFromSessionState(self::PLAYER_NAME);
   }
 
   public function getHasOrb(): bool
