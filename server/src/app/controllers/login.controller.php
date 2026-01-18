@@ -14,10 +14,10 @@ class LoginController
   public function loginGuest()
   {
     $id = $this->_sessionManager->createNewSession();
-    $stateService = new StateService();
-
+    $sessionService = new SessionService();
+    
     $username = 'guest_' . roll_d10k();
-    $stateService->setPlayerName($username);
+    $sessionService->setPlayerName($username);
     $this->_chatManager->addMember($id);
     echo json_encode([
       "payload" => [
