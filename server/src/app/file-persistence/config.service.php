@@ -6,7 +6,8 @@ class ConfigService extends BaseIOService {
 
   public function __construct()
   {
-    $this->filePath = __DIR__ . getenv("CONFIG_JSON_FILE_PATH") . "/config.json";
+    $envPath = getenv("CONFIG_JSON_FILE_PATH") ?: "/../..";
+    $this->filePath = __DIR__ . $envPath . "/config.json";
   }
 
   public function getVersion(): string
