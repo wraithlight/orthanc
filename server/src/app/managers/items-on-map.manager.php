@@ -73,15 +73,15 @@ class ItemsOnMapManager
       array_push(
         $itemsOnMap,
         createItem(
-          "ITEM_CHEST_ORB",
-          "item_chest",
+          "ITEM_ORB",
+          "item_orb",
           1,
           0,
           1 * self::ORB_WEIGHT,
           true,
-          "Loot chest",
+          "Pick up Orb!",
           "You picked up the Orb! Run to the entrance!",
-          "You see a chest",
+          "You see the Orb!",
           $tileCoordinates[$randomIndex]["x"],
           $tileCoordinates[$randomIndex]["y"],
         )
@@ -103,15 +103,15 @@ class ItemsOnMapManager
       array_push(
         $itemsOnMap,
         createItem(
-          "ITEM_CHEST_GRAIL",
-          "item_chest",
+          "ITEM_GRAIL",
+          "item_grail",
           1,
           0,
           1 * self::GRAIL_WEIGHT,
           true,
-          "Loot chest",
+          "Pick up Grail!",
           "You picked up the Grail! Run to the entrance!",
-          "You see a chest",
+          "You see the Grail!",
           $tileCoordinates[$randomIndex]["x"],
           $tileCoordinates[$randomIndex]["y"],
         )
