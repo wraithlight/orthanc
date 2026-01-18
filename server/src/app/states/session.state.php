@@ -10,7 +10,7 @@ class SessionState extends BaseState {
     return $this->readState(self::PLAYER_NAME);
   }
 
-  public function getPlayerName(string $name): string {
+  public function getPlayerName(): string {
     return $this->readState(self::PLAYER_NAME);
   }
 
