@@ -158,13 +158,13 @@ class ActionsManager
     $currentGold = $this->_stateService->getCharacterStatsMoney();
     $this->_stateService->setCharacterStatsMoney($currentGold + $currentItem->wealth);
 
-    if ($currentItem->key === "ITEM_CHEST_ORB") {
+    if ($currentItem->key === "ITEM_ORB") {
       $this->_stateService->setHasOrb(true);
       $spells = $this->_stateService->getCharacterSpellsOn();
       array_push($spells, C_SPELL_ORB);
       $this->_stateService->setCharacterSpellsOn($spells);
     }
-    if ($currentItem->key === "ITEM_CHEST_GRAIL") {
+    if ($currentItem->key === "ITEM_GRAIL") {
       $this->_stateService->setHasGrail(true);
       $spells = $this->_stateService->getCharacterSpellsOn();
       array_push($spells, C_SPELL_GRAIL);
