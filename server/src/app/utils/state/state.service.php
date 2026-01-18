@@ -17,6 +17,7 @@ class StateService
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON";
   const MAP_FULL = "MAP_FULL";
   const INVENTORY_ORB = "INVENTORY_ORB";
+  const INVENTORY_GRAIL = "INVENTORY_GRAIL";
   const GAME_START_TIME = "GAME_START_TIME";
   const PREVIOUS_GAME_STATE_KEY = "GAME_STATE_PREVIOUS";
 
@@ -192,6 +193,16 @@ class StateService
   public function setHasOrb(bool $hasOrb)
   {
     return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
+  }
+
+  public function getHasGrail(): bool
+  {
+    return $this->readFromSessionState(self::INVENTORY_GRAIL);
+  }
+
+  public function setHasGrail(bool $hasGrail)
+  {
+    return $this->writeToSessionState(self::INVENTORY_GRAIL, $hasGrail);
   }
 
   private function readFromSessionState($key)

@@ -51,6 +51,7 @@ class GameController
     $stateService->setEquipmentBow("NORMAL");
     $stateService->setEquipmentArrows(0);
     $stateService->setHasOrb(false);
+    $stateService->setHasGrail(false);
     // Stats
     $playerService->setCurrentHitsToMax();
     $stateService->setCharacterStatsMoney(0);
@@ -382,8 +383,9 @@ class GameController
     $playerLocationService = new PlayerLocationService();
 
     $hasOrb = $stateService->getHasOrb();
+    $hasGrail = $stateService->getHasGrail();
 
-    $hasWinItems = $hasOrb;
+    $hasWinItems = $hasOrb && $hasGrail;
     $isAlive = $playerService->isAlive();
     $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
