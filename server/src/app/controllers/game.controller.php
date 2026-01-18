@@ -123,11 +123,11 @@ class GameController
     $gameState = $this->getGameState();
     $previousGameState = $stateService->getPreviousGameState();
 
+    $playerName = $sessionService->getPlayerName();
     if ($gameState === GameState::EndSuccess && $previousGameState !== GameState::EndSuccess) {
       $configService = new ConfigService();
       $userInteractionsService = new UserInteractionsService();
 
-      $playerName = $sessionService->getPlayerName();
       $hallOfFameService->addUser(
         $playerName,
         $this->_sessionManager->getSessionId(),
