@@ -7,6 +7,7 @@
     "gha:build:prod": "vite build -- --environment=production",
     "gha:build:canary": "vite build -- --environment=canary",
     "gha:build:development": "vite build -- --environment=development",
+    "gha:lint": "echo 0",
     "dev": "vite",
     "build": "vite build"
   },
