@@ -14,9 +14,11 @@ class StateService
   const CHARACTER_STATS_WEIGHT = "CHARACTER_STATS_WEIGHT"; // on-demand calculation (inventory + equipment)
   const CHARACTER_SPELLS_ON = "CHARACTER_SPELLS_ON"; // spells
   const MAP_FULL = "MAP_FULL"; // map
-  const INVENTORY_ORB = "INVENTORY_ORB"; // inventory (+ grail)
+  const INVENTORY_ORB = "INVENTORY_ORB"; // inventory
+  const INVENTORY_GRAIL = "INVENTORY_GRAIL"; // inventory
   const GAME_START_TIME = "GAME_START_TIME"; // session
   const PREVIOUS_GAME_STATE_KEY = "GAME_STATE_PREVIOUS"; // game state
+
 
   public function setPreviousGameState(GameState $state) {
     $this->writeToSessionState(self::PREVIOUS_GAME_STATE_KEY, $state);
@@ -170,6 +172,16 @@ class StateService
   public function setHasOrb(bool $hasOrb)
   {
     return $this->writeToSessionState(self::INVENTORY_ORB, $hasOrb);
+  }
+
+  public function getHasGrail(): bool
+  {
+    return $this->readFromSessionState(self::INVENTORY_GRAIL);
+  }
+
+  public function setHasGrail(bool $hasGrail)
+  {
+    return $this->writeToSessionState(self::INVENTORY_GRAIL, $hasGrail);
   }
 
   private function readFromSessionState($key)

@@ -4,6 +4,7 @@ class ItemsOnMapManager
 {
   private const GOLD_WEIGHT = 1;
   private const ORB_WEIGHT = 1000;
+  private const GRAIL_WEIGHT = 1000;
   private const WEIGHT_SWORD = 20;
   private const WEIGHT_SHIELD = 50;
   private const WEIGHT_ARMOR = 100;
@@ -12,6 +13,7 @@ class ItemsOnMapManager
   private const GOLD_PURE_PERCENTAGE_ON_MAP = 2;
   private const GOLD_CHEST_PERCENTAGE_ON_MAP = 2;
   private const NUMBER_OF_ORBS = 1;
+  private const NUMBER_OF_GRAILS = 1;
 
   private $_itemsService;
 
@@ -44,6 +46,7 @@ class ItemsOnMapManager
     );
 
     $orb = $this->getOrbsOnMap(self::NUMBER_OF_ORBS, $tileCoordinates);
+    $grail = $this->getGrailsOnMap(self::NUMBER_OF_GRAILS, $tileCoordinates);
     $chests = $this->getChestsOnMap($itemsInChests, $tileCoordinates);
 
     $this->_itemsService->setItemsOnMap(
@@ -51,6 +54,7 @@ class ItemsOnMapManager
         ...$pureGoldOnMap,
         ...$chestGoldOnMap,
         ...$orb,
+        ...$grail,
         ...$chests
       ]
     );
@@ -77,6 +81,36 @@ class ItemsOnMapManager
           true,
           "Loot chest",
           "You picked up the Orb! Run to the entrance!",
+          "You see a chest",
+          $tileCoordinates[$randomIndex]["x"],
+          $tileCoordinates[$randomIndex]["y"],
+        )
+      );
+    }
+    return $itemsOnMap;
+  }
+
+  /**
+   * @return Item[]
+   */
+  private function getGrailsOnMap(
+    int $number,
+    array $tileCoordinates
+  ): array {
+    $itemsOnMap = [];
+    for ($i = 0; $i < $number; $i++) {
+      $randomIndex = array_rand($tileCoordinates, 1);
+      array_push(
+        $itemsOnMap,
+        createItem(
+          "ITEM_CHEST_GRAIL",
+          "item_chest",
+          1,
+          0,
+          1 * self::GRAIL_WEIGHT,
+          true,
+          "Loot chest",
+          "You picked up the Grail! Run to the entrance!",
           "You see a chest",
           $tileCoordinates[$randomIndex]["x"],
           $tileCoordinates[$randomIndex]["y"],
