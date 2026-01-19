@@ -25,6 +25,23 @@
   box-sizing: border-box;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
+  position: relative;
+}
+
+.game-view-endgame-items {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}
+
+.game-view-endgame-items > img{
+  background-color: #ffa500;
+  height: 32px;
+  margin-top: 4px;
+  margin-right: 8px;
 }
 
 .game-tile {

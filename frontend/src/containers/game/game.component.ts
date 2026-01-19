@@ -26,6 +26,7 @@ export class GameContainer {
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
   public readonly events = observableArray([]);
+  public readonly endgameItemIcons = observableArray([]);
 
   public readonly characterDexterity = observable(0);
   public readonly characterIntelligence = observable(0);
@@ -120,6 +121,7 @@ export class GameContainer {
       this.activeSpells(m.activeSpells);
       this.gameState(m.gameState);
       this.events(m.events);
+      this.endgameItemIcons(m.endgameItems.map((o: any) => o.iconName));
       this.minimapState(m.minimapState);
 
       if (this.gameState() !== "GAME_RUNNING") {

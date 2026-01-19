@@ -264,7 +264,8 @@ class GameController
           ],
           $tiles
         ),
-        "minimapState" => $minimapState
+        "minimapState" => $minimapState,
+        "endgameItems" => $this->getEndgameItems()
       ]
     ]);
   }
@@ -391,6 +392,19 @@ class GameController
     $isAtStartPoint = $playerLocationService->isAtInitialLocation();
 
     return $hasWinItems && $isAlive && $isAtStartPoint;
+  }
+
+  private function getEndgameItems(): array {
+    $endgameItems = [];
+
+    $stateService = new StateService();
+    $hasOrb = $stateService->getHasOrb();
+    $hasGrail = $stateService->getHasGrail();
+
+    $hasOrb && array_push($endgameItems, ["key" => "ITEM_ORB", "iconName" => "item_orb"]);
+    $hasGrail && array_push($endgameItems, ["key" => "ITEM_GRAIL", "iconName" => "item_grail"]);
+
+    return $endgameItems;
   }
 
 }
