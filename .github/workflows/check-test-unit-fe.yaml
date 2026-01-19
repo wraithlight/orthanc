@@ -1,0 +1,27 @@
+name: "GHA - FE test (unit)"
+run-name: "Test (unit) Frontend"
+on: [push, workflow_dispatch]
+
+jobs:
+  frontendTestUnit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Volta
+        run: |
+          curl https://get.volta.sh | bash
+          echo "$HOME/.volta/bin" >> $GITHUB_PATH
+
+      - name: Install packages
+        run: |
+          volta install node yarn
+          yarn install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Run test (unit)
+        run: yarn gha:test:unit
+        working-directory: ./frontend

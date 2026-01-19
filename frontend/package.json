@@ -9,6 +9,7 @@
     "gha:build:development": "vite build -- --environment=development",
     "gha:lint": "echo 0",
     "gha:stylelint": "echo 0",
+    "gha:test:unit": "echo 0",
     "dev": "vite",
     "build": "vite build"
   },
