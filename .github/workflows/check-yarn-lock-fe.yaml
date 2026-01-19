@@ -1,0 +1,22 @@
+name: GHA - FE yarn.lock
+run-name: "yarn.lock Frontend"
+on: [pull_request]
+
+jobs:
+  frontendYarnlock:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Yarn Lock Changes
+        uses: Simek/yarn-lock-changes@main
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: frontend/yarn.lock
