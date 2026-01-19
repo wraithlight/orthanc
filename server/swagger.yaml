@@ -459,6 +459,19 @@ components:
                       type: string
                       enum: ["EMPTY", "WALL", "UNKNOWN"]
                       example: "UNKNOWN"
+                endgameItems:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                        enum: ["ITEM_ORB", "ITEM_GRAIL"]
+                        example: "ITEM_ORB"
+                      iconName:
+                        type: string
+                        enum: ["item_orb", "item_grail"]
+                        example: "item_orb"
 
     GameStartSuccessResponse:
       allOf:

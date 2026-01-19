@@ -20,6 +20,14 @@
         <!-- /ko -->
       </div>
       <!-- /ko -->
+      <div class="game-view-endgame-items">
+        <!-- ko if: endgameItemIcons().includes('item_grail') -->
+          <img data-bind="attr: { src: '/assets/item_grail.svg' }">
+        <!-- /ko -->
+        <!-- ko if: endgameItemIcons().includes('item_orb') -->
+          <img data-bind="attr: { src: '/assets/item_orb.svg' }">
+        <!-- /ko -->
+      </div>
     </div>
     <div class="game-feedback">
       <!-- ko foreach: events -->
