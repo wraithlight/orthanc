@@ -1,45 +1,74 @@
-.chat-box {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border: 2px solid #ffa500;
-}
+game-chat {
+  .chat-box {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border: var(--border-2px0-primary-solid);
+  }
 
-.chat-members {
-  height: 20%;
-  border-bottom: 2px solid #ffa500;
-  display: flex;
-  flex-direction: column;
-  overflow: scroll;
-  padding: 4px 8px;
-}
+  .chat-members {
+    height: 20%;
+    border-bottom: var(--border-2px0-primary-solid);
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    padding: var(--spacing-04) var(--spacing-08);
+  }
 
-.player {
-  font-weight: 700;
-}
+  .player {
+    font-weight: 700;
+  }
 
-.chat-messages {
-  flex-grow: 1;
-  overflow-y: scroll;
-  max-width: 281px;
-  padding: 4px;
-}
+  .chat-messages {
+    flex-grow: 1;
+    overflow-y: scroll;
+    max-width: 281px;
+    padding: var(--spacing-04);
+  }
 
-.chat-actions>form {
-  display: flex;
-}
+  .chat-actions>form {
+    display: flex;
+  }
 
-.chat-actions>form>button {
-  width: 30%;
-  border-right: 0;
-  border-bottom: 0 !important;
-}
+  .chat-actions>form>button {
+    width: 30%;
+    border-right: 0;
+    border-bottom: 0 !important;
+  }
 
-.chat-actions__input {
-  border-left: 0;
-  border-right: 0;
-  border-bottom: 0;
-}
-.chat-actions__input::placeholder {
-  color: #ffa500;
+  .chat-actions__input {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0;
+  }
+
+  .chat-actions__input {
+    width: 100%;
+    background: #000;
+    color: orange;
+    border-top: var(--border-1px0-primary-solid);
+    padding: var(--spacing-06);
+    font-family: inherit;
+    font-size: 16px;
+    &::placeholder {
+      color: var(--color-primary);
+    }
+  }
+
+  button {
+    background: #000;
+    color: var(--color-primary);
+    border-bottom: 0;
+    padding: var(--spacing-06) var(--spacing-16);
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    border: var(--border-2px0-primary-solid);
+
+    &:hover {
+      background: var(--color-primary);
+      color: #000;
+    }
+  }
 }
