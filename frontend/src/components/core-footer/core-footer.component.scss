@@ -1,17 +1,19 @@
-.core-footer {
-  padding-top: 4px;
-  width: 100%;
-  font-size: 0.6rem;
-  display: flex;
-  justify-content: end;
-}
+core-footer {
+  .core-footer {
+    padding-top: var(--spacing-04);
+    width: 100%;
+    font-size: 0.6rem;
+    display: flex;
+    justify-content: end;
 
-.core-footer > a {
-  color: #FFA500;
-  text-decoration: none;
-}
+    &>a {
+      color: var(--color-primary);
+      text-decoration: none;
 
-.core-footer > a::after {
-  content: "|";
-  padding-left: 2px;
+      &::after {
+        content: "|";
+        padding-left: var(--spacing-02);
+      }
+    }
+  }
 }

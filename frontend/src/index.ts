@@ -10,7 +10,9 @@ import { SELECTOR } from "./app.selector";
 import TEMPLATE from "./app.template.html?raw";
 import { State } from "./state";
 
-import "./normalize.scss";
+import "./assets/styles/normalize.scss";
+import "./assets/styles/variables.scss";
+import "./assets/styles/_dialog.scss";
 import "./global.scss";
 
 import.meta.glob('./components/**/index.ts', { eager: true });
