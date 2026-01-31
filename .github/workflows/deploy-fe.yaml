@@ -12,7 +12,22 @@ jobs:
     env:
       DEPLOY_ENV: ${{ github.event.client_payload.env }}
     steps:
-      - uses: actions/checkout@v3
+      - name: Validate deploy source branch
+        shell: bash
+        run: |
+          set -e
+
+          REF="${GITHUB_REF#refs/heads/}"
+          TARGET_ENV="${{ github.event.client_payload.env }}"
+
+          if [[ ("$TARGET_ENV" == "PROD" || "$TARGET_ENV" == "CANARY") && "$REF" != release/* ]]; then
+            echo "❌ $TARGET_ENV deployments must run from release/* branches"
+            exit 1
+          fi
+
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.client_payload.target_branch }}
 
       - name: Install Volta
         run: |
