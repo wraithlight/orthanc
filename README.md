@@ -79,6 +79,7 @@ The `package.json` file under `frontend` contains the following scripts:
   gha:build:development - Used by GitHub | Runs the build with development env.
   gha:lint              - Used by GitHub | Runs the linter over the typescript codebase.
   gha:stylelint         - Used by GitHub | Runs the linter over the SCSS/CSS codebase.
+  gha:test:unit         - Used by GitHub | Runs the unit tests for frontend.
   dev                   - Runs the FE locally on port 3000.
   build                 - Runs the build with local-development env.
 
