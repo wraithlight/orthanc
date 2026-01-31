@@ -82,9 +82,8 @@ class ItemsOnMapManager
           "Pick up Orb!",
           "You picked up the Orb! Run to the entrance!",
           "You see the Orb!",
-          2,1
-          // $tileCoordinates[$randomIndex]["x"],
-          // $tileCoordinates[$randomIndex]["y"],
+          $tileCoordinates[$randomIndex]["x"],
+          $tileCoordinates[$randomIndex]["y"],
         )
       );
     }
@@ -113,9 +112,8 @@ class ItemsOnMapManager
           "Pick up Grail!",
           "You picked up the Grail! Run to the entrance!",
           "You see the Grail!",
-          3,1
-          // $tileCoordinates[$randomIndex]["x"],
-          // $tileCoordinates[$randomIndex]["y"],
+          $tileCoordinates[$randomIndex]["x"],
+          $tileCoordinates[$randomIndex]["y"],
         )
       );
     }
