@@ -1,0 +1,27 @@
+name: "GHA - FE knip"
+run-name: "Knip Frontend"
+on: [push, workflow_dispatch]
+
+jobs:
+  frontendKnip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Volta
+        run: |
+          curl https://get.volta.sh | bash
+          echo "$HOME/.volta/bin" >> $GITHUB_PATH
+
+      - name: Install packages
+        run: |
+          volta install node yarn
+          yarn install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Run knip
+        run: yarn gha:knip
+        working-directory: ./frontend
