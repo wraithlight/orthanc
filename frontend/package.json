@@ -8,6 +8,7 @@
     "gha:build:development": "vite build -- --environment=development",
     "gha:lint": "echo 0",
     "gha:stylelint": "echo 0",
+    "gha:htmlhint": "echo 0",
     "gha:test:unit": "echo 0",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
