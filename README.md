@@ -82,6 +82,7 @@ The `package.json` file under `frontend` contains the following scripts:
   gha:htmlhint          - Used by GitHub | Runs the htmlhint over the HTML codebase.
   gha:test:unit         - Used by GitHub | Runs the unit tests for frontend.
   gha:knip              - Used by GitHub | Runs the knip check for frontend.
+  gha:sherif            - Used by GitHub | Runs the sherif check for frontend.
   dev                   - Runs the FE locally on port 3000.
   build                 - Runs the build with local-development env.
 
