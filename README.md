@@ -10,6 +10,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 ## Get started
 
 **Requirements**
+* Composer installed
 * Docker installed
 * NodeJS installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 * yarn installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
@@ -51,6 +52,7 @@ To contribute this project, the following tools and plugins are suggested:
 * Docker Desktop
 * NodeJS **OR** volta
 * yarn **OR** volta
+* Composer
 
 **Plugins:**
 * Composer (https://marketplace.visualstudio.com/items?itemName=DEVSENSE.composer-php-vscode)
@@ -90,6 +92,7 @@ The `package.json` file under `frontend` contains the following scripts:
 
 ### Technical details
 The following technologies are used during the development of this game:
+* Composer
 * CSS
 * Docker
 * HTML
