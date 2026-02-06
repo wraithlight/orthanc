@@ -1,0 +1,10 @@
+{
+  "name": "orthanc/server",
+  "authors": [
+    {
+      "name": "kfarkasHU",
+      "email": "sohamar@farkask.eu"
+    }
+  ],
+  "require": {}
+}
