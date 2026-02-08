@@ -15,6 +15,19 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 * NodeJS installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 * yarn installed **OR** [volta installed](https://docs.volta.sh/guide/getting-started)
 
+**Set up your local environment**
+```sh
+
+git clone https://github.com/wraithlight/orthanc.git    # fork the repo
+cd orthanc                                              # navigate to the repo
+cd server                                               # navigate to server folder
+composer install                                        # install dependencies via composer
+cd ..                                                   # navigate to the repo root
+cd frontend                                             # navigate to frontend folder
+yarn                                                    # install dependencies via yarn
+
+```
+
 **Local development mode**
 ```sh
 
@@ -70,6 +83,15 @@ During Docker build, the `run-dev.sh` script will create its own docker image na
 | `run-local.sh`  | `orthanc-game-local`  | `orthanc-game-local`    |
 
 As you may see the Docker Image and the Docker Container have the same name.
+
+### BE scripts
+The `composer.json` file under `server` contains the following scripts:
+
+```sh
+
+  gha:test:unit         - Used by GitHub | Runs the unit tests for server.
+
+```
 
 ### FE scripts
 The `package.json` file under `frontend` contains the following scripts:
