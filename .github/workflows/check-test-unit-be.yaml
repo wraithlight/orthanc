@@ -20,7 +20,6 @@ jobs:
         working-directory: ./server
 
       - name: Install dependencies
-        working-directory: be
         run: composer install --no-interaction --prefer-dist
         working-directory: ./server
 
