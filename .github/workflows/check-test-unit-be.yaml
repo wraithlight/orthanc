@@ -1,0 +1,29 @@
+name: "GHA - BE test (unit)"
+run-name: "Test (unit) Backend"
+on: [push, workflow_dispatch]
+
+jobs:
+  backendTestUnit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          coverage: none
+        working-directory: ./server
+
+      - name: Install dependencies
+        working-directory: be
+        run: composer install --no-interaction --prefer-dist
+        working-directory: ./server
+
+      - name: Run test (unit)
+        run: composer gha:test:unit
+        working-directory: ./server
