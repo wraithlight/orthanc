@@ -13,11 +13,11 @@ jobs:
 
       - name: Set up PHP with Composer
         uses: shivammathur/setup-php@v2
+        working-directory: ./server
         with:
           php-version: '8.1'
           tools: composer
           coverage: none
-        working-directory: ./server
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
