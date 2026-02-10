@@ -64,7 +64,6 @@ jobs:
         run: |
           DATE=$(date +%Y%m%d)
           BRANCH="release/${DATE}_${{ steps.bump_version.outputs.new_version }}"
-          git checkout -b "$BRANCH"
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Create release branch
