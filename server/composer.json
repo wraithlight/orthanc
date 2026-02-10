@@ -1,0 +1,15 @@
+{
+  "name": "orthanc/server",
+  "authors": [
+    {
+      "name": "kfarkasHU",
+      "email": "sohamar@farkask.eu"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^10.0"
+  },
+  "scripts": {
+    "gha:test:unit": "phpunit --test-suffix spec.php ."
+  }
+}
