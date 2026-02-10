@@ -12,6 +12,8 @@ on:
           - major
           - minor
           - revision
+permissions:
+  contents: write
 
 jobs:
   release:
