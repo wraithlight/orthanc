@@ -1,0 +1,27 @@
+name: "GHA - FE sherif"
+run-name: "Sherif Frontend"
+on: [push, workflow_dispatch]
+
+jobs:
+  frontendSherif:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Volta
+        run: |
+          curl https://get.volta.sh | bash
+          echo "$HOME/.volta/bin" >> $GITHUB_PATH
+
+      - name: Install packages
+        run: |
+          volta install node yarn
+          yarn install --frozen-lockfile
+        working-directory: ./frontend
+
+      - name: Run sherif
+        run: yarn gha:sherif
+        working-directory: ./frontend
