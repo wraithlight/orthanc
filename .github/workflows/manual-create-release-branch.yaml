@@ -87,3 +87,4 @@ jobs:
           branch: '${{ steps.get_release_branch_name.outputs.branch }}'
           commit-message: "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
           title: 'downmerge: ${{ steps.bump_version.outputs.new_version }}'
+          author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
