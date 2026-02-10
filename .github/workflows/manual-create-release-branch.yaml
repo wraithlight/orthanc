@@ -89,7 +89,6 @@ jobs:
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ steps.create_branch.outputs.branch }}
-          title: "chore(*): RC of ${{ steps.bump_version.outputs.new_version }}"
+          branch: '${{ steps.create_branch.outputs.branch }}'
+          title: 'downmerge: ${{ github.event.inputs.version }} (${{ env.FOLDER }})'
