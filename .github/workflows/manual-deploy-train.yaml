@@ -1,4 +1,4 @@
-name: Deployment Train
+name: A) Deployment Train
 
 on:
   push:
