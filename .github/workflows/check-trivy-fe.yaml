@@ -1,0 +1,77 @@
+name: "GHA - FE trivy"
+run-name: "Trivy Frontend"
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  pull-requests: write
+
+jobs:
+  frontendTrivy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Create output folder
+        run: mkdir -p trivy-output
+
+      - name: Run Trivy scan
+        id: trivy
+        uses: aquasecurity/trivy-action@0.33.1
+        with:
+          scan-type: fs
+          input: ./frontend
+          vuln-type: library
+          format: json
+          output: trivy-output/result.json
+          exit-code: 1
+
+      - name: Build Markdown table
+        id: table
+        run: |
+          echo "### Trivy Scan Results" > table.md
+          echo "" >> table.md
+
+          if [ ! -s trivy-output/result.json ]; then
+            echo "**WRN**: No Trivy results!" >> table.md
+            exit 0
+          fi
+
+          VULNS=$(jq '.Results[].Vulnerabilities | length' trivy-output/result.json | awk '{sum += $1} END {print sum}')
+          if [ "$VULNS" -eq 0 ]; then
+            echo "**LOG**: No vulnerabilities was found." >> table.md
+            exit 0
+          fi
+
+          echo "| Package | CVE | Severity | Title |" >> table.md
+          echo "|---------|-----|----------|-------|" >> table.md
+
+          jq -r '
+            .Results[]?.Vulnerabilities[] |
+            [.PkgName, .VulnerabilityID, .Severity, .Title] |
+            @tsv
+          ' trivy-output/result.json | while IFS=$'\t' read -r pkg cve sev title; do
+            echo "| $pkg | $cve | $sev | $title |" >> table.md
+          done
+
+      - name: Find Comment
+        uses: peter-evans/find-comment@v3
+        id: fc
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: '### Trivy Scan Results'
+
+      - name: Post or update PR comment
+        if: github.event_name == 'pull_request'
+        uses: peter-evans/create-or-update-comment@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          body-path: table.md
+          edit-mode: replace
