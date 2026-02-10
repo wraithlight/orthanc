@@ -84,6 +84,6 @@ jobs:
         uses: peter-evans/create-pull-request@v5
         with:
           base: main
-          branch: '${{ steps.get_release_branch_name.outputs.get_release_branch_name }}'
+          branch: '${{ steps.get_release_branch_name.outputs.branch }}'
           commit-message: "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
           title: 'downmerge: ${{ steps.bump_version.outputs.new_version }}'
