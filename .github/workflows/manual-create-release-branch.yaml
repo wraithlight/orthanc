@@ -59,13 +59,20 @@ jobs:
           echo "New version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create release branch
-        id: create_branch
+      - name: Get release branch name
+        id: get_release_branch_name
         run: |
           DATE=$(date +%Y%m%d)
           BRANCH="release/${DATE}_${{ steps.bump_version.outputs.new_version }}"
           git checkout -b "$BRANCH"
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Create release branch
+        uses: peterjgrainger/action-create-branch@v2.2.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          branch: 'refs/heads/${{ steps.get_release_branch_name.outputs.branch }}'
 
       - name: Update version.json
         id: update_version
@@ -84,11 +91,11 @@ jobs:
         run: |
           git add version.json
           git commit -m "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
-          git push origin "${{ steps.create_branch.outputs.branch }}"
+          git push origin "${{ steps.get_release_branch_name.outputs.branch }}"
 
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           base: main
-          branch: '${{ steps.create_branch.outputs.branch }}'
-          title: 'downmerge: ${{ github.event.inputs.version }} (${{ env.FOLDER }})'
+          branch: '${{ steps.get_release_branch_name.outputs.get_release_branch_name }}'
+          title: 'downmerge: ${{ steps.bump_version.outputs.new_version }}'
