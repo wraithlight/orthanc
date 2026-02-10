@@ -64,14 +64,8 @@ jobs:
         run: |
           DATE=$(date +%Y%m%d)
           BRANCH="release/${DATE}_${{ steps.bump_version.outputs.new_version }}"
+          git checkout -b "$BRANCH"
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
-
-      - name: Create release branch
-        uses: peterjgrainger/action-create-branch@v2.2.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          branch: 'refs/heads/${{ steps.get_release_branch_name.outputs.branch }}'
 
       - name: Update version.json
         id: update_version
@@ -86,15 +80,10 @@ jobs:
             version.json > version.tmp.json
           mv version.tmp.json version.json
 
-      - name: Commit changes
-        run: |
-          git add version.json
-          git commit -m "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
-          git push origin "${{ steps.get_release_branch_name.outputs.branch }}"
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
           base: main
           branch: '${{ steps.get_release_branch_name.outputs.get_release_branch_name }}'
+          commit-message: "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
           title: 'downmerge: ${{ steps.bump_version.outputs.new_version }}'
