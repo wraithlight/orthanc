@@ -1,6 +1,6 @@
 name: GHA - FE yarn.lock
 run-name: "yarn.lock Frontend"
-on: [pull_request]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   frontendYarnlock:
