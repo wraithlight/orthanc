@@ -1,0 +1,93 @@
+name: A) Create release branch
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionType:
+        description: 'Version bump type'
+        required: true
+        default: 'revision'
+        type: choice
+        options:
+          - major
+          - minor
+          - revision
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Set up Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Read current version
+        id: read_version
+        run: |
+          VERSION=$(jq -r '.version' ./version.json)
+          echo "Current version: $VERSION"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        id: bump_version
+        run: |
+          IFS='.' read -r MAJOR MINOR REV <<< "${{ steps.read_version.outputs.version }}"
+          case "${{ github.event.inputs.versionType }}" in
+            major)
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              REV=0
+              ;;
+            minor)
+              MINOR=$((MINOR + 1))
+              REV=0
+              ;;
+            revision)
+              REV=$((REV + 1))
+              ;;
+          esac
+          NEW_VERSION="$MAJOR.$MINOR.$REV"
+          echo "New version: $NEW_VERSION"
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+
+      - name: Create release branch
+        id: create_branch
+        run: |
+          DATE=$(date +%Y%m%d)
+          BRANCH="release/${DATE}_${{ steps.bump_version.outputs.new_version }}"
+          git checkout -b "$BRANCH"
+          echo "branch=$BRANCH" >> $GITHUB_OUTPUT
+
+      - name: Update version.json
+        id: update_version
+        run: |
+          GIT_HASH=$(git rev-parse HEAD)
+          DATE_UTC=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          jq \
+            --arg ver "${{ steps.bump_version.outputs.new_version }}" \
+            --arg hash "$GIT_HASH" \
+            --arg date "$DATE_UTC" \
+            '.version=$ver | .gitHash=$hash | .releaseCutDateUtc=$date' \
+            version.json > version.tmp.json
+          mv version.tmp.json version.json
+
+      - name: Commit changes
+        run: |
+          git add version.json
+          git commit -m "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
+          git push origin "${{ steps.create_branch.outputs.branch }}"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          base: main
+          head: ${{ steps.create_branch.outputs.branch }}
+          title: "chore(*): RC of ${{ steps.bump_version.outputs.new_version }}"
