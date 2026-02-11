@@ -33,7 +33,7 @@ jobs:
       - name: Build Markdown table
         id: table
         run: |
-          echo "### Trivy Scan Results" > table.md
+          echo "### Trivy Scan Results (FE)" > table.md
           echo "" >> table.md
 
           if [ ! -s trivy-output/result.json ]; then
@@ -64,7 +64,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: '### Trivy Scan Results'
+          body-includes: '### Trivy Scan Results (FE)'
 
       - name: Post or update PR comment
         if: github.event_name == 'pull_request'
