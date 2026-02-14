@@ -56,6 +56,9 @@ open localhost:4100                                     # open the app in your b
 | `dev`   | `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`  | `3100`    | `3000`      |
 | `local` | `run-local-sh`  | `orthanc-game-local`  | `orthanc-game-local`  | `4100`    | self-hosted |
 
+## Repo-wide utilities
+If you are writing unit tests, you may press <kbd>F5</kbd> to run the spec file in the integrated terminal of Visual Studio Code.
+
 ## Contribution
 
 To contribute this project, the following tools and plugins are suggested:
@@ -109,6 +112,8 @@ The `package.json` file under `frontend` contains the following scripts:
   gha:sherif            - Used by GitHub | Runs the sherif check for frontend.
   dev                   - Runs the FE locally on port 3000.
   build                 - Runs the build with local-development env.
+  test:unit             - Runs the FE unit tests.
+  test:unit:coverage    - Runs the FE unit tests with coverage report.
 
 ```
 
@@ -122,6 +127,7 @@ The following technologies are used during the development of this game:
 * PHP
 * typescript/javascript
 * Vite
+* vitest
 * volta
 * yarn
 
