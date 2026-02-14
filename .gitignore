@@ -23,3 +23,6 @@ vite.config.ts.timestamp-*
 
 # PHP (Composer)
 server/vendor
+
+# vitest
+frontend/coverage
