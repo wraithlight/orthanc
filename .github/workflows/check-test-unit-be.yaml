@@ -1,6 +1,6 @@
 name: "GHA - BE test (unit)"
 run-name: "Test (unit) Backend"
-on: [push, workflow_dispatch]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   backendTestUnit:

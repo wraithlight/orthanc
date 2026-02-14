@@ -12,6 +12,9 @@ on:
           - major
           - minor
           - revision
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   release:
@@ -57,12 +60,12 @@ jobs:
           echo "New version: $NEW_VERSION"
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
 
-      - name: Create release branch
-        id: create_branch
+      - name: Get release branch name
+        id: get_release_branch_name
         run: |
           DATE=$(date +%Y%m%d)
           BRANCH="release/${DATE}_${{ steps.bump_version.outputs.new_version }}"
-          git checkout -b "$BRANCH"
+          # git checkout -b "$BRANCH"
           echo "branch=$BRANCH" >> $GITHUB_OUTPUT
 
       - name: Update version.json
@@ -78,16 +81,11 @@ jobs:
             version.json > version.tmp.json
           mv version.tmp.json version.json
 
-      - name: Commit changes
-        run: |
-          git add version.json
-          git commit -m "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
-          git push origin "${{ steps.create_branch.outputs.branch }}"
-
       - name: Create Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
           base: main
-          head: ${{ steps.create_branch.outputs.branch }}
-          title: "chore(*): RC of ${{ steps.bump_version.outputs.new_version }}"
+          branch: '${{ steps.get_release_branch_name.outputs.branch }}'
+          commit-message: "chore(*): RC ${{ steps.bump_version.outputs.new_version }}"
+          title: 'downmerge: ${{ steps.bump_version.outputs.new_version }}'
+          author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"

@@ -1,6 +1,6 @@
 name: "GHA - FE htmlhint"
 run-name: "Htmlhint Frontend"
-on: [push, workflow_dispatch]
+on: [push, pull_request, workflow_dispatch]
 
 jobs:
   frontendHtmlhint:
