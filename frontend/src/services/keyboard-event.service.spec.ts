@@ -39,7 +39,7 @@ describe("KeyboardEventService", () => {
   });
 
   it("should not throw if no listener exists", () => {
-    const service = KeyboardEventService.getInstance();
+    KeyboardEventService.getInstance();
 
     expect(() => {
       document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyZ" }));
@@ -86,6 +86,40 @@ describe("KeyboardEventService", () => {
 
     expect(first).not.toHaveBeenCalled();
     expect(second).toHaveBeenCalledTimes(1);
+  });
+
+  it("should unsubscribe and remove listener", () => {
+    const service = KeyboardEventService.getInstance();
+
+    const callback = vi.fn();
+    service.subscribe("KeyF" as any, callback);
+
+    service.unsubscribe("KeyF" as any);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyF" }));
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("should normalize key to lowercase when unsubscribing", () => {
+    const service = KeyboardEventService.getInstance();
+
+    const callback = vi.fn();
+    service.subscribe("KeyG" as any, callback);
+
+    service.unsubscribe("KEYG" as any);
+
+    document.dispatchEvent(new KeyboardEvent("keydown", { code: "KeyG" }));
+
+    expect(callback).not.toHaveBeenCalled();
+  });
+
+  it("should not throw when unsubscribing non-existing key", () => {
+    const service = KeyboardEventService.getInstance();
+
+    expect(() => {
+      service.unsubscribe("KeyUnknown" as any);
+    }).not.toThrow();
   });
 
 });

@@ -36,4 +36,8 @@ export class KeyboardEventService {
     this._listeners[key.toLowerCase()] = callback;
   }
 
+  public unsubscribe(key: KeyboardEventType): void {
+    delete this._listeners[key.toLowerCase()];
+  }
+
 }
