@@ -1,0 +1,22 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run Vitest current spec",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${env:HOME}/.volta/bin/node",
+      "program": "${workspaceFolder}/frontend/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "preLaunchTask": "check-frontend-spec"
+    }
+  ]
+}
