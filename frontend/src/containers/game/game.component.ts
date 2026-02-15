@@ -92,6 +92,10 @@ export class GameContainer {
 
     if (action === "EVENT_RETIRE") {
       this.shouldOpenRetireDialog(true);
+      this._keyboardEventService.subscribe("Enter", () => this.restartGame());
+      this._keyboardEventService.subscribe("KeyY", () => this.restartGame());
+      this._keyboardEventService.subscribe("KeyN", () => this.closeRetireDialog());
+      this._keyboardEventService.subscribe("Escape", () => this.closeRetireDialog());
       return;
     }
 
@@ -126,6 +130,10 @@ export class GameContainer {
 
       if (this.gameState() !== "GAME_RUNNING") {
         this.shouldOpenEndDialog(true);
+        this._keyboardEventService.subscribe("Enter", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("KeyO", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("Escape", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("KeyR", () => this.restartGame());
       }
 
       this.renderMinimap();
@@ -165,13 +173,21 @@ export class GameContainer {
 
   public closeEndDialog() {
     this.shouldOpenEndDialog(false);
+    this._keyboardEventService.unsubscribe("Enter");
+    this._keyboardEventService.unsubscribe("KeyO");
+    this._keyboardEventService.unsubscribe("Escape");
   }
 
   public restartGame() {
+    this._keyboardEventService.unsubscribe("KeyR");
+    this._keyboardEventService.unsubscribe("Enter");
+    this._keyboardEventService.unsubscribe("KeyY");
     Router.update(`/${SELECTOR}`);
   }
 
   public closeRetireDialog() {
+    this._keyboardEventService.unsubscribe("KeyN");
+    this._keyboardEventService.unsubscribe("Escape");
     this.shouldOpenRetireDialog(false);
   }
 
