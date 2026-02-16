@@ -1,4 +1,4 @@
-name: Deployment Train
+name: A) Deployment Train
 
 on:
   push:
@@ -39,8 +39,22 @@ jobs:
       contents: write
 
     steps:
+      - name: Validate deploy source branch
+        shell: bash
+        run: |
+          set -e
+
+          REF="${GITHUB_REF#refs/heads/}"
+          TARGET_ENV="${{ github.event.inputs.target_env }}"
+
+          if [[ ("$TARGET_ENV" == "PROD" || "$TARGET_ENV" == "CANARY") && "$REF" != release/* ]]; then
+            echo "❌ $TARGET_ENV deployments must run from release/* branches"
+            exit 1
+          fi
+
       - name: Set deployment environment
         run: |
+          echo "TARGET_BRANCH=$(git rev-parse --abbrev-ref HEAD)" >> $GITHUB_ENV
           if [ "${GITHUB_EVENT_NAME}" = "push" ]; then
             echo "DEPLOY_ENV=DEV" >> $GITHUB_ENV
             echo "DEPLOY_BE=true" >> $GITHUB_ENV
@@ -60,7 +74,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: deploy_be
-          client-payload: '{"env": "${{ env.DEPLOY_ENV }}"}'
+          client-payload: '{"env": "${{ env.DEPLOY_ENV }}", "target_branch": "${{ env.TARGET_BRANCH }}"}'
 
       - name: Dispatch Frontend Deploy
         if: env.DEPLOY_FE == 'true'
@@ -69,7 +83,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: deploy_fe
-          client-payload: '{"env": "${{ env.DEPLOY_ENV }}"}'
+          client-payload: '{"env": "${{ env.DEPLOY_ENV }}", "target_branch": "${{ env.TARGET_BRANCH }}"}'
 
       - name: Dispatch MAZE Deploy
         if: env.DEPLOY_MAZE == 'true'
@@ -78,4 +92,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: deploy_maze
-          client-payload: '{"env": "${{ env.DEPLOY_ENV }}"}'
+          client-payload: '{"env": "${{ env.DEPLOY_ENV }}", "target_branch": "${{ env.TARGET_BRANCH }}"}'

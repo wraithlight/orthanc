@@ -9,23 +9,29 @@
     "gha:lint": "echo 0",
     "gha:stylelint": "echo 0",
     "gha:htmlhint": "echo 0",
-    "gha:test:unit": "echo 0",
+    "gha:test:unit": "vitest run --coverage",
     "gha:sherif": "echo 0",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
-    "build": "vite build"
+    "build": "vite build",
+    "test:unit": "vitest run",
+    "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
     "@profiscience/knockout-contrib-router": "2.1.5",
     "knockout": "3.5.1"
   },
   "devDependencies": {
+    "@types/jsdom": "27.0.0",
     "@types/knockout": "3.4.77",
     "@types/node": "25.0.3",
+    "@vitest/coverage-v8": "4.0.18",
+    "jsdom": "28.0.0",
     "knip": "5.82.1",
     "sass": "1.97.1",
     "typescript": "5.9.3",
-    "vite": "7.3.0"
+    "vite": "7.3.0",
+    "vitest": "4.0.18"
   },
   "volta": {
     "node": "24.12.0",

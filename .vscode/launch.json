@@ -1,0 +1,42 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Run spec (auto)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${env:HOME}/.volta/bin/node",
+      "program": "${workspaceFolder}/.vscode/scripts/run-unit-tests.js",
+      "console": "integratedTerminal",
+      "env": {
+        "VSCODE_FILE": "${file}",
+        "WORKSPACE": "${workspaceFolder}"
+      }
+    },
+    {
+      "name": "Run spec (TS)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "${env:HOME}/.volta/bin/node",
+      "program": "${workspaceFolder}/frontend/node_modules/vitest/vitest.mjs",
+      "args": [
+        "run",
+        "${file}"
+      ],
+      "cwd": "${workspaceFolder}/frontend",
+      "console": "integratedTerminal",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "preLaunchTask": "check-frontend-spec"
+    },
+    {
+      "name": "Run spec (PHP)",
+      "type": "node-terminal",
+      "request": "launch",
+      "command": "vendor/bin/phpunit ${file}",
+      "cwd": "${workspaceFolder}/server",
+      "preLaunchTask": "check-server-spec"
+    }
+  ]
+}

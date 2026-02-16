@@ -1,5 +1,5 @@
-name: "GHA - FE trivy"
-run-name: "Trivy Frontend"
+name: "GHA - BE trivy"
+run-name: "Trivy Backend"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  frontendTrivy:
+  backendTrivy:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,7 +24,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: fs
-          input: ./frontend
+          input: ./server
           vuln-type: library
           format: json
           output: trivy-output/result.json
@@ -33,7 +33,7 @@ jobs:
       - name: Build Markdown table
         id: table
         run: |
-          echo "### Trivy Scan Results (FE)" > table.md
+          echo "### Trivy Scan Results (BE)" > table.md
           echo "" >> table.md
 
           if [ ! -s trivy-output/result.json ]; then
@@ -64,7 +64,7 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
-          body-includes: '### Trivy Scan Results (FE)'
+          body-includes: '### Trivy Scan Results (BE)'
 
       - name: Post or update PR comment
         if: github.event_name == 'pull_request'
