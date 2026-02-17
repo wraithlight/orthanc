@@ -1,0 +1,23 @@
+:root {
+  // color
+  --color-primary: #ffa500;
+  --color-surface: #000000;
+
+  // spacing
+  --spacing-00: 00px;
+  --spacing-02: 02px;
+  --spacing-04: 04px;
+  --spacing-06: 06px;
+  --spacing-08: 08px;
+  --spacing-10: 10px;
+  --spacing-12: 12px;
+  --spacing-16: 16px;
+  --spacing-18: 18px;
+  --spacing-20: 20px;
+  --spacing-22: 22px;
+  --spacing-24: 24px;
+
+  --border-0px5-primary-solid: solid 0.5px var(--color-primary);
+  --border-1px0-primary-solid: solid 001px var(--color-primary);
+  --border-2px0-primary-solid: solid 002px var(--color-primary);
+}

@@ -1,0 +1,37 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "check-frontend-spec",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "-e",
+        "const path=require(\"path\"); const file=process.env.VSCODE_FILE||\"\"; const root=process.env.WORKSPACE||\"\"; const rel=path.relative(root,file).split(path.sep).join(\"/\"); if(!/^frontend\\/.*\\.spec\\.ts$/.test(rel)){ console.error(\"Open a *.spec.ts file inside /frontend from repo root\"); process.exit(1); }"
+      ],
+      "options": {
+        "env": {
+          "VSCODE_FILE": "${file}",
+          "WORKSPACE": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "check-server-spec",
+      "type": "shell",
+      "command": "node",
+      "args": [
+        "-e",
+        "const path=require(\"path\"); const file=process.env.VSCODE_FILE||\"\"; const root=process.env.WORKSPACE||\"\"; const rel=path.relative(root,file).split(path.sep).join(\"/\"); if(!/^server\\/.*\\.spec\\.php$/.test(rel)){ console.error(\"Open a *.spec.php file inside /server from repo root\"); process.exit(1); }"
+      ],
+      "options": {
+        "env": {
+          "VSCODE_FILE": "${file}",
+          "WORKSPACE": "${workspaceFolder}"
+        }
+      },
+      "problemMatcher": []
+    },
+  ]
+}

@@ -92,6 +92,10 @@ export class GameContainer {
 
     if (action === "EVENT_RETIRE") {
       this.shouldOpenRetireDialog(true);
+      this._keyboardEventService.subscribe("Enter", () => this.restartGame());
+      this._keyboardEventService.subscribe("KeyY", () => this.restartGame());
+      this._keyboardEventService.subscribe("KeyN", () => this.closeRetireDialog());
+      this._keyboardEventService.subscribe("Escape", () => this.closeRetireDialog());
       return;
     }
 
@@ -126,6 +130,10 @@ export class GameContainer {
 
       if (this.gameState() !== "GAME_RUNNING") {
         this.shouldOpenEndDialog(true);
+        this._keyboardEventService.subscribe("Enter", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("KeyO", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("Escape", () => this.closeEndDialog());
+        this._keyboardEventService.subscribe("KeyR", () => this.restartGame());
       }
 
       this.renderMinimap();
@@ -147,16 +155,17 @@ export class GameContainer {
     const cellWidth = Math.floor(canvas.width / cols);
     const cellHeight = Math.floor(canvas.height / rows);
 
+    const primaryColor = window.getComputedStyle(document.body).getPropertyValue('--color-primary');
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
-        if (this.minimapState()[y][x] === 'WALL') ctx.fillStyle = '#ffa500';
+        if (this.minimapState()[y][x] === 'WALL') ctx.fillStyle = primaryColor;
         else if (this.minimapState()[y][x] === 'PLAYER') ctx.fillStyle = '#FF0000';
         else ctx.fillStyle = '#000000';
 
         ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
 
         if (this.minimapState()[y][x] === 'EMPTY') {
-          ctx.fillStyle = '#ffa500';
+          ctx.fillStyle = primaryColor;
           ctx.fillRect(x * cellWidth + cellWidth / 3, y * cellHeight + cellHeight / 3, cellWidth / 3, cellHeight / 3);
         }
       }
@@ -165,13 +174,21 @@ export class GameContainer {
 
   public closeEndDialog() {
     this.shouldOpenEndDialog(false);
+    this._keyboardEventService.unsubscribe("Enter");
+    this._keyboardEventService.unsubscribe("KeyO");
+    this._keyboardEventService.unsubscribe("Escape");
   }
 
   public restartGame() {
+    this._keyboardEventService.unsubscribe("KeyR");
+    this._keyboardEventService.unsubscribe("Enter");
+    this._keyboardEventService.unsubscribe("KeyY");
     Router.update(`/${SELECTOR}`);
   }
 
   public closeRetireDialog() {
+    this._keyboardEventService.unsubscribe("KeyN");
+    this._keyboardEventService.unsubscribe("Escape");
     this.shouldOpenRetireDialog(false);
   }
 

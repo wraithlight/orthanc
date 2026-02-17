@@ -27,7 +27,7 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.target_branch }}
 
-      - name: Deploy to FTP
+      - name: Deploy to Server FTP
         uses: ./.github/actions/deploy-ftp
         with:
           ftp_host: ${{ secrets.FTP_HOST }}
@@ -35,3 +35,12 @@ jobs:
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_SERVER_FOLDER }}
           local_dir: "./server/src"
+
+      - name: Deploy to Swadoc FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_SWADOC_FOLDER }}
+          local_dir: "./docs-api"

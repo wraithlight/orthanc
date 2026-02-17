@@ -32,7 +32,7 @@ When this workflow triggers another one, it sends the following payload:
 
 ```
 
-This workflow can be found [here](https://github.com/wraithlight/orthanc/blob/main/.github/workflows/deploy-train.yaml), and can be triggered [here](https://github.com/wraithlight/orthanc/actions/workflows/deploy-train.yaml).
+This workflow can be found [here](https://github.com/wraithlight/orthanc/blob/main/.github/workflows/manual-deploy-train.yaml), and can be triggered [here](https://github.com/wraithlight/orthanc/actions/workflows/manual-deploy-train.yaml).
 
 ### `FTP - Deploy FRONTEND`
 This workflow is responsible for building the frontend application then copy it into the FTP.
@@ -48,7 +48,7 @@ The workflow uses the `env` payload property passed from the train. Based on tha
 This workflow can be found [here](https://github.com/wraithlight/orthanc/blob/main/.github/workflows/deploy-maze.yaml), and the runs can be checked [here](https://github.com/wraithlight/orthanc/actions/workflows/deploy-maze.yaml).
 
 ### `FTP - Deploy SERVER`
-This workflow is responsible for deploying the backend code to the FTP.
+This workflow is responsible for deploying the backend code and the API swadoc to the FTP.
 
 The workflow uses the `env` payload property passed from the train. Based on that it sets the GH Environment to read the [secrets](./REPOSITORY-SECRETS.md) from it.
 
