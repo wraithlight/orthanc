@@ -1,7 +1,9 @@
 name: "GHA - FE trivy"
 run-name: "Trivy Frontend"
 
-on: [push, pull_request, workflow_dispatch]
+on:
+  pull_request:
+  workflow_dispatch:
 
 permissions:
   pull-requests: write
