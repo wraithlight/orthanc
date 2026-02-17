@@ -20,8 +20,8 @@ jobs:
         run: |
           volta install node yarn
           yarn install --frozen-lockfile
-        working-directory: ./frontend
+        working-directory: ./src-frontend
 
       - name: Run sherif
         run: yarn gha:sherif
-        working-directory: ./frontend
+        working-directory: ./src-frontend

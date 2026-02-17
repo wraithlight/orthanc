@@ -38,7 +38,7 @@ jobs:
         run: |
           volta install node yarn
           yarn install --frozen-lockfile
-        working-directory: ./frontend
+        working-directory: ./src-frontend
 
       - name: Run build
         run: |
@@ -49,7 +49,7 @@ jobs:
           else
             yarn gha:build:development
           fi
-        working-directory: ./frontend
+        working-directory: ./src-frontend
 
       - name: Deploy to FTP
         uses: ./.github/actions/deploy-ftp
@@ -58,4 +58,4 @@ jobs:
           ftp_user: ${{ secrets.FTP_USER }}
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_FRONTEND_FOLDER }}
-          local_dir: "./frontend/dist"
+          local_dir: "./src-frontend/dist"

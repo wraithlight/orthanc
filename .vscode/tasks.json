@@ -7,7 +7,7 @@
       "command": "node",
       "args": [
         "-e",
-        "const path=require(\"path\"); const file=process.env.VSCODE_FILE||\"\"; const root=process.env.WORKSPACE||\"\"; const rel=path.relative(root,file).split(path.sep).join(\"/\"); if(!/^frontend\\/.*\\.spec\\.ts$/.test(rel)){ console.error(\"Open a *.spec.ts file inside /frontend from repo root\"); process.exit(1); }"
+        "const path=require(\"path\"); const file=process.env.VSCODE_FILE||\"\"; const root=process.env.WORKSPACE||\"\"; const rel=path.relative(root,file).split(path.sep).join(\"/\"); if(!/^src-frontend\\/.*\\.spec\\.ts$/.test(rel)){ console.error(\"Open a *.spec.ts file inside /src-frontend from repo root\"); process.exit(1); }"
       ],
       "options": {
         "env": {
