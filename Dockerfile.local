@@ -9,7 +9,7 @@ ENV VOLTA_HOME=/root/.volta
 ENV PATH=$VOLTA_HOME/bin:$PATH
 
 WORKDIR /temp
-COPY frontend /temp
+COPY src-frontend /temp
 
 RUN volta install node yarn
 RUN yarn --frozen-lockfile

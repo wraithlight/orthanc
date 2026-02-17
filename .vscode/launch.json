@@ -18,12 +18,12 @@
       "type": "node",
       "request": "launch",
       "runtimeExecutable": "${env:HOME}/.volta/bin/node",
-      "program": "${workspaceFolder}/frontend/node_modules/vitest/vitest.mjs",
+      "program": "${workspaceFolder}/src-frontend/node_modules/vitest/vitest.mjs",
       "args": [
         "run",
         "${file}"
       ],
-      "cwd": "${workspaceFolder}/frontend",
+      "cwd": "${workspaceFolder}/src-frontend",
       "console": "integratedTerminal",
       "skipFiles": [
         "<node_internals>/**"
