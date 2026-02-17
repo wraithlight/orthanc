@@ -28,8 +28,9 @@ namespace PhpAPI2 {
         throw new \Error("The request method was not found!");
 
       $requestedPathRef = Url::GetRequestedPath($chopped[0], $paths);
-      if (is_null($requestedPathRef))
+      if (is_null($requestedPathRef)) {
         throw new \Error("The requested path was not found!");
+      }
 
       $requestUriParams = Params::GetUriParams($chopped[0], $requestedPathRef->RelativeUri);
       $requestBodyParams = Params::GetBodyParams($_SERVER);

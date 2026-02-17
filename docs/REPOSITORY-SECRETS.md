@@ -9,3 +9,4 @@ The following secrets must be created within the repository for each environment
 | `FTP_SERVER_FOLDER`   | `string`    | `/`                | The folder where the PHP code will be copied during development. |
 | `FTP_FRONTEND_FOLDER` | `string`    | `/`                | The folder on the FTP server where the FE dist will be copied. |
 | `FTP_MAZE_FOLDER`     | `string`    | `/`                | The folder where the maze file will be copied. |
+| `FTP_SWADOC_FOLDER`   | `string`    | `/api-docs`        | The folder where the swadoc file will be copied. |
