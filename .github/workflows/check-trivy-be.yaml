@@ -24,7 +24,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.33.1
         with:
           scan-type: fs
-          input: ./server
+          input: ./src-server
           vuln-type: library
           format: json
           output: trivy-output/result.json

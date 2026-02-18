@@ -34,4 +34,4 @@ jobs:
           ftp_user: ${{ secrets.FTP_USER }}
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_MAZE_FOLDER }}
-          local_dir: "./server/game-data"
+          local_dir: "./src-server/game-data"

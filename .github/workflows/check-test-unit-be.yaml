@@ -20,8 +20,8 @@ jobs:
 
       - name: Install dependencies
         run: composer install --no-interaction --prefer-dist
-        working-directory: ./server
+        working-directory: ./src-server
 
       - name: Run test (unit)
         run: composer gha:test:unit
-        working-directory: ./server
+        working-directory: ./src-server

@@ -17,8 +17,8 @@ RUN yarn build
 
 FROM php:8.1.0-apache AS runner
 COPY --from=install /temp/dist /var/www/html
-COPY server/src /var/www/html
-COPY server/game-data /var/www/game-data
+COPY src-server/src /var/www/html
+COPY src-server/game-data /var/www/game-data
 COPY docs-api /var/www/docs-api
 
 RUN mkdir -p /var/www/data \
