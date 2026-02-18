@@ -22,4 +22,4 @@ jobs:
         uses: Simek/yarn-lock-changes@main
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          path: ./src-frontend/yarn.lock
+          path: src-frontend/yarn.lock
