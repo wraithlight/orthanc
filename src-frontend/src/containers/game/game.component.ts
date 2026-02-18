@@ -86,6 +86,8 @@ export class GameContainer {
     action: string,
     payload: string | null
   ): void {
+    this._keyboardEventService.unsubscribe("Space");
+
     if (this.shouldOpenRetireDialog() || this.shouldOpenEndDialog()) {
       return;
     }
@@ -134,6 +136,14 @@ export class GameContainer {
         this._keyboardEventService.subscribe("KeyO", () => this.closeEndDialog());
         this._keyboardEventService.subscribe("Escape", () => this.closeEndDialog());
         this._keyboardEventService.subscribe("KeyR", () => this.restartGame());
+      }
+
+      const pickupAction = this.getPickupAction(this.actions());
+      if (pickupAction) {
+        this._keyboardEventService.subscribe("Space", () => this.actionHandler(
+          pickupAction.key,
+          pickupAction.payload
+        ));
       }
 
       this.renderMinimap();
@@ -202,6 +212,12 @@ export class GameContainer {
     message: string
   ): Promise<void> {
     await this._gameChatClient.sendMessage(message);
+  }
+
+  private getPickupAction(
+    actions: ReadonlyArray<{ key: string, payload: string }>
+  ): { key: string, payload: string } | undefined {
+    return actions.find(m => m.key === "PICKUP");
   }
 
 }
