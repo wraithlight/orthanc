@@ -35,7 +35,12 @@
       <!-- /ko -->
     </div>
     <div class="game-minimap">
-      <canvas id="minimapCanvas"></canvas>
+      <game-minimap
+        params="{
+          minimapState: minimapState
+        }"
+      >
+      </game-minimap>
     </div>
     <div class="game-stats"><strong>Spells on</strong>
       <ul>
