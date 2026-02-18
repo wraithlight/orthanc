@@ -5,6 +5,15 @@ info:
   description: API endpoints for Orthanc game.
 servers:
   - url: https://orthanc.farkask.eu
+    description: Production environment
+  - url: https://canary.orthanc.farkask.eu
+    description: Canary environment
+  - url: https://dev.orthanc.farkask.eu
+    description: Development environment
+  - url: http://localhost:3100
+    description: Local-dev environment
+  - url: http://localhost:4100
+    description: Local environment
 
 components:
   parameters:
