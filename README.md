@@ -20,7 +20,7 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to the repo
-cd server                                               # navigate to server folder
+cd src-server                                           # navigate to server folder
 composer install                                        # install dependencies via composer
 cd ..                                                   # navigate to the repo root
 cd src-frontend                                         # navigate to frontend folder
@@ -88,7 +88,7 @@ During Docker build, the `run-dev.sh` script will create its own docker image na
 As you may see the Docker Image and the Docker Container have the same name.
 
 ### BE scripts
-The `composer.json` file under `server` contains the following scripts:
+The `composer.json` file under `src-server` contains the following scripts:
 
 ```sh
 

@@ -39,7 +39,7 @@ if (normalized.endsWith(".spec.ts")) {
   run(
     "vendor/bin/phpunit",
     ["--colors=always", "--testdox", file],
-    resolve(workspace, "server")
+    resolve(workspace, "src-server")
   );
 
 } else {

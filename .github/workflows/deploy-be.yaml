@@ -34,7 +34,7 @@ jobs:
           ftp_user: ${{ secrets.FTP_USER }}
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_SERVER_FOLDER }}
-          local_dir: "./server/src"
+          local_dir: "./src-server/src"
 
       - name: Deploy to Swadoc FTP
         uses: ./.github/actions/deploy-ftp

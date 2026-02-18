@@ -22,7 +22,7 @@ vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
 
 # PHP (Composer)
-server/vendor
+src-server/vendor
 
 # vitest
 src-frontend/coverage

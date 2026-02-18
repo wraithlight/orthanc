@@ -35,7 +35,7 @@
       "type": "node-terminal",
       "request": "launch",
       "command": "vendor/bin/phpunit ${file}",
-      "cwd": "${workspaceFolder}/server",
+      "cwd": "${workspaceFolder}/src-server",
       "preLaunchTask": "check-server-spec"
     }
   ]
