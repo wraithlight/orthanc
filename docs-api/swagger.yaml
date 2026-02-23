@@ -175,7 +175,7 @@ components:
             payload:
               type: object
               required:
-                - maxHist
+                - maxHits
                 - stats
               properties:
                 maxHits:
