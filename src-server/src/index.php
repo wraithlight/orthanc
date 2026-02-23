@@ -31,6 +31,8 @@ require_once("./app/utils/maze.php");
 
 // TODO: Cleanup range end.
 
+require_once("./app/core/create-api-responses.php");
+
 require_once("./app/constants/action-run-fail.const.php");
 require_once("./app/constants/action-run-success.const.php");
 
