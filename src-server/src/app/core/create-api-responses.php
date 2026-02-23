@@ -10,7 +10,7 @@ function createSuccessResponse(
 }
 
 function createFailResponse(
-  string $errorCode,
+  ErrorCode $errorCode,
   string $errorMessage,
 ): object {
   $result = new stdClass();
