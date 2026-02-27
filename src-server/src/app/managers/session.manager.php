@@ -7,7 +7,7 @@ class SessionManager {
       http_response_code(401);
       header('Content-Type: application/json');
       echo json_encode([
-          'errorCode' => 'ERROR_0401',
+        'errorCode' => ErrorCode::ERROR_0401,
       ]);
       exit;
     }
