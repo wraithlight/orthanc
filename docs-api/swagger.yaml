@@ -29,7 +29,7 @@ components:
     BaseSuccessResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
           description: Unique identifier for the request
@@ -37,13 +37,13 @@ components:
           type: object
           description: Endpoint-specific payload
       required:
-        - requestId
+        - correlationId
         - payload
 
     UnauthorizedResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
         payload:
@@ -57,14 +57,14 @@ components:
           type: string
           example: Unauthorized
       required:
-        - requestId
+        - correlationId
         - errorCode
         - message
 
     ErrorResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
         payload:
@@ -78,7 +78,7 @@ components:
           type: string
           example: Internal server error
       required:
-        - requestId
+        - correlationId
         - errorCode
         - message
 
