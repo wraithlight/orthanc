@@ -1,6 +1,6 @@
 name: "GHA - FE sherif"
 run-name: "Sherif Frontend"
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   frontendSherif:
