@@ -9,6 +9,15 @@
   </div>
   <!-- /ko -->
 
+  <orthanc-selector
+    params="{
+      label: 'Mode',
+      name: 'game-mode',
+      value: gameMode,
+      options: gameModeOptions
+    }"
+  ></orthanc-selector>
+
   <div class="actions">
     <button data-bind="click: onGuestLogin">Play as Guest</button>
   </div>
