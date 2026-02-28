@@ -4,7 +4,7 @@ function createSuccessResponse(
   object $payload
 ): object {
   $result = new stdClass();
-  $result->requestId = _getRequestId();
+  $result->correlationId = _getCorrelationId();
   $result->payload = $payload;
   return $result;
 }
@@ -14,14 +14,14 @@ function createFailResponse(
   string $errorMessage,
 ): object {
   $result = new stdClass();
-  $result->requestId = _getRequestId();
+  $result->correlationId = _getCorrelationId();
   $result->payload = null;
   $result->errorCode = $errorCode;
   $result->message = $errorMessage;
   return $result;
 }
 
-function _getRequestId(): string {
+function _getCorrelationId(): string {
   $data = random_bytes(16);
   $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
   $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
