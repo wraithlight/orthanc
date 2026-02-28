@@ -30,9 +30,12 @@
       </div>
     </div>
     <div class="game-feedback">
-      <!-- ko foreach: events -->
-      <span data-bind="text: label"></span>
-      <!-- /ko -->
+      <game-events
+        params="{
+          events: events
+        }"
+      >
+      </game-events>
     </div>
     <div class="game-minimap">
       <game-minimap
