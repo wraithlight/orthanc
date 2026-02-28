@@ -42,12 +42,13 @@
       >
       </game-minimap>
     </div>
-    <div class="game-stats"><strong>Spells on</strong>
-      <ul>
-        <!-- ko foreach: activeSpells -->
-        <li data-bind="text: label + '(' + remaining + ')'"></li>
-        <!-- /ko -->
-      </ul>
+    <div class="game-stats">
+      <game-spells
+        params="{
+          activeSpells: activeSpells
+        }"
+      >
+      </game-spells>
     </div>
     <div class="game-actions">
       <div class="game-hits" data-bind="text: maxHits() + '/' + curHits() + ' HITS left.'"></div>
