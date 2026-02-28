@@ -1,6 +1,6 @@
 name: "GHA - FE knip"
 run-name: "Knip Frontend"
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   frontendKnip:
