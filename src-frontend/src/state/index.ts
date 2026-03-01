@@ -2,7 +2,6 @@ import { ApplicationConfiguration } from "../domain";
 import { Predicate } from "../framework";
 
 import { ApplicationConfigurationState } from "./application-configuration";
-import { STATE_CONFIG } from "./config";
 import {
   EVENT_BACK_FROM_CHARACTER_CREATION,
   EVENT_LOGIN_SUCCESS,
@@ -14,7 +13,6 @@ export * from "./application-configuration";
 
 export const State = {
   name: STATE_NAME,
-  config: STATE_CONFIG,
   events: {
     loginSuccess: EVENT_LOGIN_SUCCESS,
     nextFromCharacterCreation: EVENT_BACK_FROM_CHARACTER_CREATION,

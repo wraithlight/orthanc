@@ -3,9 +3,9 @@
   "version": "0.0.1",
   "license": "MIT",
   "scripts": {
-    "gha:build:prod": "vite build -- --environment=production",
-    "gha:build:canary": "vite build -- --environment=canary",
-    "gha:build:development": "vite build -- --environment=development",
+    "gha:build:prod": "vite build -- production",
+    "gha:build:canary": "vite build -- canary",
+    "gha:build:development": "vite build -- development",
     "gha:lint": "echo 0",
     "gha:stylelint": "echo 0",
     "gha:htmlhint": "echo 0",
@@ -13,7 +13,8 @@
     "gha:sherif": "echo 0",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
-    "build": "vite build",
+    "build:local": "vite build -- local",
+    "build:local-dev": "vite build -- local-development",
     "test:unit": "vitest run",
     "test:unit:coverage": "vitest run --coverage"
   },

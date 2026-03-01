@@ -1,4 +1,5 @@
-import { State } from "../../state";
+import { Environment } from "../../environment";
+import { readFromConfigState } from "../../state";
 
 interface CoreFooterComponentProps { }
 
@@ -7,8 +8,8 @@ export class CoreFooterComponent implements CoreFooterComponentProps {
   public environment: string;
 
   constructor() {
-    this.version = State.config()!.version;
-    this.environment = State.config()!.environment;
+    this.version = readFromConfigState(m => m.version, "CANNOT_DETERMINE");
+    this.environment = Environment.environmentName;
   }
 
 }

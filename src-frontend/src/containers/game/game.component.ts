@@ -9,6 +9,7 @@ import { SELECTOR } from "../character-creation/character-creation.selector";
 import { GameChatClient } from "./game-chat.client";
 import { GameActionClient } from "./game-action.client";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
+import { Environment } from "../../environment";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
@@ -39,8 +40,8 @@ export class GameContainer {
   public readonly activeSpells = observableArray([]);
 
   private readonly _keyboardEventService = KeyboardEventService.getInstance();
-  private readonly _gameChatClient = new GameChatClient(State.config()!.apiUrl);
-  private readonly _gameActionClient = new GameActionClient(State.config()!.apiUrl);
+  private readonly _gameChatClient = new GameChatClient(Environment.apiBaseUrl);
+  private readonly _gameActionClient = new GameActionClient(Environment.apiBaseUrl);
 
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());

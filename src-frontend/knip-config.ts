@@ -2,7 +2,8 @@ import { KnipConfig } from "knip";
 
 const config: KnipConfig = {
   entry: [
-    "src/**/index.ts"
+    "src/**/index.ts",
+    "src/environment/environment.*.ts"
   ],
   ignoreDependencies: [
     "@types/knockout"

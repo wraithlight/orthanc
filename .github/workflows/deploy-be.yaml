@@ -44,3 +44,21 @@ jobs:
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_SWADOC_FOLDER }}
           local_dir: "./docs-api"
+
+      - name: Deploy to Configuration FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_CONFIGURATION_FOLDER }}
+          local_dir: "./src-config"
+
+      - name: Deploy to Version FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_VERSION_FOLDER }}
+          local_dir: "./version.json"

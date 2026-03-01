@@ -2,40 +2,22 @@
 class ConfigurationManager
 {
 
+  private $_versionService;
+  private $_configurationService;
+
   public function __construct()
   {
+    $this->_versionService = new VersionService();
+    $this->_configurationService = new ConfigurationService();
   }
 
   public function getConfiguration(): object {
-    $defaultLanguage = "en";
+    $versionInfo = $this->_versionService->getVersion();
+    $configuration = $this->_configurationService->getConfiguration();
 
-    $payload = new stdClass();
-    $payload->availableLocales = [
-      "en",
-    ];
-    $payload->featureStates = [
-      "applicationDefaultLanguageDefault" => [
-        "value" => $defaultLanguage,
-        "type" => "VALUE"
-      ],
-      "loginScreenLanguageSwitchEnabled" => [
-        "value" => false,
-        "type" => "FLAG"
-      ],
-      "loginScreenLanguageSwitchDefault" => [
-        "value" => $defaultLanguage,
-        "type" => "VALUE"
-      ],
-      "loginScreenModeScreenEnabled" => [
-        "value" => false,
-        "type" => "FLAG"
-      ],
-      "loginScreenModeScreenDefault" => [
-        "value" => "VALUE",
-        "type" => GameMode::Vanilla
-      ],
-    ];
-    return $payload;
+    $configuration->version = $versionInfo->version;
+
+    return $configuration;
   }
 
 }
