@@ -103,37 +103,12 @@
       </table>
     </div>
     <div class="game-stats">
-      <strong>Statistics</strong>
-      <table>
-        <tr>
-          <td>Experience</td>
-          <td data-bind="text: statisticsExperience"></td>
-        </tr>
-        <tr>
-          <td>Money</td>
-          <td data-bind="text: statisticsMoney"></td>
-        </tr>
-        <tr>
-          <td>Next Level</td>
-          <td data-bind="text: statisticsNextLevelInXp"></td>
-        </tr>
-        <tr>
-          <td>XP from kills</td>
-          <td data-bind="text: statisticsXpPercentageFromKills() + '%'"></td>
-        </tr>
-        <tr>
-          <td>Weight</td>
-          <td data-bind="text: statisticsWeight"></td>
-        </tr>
-        <tr>
-          <td>Player level</td>
-          <td data-bind="text: statisticsPlayerLevel"></td>
-        </tr>
-        <tr>
-          <td>Spell units</td>
-          <td data-bind="text: statisticsSpellUnitsCur() + '/' + statisticsSpellUnitsMax()"></td>
-        </tr>
-      </table>
+      <game-statistics
+        params="{
+          stats: stats
+        }"
+      >
+      </game-statistics>
     </div>
   </div>
   <div class="game-screen-chat">
