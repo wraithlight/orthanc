@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Trivy scan
         id: trivy
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.69.2
         with:
           scan-type: fs
           input: ./src-frontend
