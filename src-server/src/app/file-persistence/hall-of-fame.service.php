@@ -42,6 +42,10 @@ class HallOfFameService extends BaseIOService
     return $id;
   }
 
+  public function list(): array {
+    return $this->read();
+  }
+
 
 }
 ?>
