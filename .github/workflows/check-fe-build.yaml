@@ -1,6 +1,6 @@
 name: "GHA - FE build"
 run-name: "Build Frontend"
-on: [push, pull_request, workflow_dispatch]
+on: [pull_request, workflow_dispatch]
 
 jobs:
   frontendBuildProd:

@@ -1,6 +1,7 @@
 <?php
 require_once("./phpapi/api.php");
 
+// TODO: Move these to `domain` folder. (domain/enum).
 require_once("./app/enums/game-state.enum.php");
 require_once("./app/enums/movement-direction.enum.php");
 
@@ -30,6 +31,11 @@ require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
 // TODO: Cleanup range end.
+
+require_once("./app/domain/game-mode.enum.php");
+
+require_once("./app/core/error-code.enum.php");
+require_once("./app/core/create-api-responses.php");
 
 require_once("./app/constants/action-run-fail.const.php");
 require_once("./app/constants/action-run-success.const.php");
@@ -62,6 +68,7 @@ require_once("./app/managers/npcs-on-map.manager.php");
 require_once("./app/managers/session.manager.php");
 require_once("./app/managers/swadoc.manager.php");
 require_once("./app/managers/hall-of-fame.manager.php");
+require_once("./app/managers/configuration.manager.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
@@ -69,6 +76,7 @@ require_once("./app/controllers/game.controller.php");
 require_once("./app/controllers/chat.controller.php");
 require_once("./app/controllers/swadoc.controller.php");
 require_once("./app/controllers/hall-of-fame.controller.php");
+require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
@@ -92,6 +100,9 @@ $swadocControllerFactory = function () {
 $hallOfFameControllerFactory = function () {
   return new HallOfFameController();
 };
+$configurationControllerFactory = function() {
+  return new ConfigurationController();
+};
 
 Wrapper::RegisterPath("GET", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
@@ -101,6 +112,7 @@ Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "send
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
 Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
 Wrapper::RegisterPath("GET", "/api/v1/main/hall-of-fame", $hallOfFameControllerFactory, "getRecords");
+Wrapper::RegisterPath("GET", "/api/v1/configuration", $configurationControllerFactory, "getConfiguration");
 strtolower($isSwadocEnabled) === "true" && Wrapper::RegisterPath("GET", "/api/v1/swadoc", $swadocControllerFactory, "getSwadoc");
 
 Wrapper::Listen(true);

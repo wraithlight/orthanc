@@ -1,0 +1,33 @@
+orthanc-selector {
+  .orthanc-selector__container {
+    background: var(--color-surface);
+    color: var(--color-primary);
+    padding: var(--spacing-04) var(--spacing-08);
+    letter-spacing: 1px;
+    display: inline-flex;
+    gap: 1rem;
+    align-items: center;
+    user-select: none;
+
+    &_label {
+      margin-right: 0.5rem;
+    }
+
+    input[type="radio"] {
+      display: none;
+    }
+
+    input[type="radio"]:checked+span::before {
+      content: "[";
+    }
+
+    input[type="radio"]:checked+span::after {
+      content: "]";
+    }
+
+    label {
+      cursor: pointer;
+    }
+  }
+
+}

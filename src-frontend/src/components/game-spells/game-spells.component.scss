@@ -1,0 +1,10 @@
+.game-spells {
+  ul {
+    padding: var(--spacing-10) var(--spacing-16);
+  }
+
+  li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}

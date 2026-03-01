@@ -1,16 +1,19 @@
 import { Router } from "@profiscience/knockout-contrib-router";
 import { observable, observableArray, subscribable } from "knockout";
 
+import { INITIAL_GAME_CHARACTER, INITIAL_GAME_EQUIPMENT, INITIAL_GAME_STATISTICS } from "../../constant";
 import { KeyboardEventService } from "../../services";
 import { State } from "../../state";
 import { SELECTOR } from "../character-creation/character-creation.selector";
 
 import { GameChatClient } from "./game-chat.client";
 import { GameActionClient } from "./game-action.client";
+import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
   public readonly onSendChatMessage = new subscribable<string>();
+  public readonly onActionItemClickHandler = new subscribable<{ key: string, payload: string }>();
 
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
@@ -28,25 +31,10 @@ export class GameContainer {
   public readonly events = observableArray([]);
   public readonly endgameItemIcons = observableArray([]);
 
-  public readonly characterDexterity = observable(0);
-  public readonly characterIntelligence = observable(0);
-  public readonly characterStrength = observable(0);
-  public readonly characterConstitution = observable(0);
+  public readonly character = observable<GameCharacter>(INITIAL_GAME_CHARACTER);
+  public readonly equipment = observable<GameEquipment>(INITIAL_GAME_EQUIPMENT);
+  public readonly stats = observable<CharacterGameStats>(INITIAL_GAME_STATISTICS);
 
-  public readonly equipmentSword = observable("???");
-  public readonly equipmentShield = observable("???");
-  public readonly equipmentArmor = observable("???");
-  public readonly equipmentBow = observable("???");
-  public readonly equipmentArrows = observable(0);
-
-  public readonly statisticsExperience = observable(0);
-  public readonly statisticsMoney = observable(0);
-  public readonly statisticsNextLevelInXp = observable(0);
-  public readonly statisticsWeight = observable(0);
-  public readonly statisticsPlayerLevel = observable(0);
-  public readonly statisticsSpellUnitsCur = observable(0);
-  public readonly statisticsSpellUnitsMax = observable(0);
-  public readonly statisticsXpPercentageFromKills = observable(0);
   public readonly actions = observableArray([]);
   public readonly activeSpells = observableArray([]);
 
@@ -57,6 +45,7 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
+    this.onActionItemClickHandler.subscribe(m => this.onActionItemClick(m.key, m.payload));
     this.actionHandler("INITIAL_IN_GAME", null);
 
     this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
@@ -103,23 +92,9 @@ export class GameContainer {
       this.tiles(m.mapState);
       this.maxHits(m.maxHits);
       this.curHits(m.hits);
-      this.characterDexterity(m.character.dexterity);
-      this.characterIntelligence(m.character.intelligence);
-      this.characterStrength(m.character.strength);
-      this.characterConstitution(m.character.constitution);
-      this.equipmentSword(m.equipment.sword);
-      this.equipmentShield(m.equipment.shield);
-      this.equipmentArmor(m.equipment.armor);
-      this.equipmentBow(m.equipment.bow);
-      this.equipmentArrows(m.equipment.arrows);
-      this.statisticsExperience(m.statistics.experience);
-      this.statisticsMoney(m.statistics.money);
-      this.statisticsNextLevelInXp(m.statistics.nextLevelInXp);
-      this.statisticsWeight(m.statistics.weight);
-      this.statisticsPlayerLevel(m.statistics.playerLevel);
-      this.statisticsSpellUnitsCur(m.statistics.spellUnits.current);
-      this.statisticsSpellUnitsMax(m.statistics.spellUnits.maximum);
-      this.statisticsXpPercentageFromKills(m.statistics.xpPercentageFromKills);
+      this.equipment(m.equipment);
+      this.character(m.character);
+      this.stats(m.statistics);
       this.actions(m.possibleActions);
       this.playerName(m.playerName);
       this.activeSpells(m.activeSpells);
@@ -135,41 +110,7 @@ export class GameContainer {
         this._keyboardEventService.subscribe("Escape", () => this.closeEndDialog());
         this._keyboardEventService.subscribe("KeyR", () => this.restartGame());
       }
-
-      this.renderMinimap();
     });
-  }
-
-  private renderMinimap() {
-    const canvas = document.getElementById('minimapCanvas') as HTMLCanvasElement;
-    const ctx = canvas.getContext('2d')!;
-    canvas.width = canvas.clientWidth;
-    canvas.height = canvas.clientHeight;
-    ctx!.imageSmoothingEnabled = false;
-    ctx!.fillStyle = 'black';
-    ctx!.fillRect(0, 0, canvas.width, canvas.height);
-
-    const rows = this.minimapState().length;
-    const cols = this.minimapState()[0].length;
-
-    const cellWidth = Math.floor(canvas.width / cols);
-    const cellHeight = Math.floor(canvas.height / rows);
-
-    const primaryColor = window.getComputedStyle(document.body).getPropertyValue('--color-primary');
-    for (let y = 0; y < rows; y++) {
-      for (let x = 0; x < cols; x++) {
-        if (this.minimapState()[y][x] === 'WALL') ctx.fillStyle = primaryColor;
-        else if (this.minimapState()[y][x] === 'PLAYER') ctx.fillStyle = '#FF0000';
-        else ctx.fillStyle = '#000000';
-
-        ctx.fillRect(x * cellWidth, y * cellHeight, cellWidth, cellHeight);
-
-        if (this.minimapState()[y][x] === 'EMPTY') {
-          ctx.fillStyle = primaryColor;
-          ctx.fillRect(x * cellWidth + cellWidth / 3, y * cellHeight + cellHeight / 3, cellWidth / 3, cellHeight / 3);
-        }
-      }
-    }
   }
 
   public closeEndDialog() {

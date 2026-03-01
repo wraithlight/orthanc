@@ -29,7 +29,7 @@ components:
     BaseSuccessResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
           description: Unique identifier for the request
@@ -37,13 +37,13 @@ components:
           type: object
           description: Endpoint-specific payload
       required:
-        - requestId
+        - correlationId
         - payload
 
     UnauthorizedResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
         payload:
@@ -57,14 +57,14 @@ components:
           type: string
           example: Unauthorized
       required:
-        - requestId
+        - correlationId
         - errorCode
         - message
 
     ErrorResponse:
       type: object
       properties:
-        requestId:
+        correlationId:
           type: string
           format: uuid
         payload:
@@ -78,7 +78,7 @@ components:
           type: string
           example: Internal server error
       required:
-        - requestId
+        - correlationId
         - errorCode
         - message
 
@@ -175,7 +175,7 @@ components:
             payload:
               type: object
               required:
-                - maxHist
+                - maxHits
                 - stats
               properties:
                 maxHits:
@@ -533,6 +533,39 @@ components:
                     type: string
                     example: "guest_123"
 
+    ConfigurationSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              properties:
+                availableLocales:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    enum: ["en", "hu", "hr", "de"]
+                    example: "en"
+                featureStates:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      key:
+                        type: string
+                      isEnabled:
+                        type: boolean
+                      defaultValue:
+                        type: string
+                    required:
+                      - key
+                      - isEnabled
+              required:
+                  - availableLocales
+                  - featureStates
+
 tags:
   - name: session
     description: Endpoints for user login and session management
@@ -542,6 +575,8 @@ tags:
     description: Endpoints for chat messaging and polling
   - name: main
     description: Endpoints that are being called from the main menu.
+  - name: configuration
+    description: Endpoints that are configuration related.
 
 paths:
   /api/v1/main/hall-of-fame:
@@ -735,6 +770,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/configuration:
+    get:
+      summary: An endpoint that returns the application configuration.
+      operationId: getConfiguration
+      tags:
+       - configuration
+      responses:
+        '200':
+          description: Successfully fetched the configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConfigurationSuccessResponse'
         '500':
           description: Internal server error
           content:
