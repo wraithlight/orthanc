@@ -34,17 +34,4 @@
     align-items: center;
     flex-direction: column;
   }
-
-  table {
-    width: 100%;
-  }
-
-  td:nth-of-type(1):hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  td:nth-of-type(2) {
-    text-align: end;
-  }
 }

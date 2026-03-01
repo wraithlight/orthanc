@@ -41,48 +41,13 @@
       </game-actions>
     </div>
     <div class="game-stats">
-      <strong>Characteristics</strong>
-      <table>
-        <tr>
-          <td>Strength</td>
-          <td data-bind="text: characterStrength"></td>
-        </tr>
-        <tr>
-          <td>Intelligence</td>
-          <td data-bind="text: characterIntelligence"></td>
-        </tr>
-        <tr>
-          <td>Constitution</td>
-          <td data-bind="text: characterConstitution"></td>
-        </tr>
-        <tr>
-          <td>Dexterity</td>
-          <td data-bind="text: characterDexterity"></td>
-        </tr>
-      </table>
-      <strong>Equipment</strong>
-      <table>
-        <tr>
-          <td>Sword</td>
-          <td data-bind="text: equipmentSword"></td>
-        </tr>
-        <tr>
-          <td>Shield</td>
-          <td data-bind="text: equipmentShield"></td>
-        </tr>
-        <tr>
-          <td>Armor</td>
-          <td data-bind="text: equipmentArmor"></td>
-        </tr>
-        <tr>
-          <td>Bow</td>
-          <td data-bind="text: equipmentBow"></td>
-        </tr>
-        <tr>
-          <td>Arrows</td>
-          <td data-bind="text: equipmentArrows"></td>
-        </tr>
-      </table>
+      <game-character-info
+        params="{
+          character: character,
+          equipment: equipment
+        }"
+      >
+      </game-character-info>
     </div>
     <div class="game-stats">
       <game-statistics
