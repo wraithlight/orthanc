@@ -15,59 +15,6 @@
     width: 400px;
   }
 
-  .game-view {
-    grid-row: 1 / span 2;
-    border: var(--border-1px0-primary-solid);
-    padding: calc(100px - 2px);
-    display: flex;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    position: relative;
-  }
-
-  .game-view-endgame-items {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    display: flex;
-    align-items: flex-end;
-    justify-content: flex-end;
-  }
-
-  .game-view-endgame-items>img {
-    background-color: var(--color-primary);
-    height: 32px;
-    margin-top: var(--spacing-04);
-    margin-right: var(--spacing-08);
-  }
-
-  .game-tile {
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-  }
-
-  .wall-top {
-    border-top: var(--border-0px5-primary-solid);
-  }
-
-  .wall-bottom {
-    border-bottom: var(--border-0px5-primary-solid);
-  }
-
-  .wall-left {
-    border-left: var(--border-0px5-primary-solid);
-  }
-
-  .wall-right {
-    border-right: var(--border-0px5-primary-solid);
-  }
-
   .game-actions,
   .game-stats {
     border: var(--border-1px0-primary-solid);
@@ -78,27 +25,6 @@
     border: var(--border-1px0-primary-solid);
   }
 
-  .game-actions {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-00);
-  }
-
-  .game-hits,
-  .game-action {
-    padding: var(--spacing-04) var(--spacing-08);
-  }
-
-  .game-hits {
-    font-weight: 700;
-  }
-
-  .game-action:hover {
-    cursor: pointer;
-    background: var(--color-primary);
-    color: #000;
-  }
-
   .game-feedback {
     padding: var(--spacing-20);
     grid-column: 2 / span 2;
@@ -107,41 +33,5 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-  }
-
-
-  ul {
-    padding: var(--spacing-10) var(--spacing-16);
-  }
-
-  li:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  table {
-    width: 100%;
-  }
-
-  td:nth-of-type(1):hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-
-  td:nth-of-type(2) {
-    text-align: end;
-  }
-
-  img.character-tile {
-    width: 40px;
-    height: 61px;
-    background-color: var(--color-primary);
-  }
-
-  img.item_orb,
-  img.item_grail,
-  img.item_gold {
-    background-color: var(--color-primary);
-    height: 24px;
   }
 }

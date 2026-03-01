@@ -59,7 +59,7 @@ jobs:
             echo "DEPLOY_ENV=DEV" >> $GITHUB_ENV
             echo "DEPLOY_BE=true" >> $GITHUB_ENV
             echo "DEPLOY_FE=true" >> $GITHUB_ENV
-            echo "DEPLOY_MAZE=false" >> $GITHUB_ENV
+            echo "DEPLOY_MAZE=true" >> $GITHUB_ENV
           else
             echo "DEPLOY_ENV=${{ github.event.inputs.target_env }}" >> $GITHUB_ENV
             echo "DEPLOY_BE=${{ github.event.inputs.deploy_be }}" >> $GITHUB_ENV

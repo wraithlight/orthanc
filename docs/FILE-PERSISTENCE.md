@@ -1,4 +1,5 @@
-## Error Codes from Orthanc Server
+## Orthanc Server file persistence layer
+
 This page contains information about the files that are required for the application to run.
 The application requires the following files.
 
