@@ -30,13 +30,15 @@
       </game-spells>
     </div>
     <div class="game-actions">
-      <div class="game-hits" data-bind="text: maxHits() + '/' + curHits() + ' HITS left.'"></div>
-      <!-- ko foreach: actions -->
-      <div class="game-action" data-bind="
-          text: label,
-          click: $parent.onActionItemClick.bind($parent, key, payload)
-        "></div>
-      <!-- /ko -->
+      <game-actions
+        params="{
+          actions: actions,
+          maxHits: maxHits,
+          curHits: curHits,
+          onActionItemClick: onActionItemClickHandler
+        }"
+      >
+      </game-actions>
     </div>
     <div class="game-stats">
       <strong>Characteristics</strong>

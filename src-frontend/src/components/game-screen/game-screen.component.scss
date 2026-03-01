@@ -49,4 +49,17 @@ game-screen-component {
   .wall-right {
     border-right: var(--border-0px5-primary-solid);
   }
+
+  img.character-tile {
+    width: 40px;
+    height: 61px;
+    background-color: var(--color-primary);
+  }
+
+  img.item_orb,
+  img.item_grail,
+  img.item_gold {
+    background-color: var(--color-primary);
+    height: 24px;
+  }
 }

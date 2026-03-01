@@ -25,27 +25,6 @@
     border: var(--border-1px0-primary-solid);
   }
 
-  .game-actions {
-    display: flex;
-    flex-direction: column;
-    padding: var(--spacing-00);
-  }
-
-  .game-hits,
-  .game-action {
-    padding: var(--spacing-04) var(--spacing-08);
-  }
-
-  .game-hits {
-    font-weight: 700;
-  }
-
-  .game-action:hover {
-    cursor: pointer;
-    background: var(--color-primary);
-    color: #000;
-  }
-
   .game-feedback {
     padding: var(--spacing-20);
     grid-column: 2 / span 2;
@@ -67,18 +46,5 @@
 
   td:nth-of-type(2) {
     text-align: end;
-  }
-
-  img.character-tile {
-    width: 40px;
-    height: 61px;
-    background-color: var(--color-primary);
-  }
-
-  img.item_orb,
-  img.item_grail,
-  img.item_gold {
-    background-color: var(--color-primary);
-    height: 24px;
   }
 }
