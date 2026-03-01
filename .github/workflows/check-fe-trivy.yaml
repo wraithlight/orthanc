@@ -15,6 +15,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref || github.ref }}
+          fetch-depth: 0
 
       - name: Create output folder
         run: mkdir -p trivy-output
@@ -29,6 +32,7 @@ jobs:
           format: json
           output: trivy-output/result.json
           exit-code: 1
+          scan-ref: ${{ github.sha }}
 
       - name: Build Markdown table
         id: table

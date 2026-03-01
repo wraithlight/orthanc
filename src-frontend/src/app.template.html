@@ -1,1 +1,7 @@
-<router></router>
+<!-- ko if: isLoading -->
+  <orthanc-loader></orthanc-loader>
+<!-- /ko -->
+<!-- ko ifnot: isLoading -->
+  <router></router>
+<!-- /ko -->
+ 
