@@ -16,8 +16,10 @@ class LoginController
     $id = $this->_sessionManager->createNewSession();
     $sessionService = new SessionService();
     
+    $gameMode = GameMode::Vanilla;
     $username = 'guest_' . roll_d10k();
     $sessionService->setPlayerName($username);
+    $sessionService->setGameMode($gameMode);
     $this->_chatManager->addMember($id);
     echo json_encode([
       "payload" => [
