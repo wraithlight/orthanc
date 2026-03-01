@@ -1,0 +1,15 @@
+<!-- ko if: isDialogVisible -->
+<div class="popup-overlay" data-bind="attr: { id: id() + '-overlay' }">
+  <div class="popup" data-bind="attr: { id: id() + '-popup' }">
+    <div class="popup-title" data-bind="text: title, attr: { id: id() + '-title' }">
+    </div>
+    <div class="popup-message" data-bind="html: messageHtml, attr: { id: id() + '-message' }">
+    </div>
+    <div class="popup-actions" data-bind="attr: { id: id() + '-actions' }">
+      <!-- ko foreach: actions -->
+        <button data-bind="click: onClick, text: label, attr: { id: id }"></button>
+      <!-- /ko -->
+    </div>
+  </div>
+</div>
+<!-- /ko -->
