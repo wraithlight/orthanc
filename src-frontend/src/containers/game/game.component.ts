@@ -1,13 +1,14 @@
 import { Router } from "@profiscience/knockout-contrib-router";
 import { observable, observableArray, subscribable } from "knockout";
 
-import { INITIAL_GAME_STATISTICS } from "../../constant";
+import { INITIAL_GAME_CHARACTER, INITIAL_GAME_EQUIPMENT, INITIAL_GAME_STATISTICS } from "../../constant";
 import { KeyboardEventService } from "../../services";
 import { State } from "../../state";
 import { SELECTOR } from "../character-creation/character-creation.selector";
 
 import { GameChatClient } from "./game-chat.client";
 import { GameActionClient } from "./game-action.client";
+import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
@@ -30,18 +31,9 @@ export class GameContainer {
   public readonly events = observableArray([]);
   public readonly endgameItemIcons = observableArray([]);
 
-  public readonly characterDexterity = observable(0);
-  public readonly characterIntelligence = observable(0);
-  public readonly characterStrength = observable(0);
-  public readonly characterConstitution = observable(0);
-
-  public readonly equipmentSword = observable("???");
-  public readonly equipmentShield = observable("???");
-  public readonly equipmentArmor = observable("???");
-  public readonly equipmentBow = observable("???");
-  public readonly equipmentArrows = observable(0);
-
-  public readonly stats = observable(INITIAL_GAME_STATISTICS);
+  public readonly character = observable<GameCharacter>(INITIAL_GAME_CHARACTER);
+  public readonly equipment = observable<GameEquipment>(INITIAL_GAME_EQUIPMENT);
+  public readonly stats = observable<CharacterGameStats>(INITIAL_GAME_STATISTICS);
 
   public readonly actions = observableArray([]);
   public readonly activeSpells = observableArray([]);
@@ -100,15 +92,8 @@ export class GameContainer {
       this.tiles(m.mapState);
       this.maxHits(m.maxHits);
       this.curHits(m.hits);
-      this.characterDexterity(m.character.dexterity);
-      this.characterIntelligence(m.character.intelligence);
-      this.characterStrength(m.character.strength);
-      this.characterConstitution(m.character.constitution);
-      this.equipmentSword(m.equipment.sword);
-      this.equipmentShield(m.equipment.shield);
-      this.equipmentArmor(m.equipment.armor);
-      this.equipmentBow(m.equipment.bow);
-      this.equipmentArrows(m.equipment.arrows);
+      this.equipment(m.equipment);
+      this.character(m.character);
       this.stats(m.statistics);
       this.actions(m.possibleActions);
       this.playerName(m.playerName);
