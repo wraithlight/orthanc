@@ -1,4 +1,4 @@
-import { ApplicationConfiguration, GameMode } from "../domain";
+import { ApplicationConfiguration } from "../domain";
 import { Predicate } from "../framework";
 
 export class ApplicationConfigurationState {

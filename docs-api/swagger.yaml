@@ -541,6 +541,9 @@ components:
             payload:
               type: object
               properties:
+                version:
+                  type: string
+                  example: 0.0.1-f4hcxqdj
                 availableLocales:
                   type: array
                   minItems: 1

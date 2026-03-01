@@ -12,8 +12,9 @@ require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");
 require_once("./app/file-persistence/maze.service.php");
 require_once("./app/file-persistence/hall-of-fame.service.php");
-require_once("./app/file-persistence/config.service.php");
 require_once("./app/file-persistence/swadoc.service.php");
+require_once("./app/file-persistence/version.service.php");
+require_once("./app/file-persistence/configuration.service.php");
 
 require_once("./app/utils/guid.php");
 

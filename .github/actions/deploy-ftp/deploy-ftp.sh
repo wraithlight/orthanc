@@ -10,12 +10,23 @@ fi
 
 echo "Deploying files..."
 
-lftp -c "
-set ftp:list-options -a
-set ssl:verify-certificate no
-open -u \"$FTP_USER,$FTP_PASS\" \"$FTP_HOST\"
-mirror -R \"$LOCAL_DIR\" \"$REMOTE_DIR\" --only-newer --parallel=5 --verbose
-bye
-"
+if [ -f "$LOCAL_DIR" ]; then
+    echo "Uploading single file..."
+    lftp -c "
+    set ssl:verify-certificate no
+    open -u \"$FTP_USER,$FTP_PASS\" \"$FTP_HOST\"
+    put \"$LOCAL_DIR\" -o \"$REMOTE_DIR\"
+    bye
+    "
+else
+    echo "Uploading directory..."
+    lftp -c "
+    set ftp:list-options -a
+    set ssl:verify-certificate no
+    open -u \"$FTP_USER,$FTP_PASS\" \"$FTP_HOST\"
+    mirror -R \"$LOCAL_DIR\" \"$REMOTE_DIR\" --only-newer --parallel=5 --verbose
+    bye
+    "
+fi
 
 echo "Deployment completed!"

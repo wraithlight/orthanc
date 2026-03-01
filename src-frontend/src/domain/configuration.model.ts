@@ -15,6 +15,7 @@ interface ConfigurationFlagItem extends ConfigurationItem {
 }
 
 export interface ApplicationConfiguration {
+  version: string;
   availableLocales: ReadonlyArray<string>;
   featureStates: {
     applicationDefaultLanguageDefault: Omit<ConfigurationValueItem<"en">, "type">;
