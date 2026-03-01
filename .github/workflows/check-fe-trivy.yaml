@@ -29,6 +29,7 @@ jobs:
           format: json
           output: trivy-output/result.json
           exit-code: 1
+          scan-ref: ${{ github.sha }}
 
       - name: Build Markdown table
         id: table
