@@ -1,6 +1,7 @@
 import { Router } from "@profiscience/knockout-contrib-router";
 import { observable, observableArray, subscribable } from "knockout";
 
+import { INITIAL_GAME_STATISTICS } from "../../constant";
 import { KeyboardEventService } from "../../services";
 import { State } from "../../state";
 import { SELECTOR } from "../character-creation/character-creation.selector";
@@ -39,14 +40,8 @@ export class GameContainer {
   public readonly equipmentBow = observable("???");
   public readonly equipmentArrows = observable(0);
 
-  public readonly statisticsExperience = observable(0);
-  public readonly statisticsMoney = observable(0);
-  public readonly statisticsNextLevelInXp = observable(0);
-  public readonly statisticsWeight = observable(0);
-  public readonly statisticsPlayerLevel = observable(0);
-  public readonly statisticsSpellUnitsCur = observable(0);
-  public readonly statisticsSpellUnitsMax = observable(0);
-  public readonly statisticsXpPercentageFromKills = observable(0);
+  public readonly stats = observable(INITIAL_GAME_STATISTICS);
+
   public readonly actions = observableArray([]);
   public readonly activeSpells = observableArray([]);
 
@@ -112,14 +107,7 @@ export class GameContainer {
       this.equipmentArmor(m.equipment.armor);
       this.equipmentBow(m.equipment.bow);
       this.equipmentArrows(m.equipment.arrows);
-      this.statisticsExperience(m.statistics.experience);
-      this.statisticsMoney(m.statistics.money);
-      this.statisticsNextLevelInXp(m.statistics.nextLevelInXp);
-      this.statisticsWeight(m.statistics.weight);
-      this.statisticsPlayerLevel(m.statistics.playerLevel);
-      this.statisticsSpellUnitsCur(m.statistics.spellUnits.current);
-      this.statisticsSpellUnitsMax(m.statistics.spellUnits.maximum);
-      this.statisticsXpPercentageFromKills(m.statistics.xpPercentageFromKills);
+      this.stats(m.statistics);
       this.actions(m.possibleActions);
       this.playerName(m.playerName);
       this.activeSpells(m.activeSpells);
