@@ -4,6 +4,7 @@ class SessionState extends BaseState {
 
   private const PLAYER_NAME = "SESSION__PLAYER_NAME";
   private const CHAT_LAST_MESSAGE_ID = "SESSION__CHAT_LAST_MESSAGE_ID";
+  private const GAME_MODE = "SESSION__GAME_MODE";
 
   public function setPlayerName(string $name): string {
     $this->writeState(self::PLAYER_NAME, $name);
@@ -21,6 +22,15 @@ class SessionState extends BaseState {
 
   public function getLastChatMessageId(): int {
     return $this->readState(self::CHAT_LAST_MESSAGE_ID);
+  }
+
+  public function setGameMode(GameMode $gameMode): GameMode {
+    $this->writeState(self::GAME_MODE, $gameMode);
+    return $this->readState(self::GAME_MODE);
+  }
+
+  public function getGameMode(): GameMode {
+    return $this->readState(self::GAME_MODE);
   }
 
 }
