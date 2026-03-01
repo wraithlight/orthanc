@@ -549,19 +549,26 @@ components:
                     enum: ["en", "hu", "hr", "de"]
                     example: "en"
                 featureStates:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      key:
-                        type: string
-                      isEnabled:
-                        type: boolean
-                      defaultValue:
-                        type: string
-                    required:
-                      - key
-                      - isEnabled
+                  type: object
+                  properties:
+                    featureName:
+                      oneOf: 
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: ["FLAG"]
+                            value:
+                              type: string
+                              example: "ENABLED"
+                        - type: object
+                          properties:
+                            type:
+                              type: string
+                              enum: ["VALUE"]
+                            value:
+                              type: string
+                              example: "en"
               required:
                   - availableLocales
                   - featureStates

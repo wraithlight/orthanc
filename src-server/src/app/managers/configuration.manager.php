@@ -7,25 +7,33 @@ class ConfigurationManager
   }
 
   public function getConfiguration(): object {
+    $defaultLanguage = "en";
+
     $payload = new stdClass();
     $payload->availableLocales = [
       "en",
-      // "hr", "hu", "de"
     ];
     $payload->featureStates = [
-      [
-        "key" => "applicationDefaultLanguage",
-        "value" => "en"
+      "applicationDefaultLanguageDefault" => [
+        "value" => $defaultLanguage,
+        "type" => "VALUE"
       ],
-      [
-        "key" => "loginScreenLanguageSwitch",
-        "isEnabled" => false,
+      "loginScreenLanguageSwitchEnabled" => [
+        "value" => false,
+        "type" => "FLAG"
       ],
-      [
-        "key" => "loginScreenModeScreen",
-        "isEnabled" => false,
-        "defaultValue" => "Vanilla"
-      ]
+      "loginScreenLanguageSwitchDefault" => [
+        "value" => $defaultLanguage,
+        "type" => "VALUE"
+      ],
+      "loginScreenModeScreenEnabled" => [
+        "value" => false,
+        "type" => "FLAG"
+      ],
+      "loginScreenModeScreenDefault" => [
+        "value" => "VALUE",
+        "type" => GameMode::Vanilla
+      ],
     ];
     return $payload;
   }
