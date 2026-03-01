@@ -11,7 +11,7 @@ class HallOfFameManager
   }
 
   public function listHallOfFame(): array {
-    return $this->_hallOfFameService->list();
+    return $this->_hallOfFameService->list(10);
   }
 
 }
