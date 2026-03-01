@@ -1,6 +1,7 @@
 <?php
 require_once("./phpapi/api.php");
 
+// TODO: Move these to `domain` folder. (domain/enum).
 require_once("./app/enums/game-state.enum.php");
 require_once("./app/enums/movement-direction.enum.php");
 
@@ -30,6 +31,8 @@ require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
 // TODO: Cleanup range end.
+
+require_once("./app/domain/game-mode.enum.php");
 
 require_once("./app/core/error-code.enum.php");
 require_once("./app/core/create-api-responses.php");
