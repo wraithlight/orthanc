@@ -12,6 +12,7 @@ import { GameActionClient } from "./game-action.client";
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
   public readonly onSendChatMessage = new subscribable<string>();
+  public readonly onActionItemClickHandler = new subscribable<{ key: string, payload: string }>();
 
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
@@ -52,6 +53,7 @@ export class GameContainer {
   constructor() {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
+    this.onActionItemClickHandler.subscribe(m => this.onActionItemClick(m.key, m.payload));
     this.actionHandler("INITIAL_IN_GAME", null);
 
     this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));

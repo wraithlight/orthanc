@@ -12,7 +12,5 @@ export class GameStatisticsComponent implements GameStatisticsComponentProps {
 
   constructor(props: GameStatisticsComponentProps) {
     this.stats = props.stats;
-    console.log(this.stats());
-    console.log(this.stats().spellUnits.current);
   }
 }
