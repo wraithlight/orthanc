@@ -1,53 +1,33 @@
 <div class="game-screen">
   <div class="game-screen-layout">
-    <div class="game-view">
-      <!-- ko foreach: tiles -->
-       <div class="game-tile"
-        data-bind="css: { 'wall-top': top === 'TILE_WALL', 'wall-bottom': bottom === 'TILE_WALL', 'wall-right': right === 'TILE_WALL', 'wall-left': left === 'TILE_WALL' }">
-        <!-- ko if: containsItems?.length > 0 -->
-          <!-- ko if: !['item_gold', 'item_orb', 'item_grail'].includes(containsItems[0].iconName.toLowerCase()) -->
-           <img data-bind="attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.png' }">
-          <!-- /ko -->
-          <!-- ko if: ['item_gold', 'item_orb', 'item_grail'].includes(containsItems[0].iconName.toLowerCase()) -->
-           <img data-bind="
-            attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.svg' },
-            class: containsItems[0].iconName.toLowerCase()
-          ">
-          <!-- /ko -->
-        <!-- /ko -->
-        <!-- ko if: occupiedBy?.key -->
-          <img class="character-tile" data-bind="attr: { src: '/assets/' + occupiedBy.key.toLowerCase() + '.svg' }">
-        <!-- /ko -->
-      </div>
-      <!-- /ko -->
-      <div class="game-view-endgame-items">
-        <!-- ko if: endgameItemIcons().includes('item_grail') -->
-          <img data-bind="attr: { src: '/assets/item_grail.svg' }">
-        <!-- /ko -->
-        <!-- ko if: endgameItemIcons().includes('item_orb') -->
-          <img data-bind="attr: { src: '/assets/item_orb.svg' }">
-        <!-- /ko -->
-      </div>
-    </div>
+    <game-screen-component
+      params="{
+        tiles: tiles,
+        endgameItemIcons: endgameItemIcons,
+      }"
+    >
+    </game-screen-component>
     <div class="game-feedback">
-      <!-- ko foreach: events -->
-      <span data-bind="text: label"></span>
-      <!-- /ko -->
-    </div>
-    <div class="game-minimap">
-      <game-minimap
+      <game-events
         params="{
-          minimapState: minimapState
+          events: events
         }"
       >
+      </game-events>
+    </div>
+    <div class="game-minimap">
+      <game-minimap params="{
+          minimapState: minimapState
+        }">
       </game-minimap>
     </div>
-    <div class="game-stats"><strong>Spells on</strong>
-      <ul>
-        <!-- ko foreach: activeSpells -->
-        <li data-bind="text: label + '(' + remaining + ')'"></li>
-        <!-- /ko -->
-      </ul>
+    <div class="game-stats">
+      <game-spells
+        params="{
+          activeSpells: activeSpells
+        }"
+      >
+      </game-spells>
     </div>
     <div class="game-actions">
       <div class="game-hits" data-bind="text: maxHits() + '/' + curHits() + ' HITS left.'"></div>
@@ -139,7 +119,7 @@
   </div>
 </div>
 <!-- /ko -->
- <!-- ko if: gameState() === "GAME_END_FAIL" && shouldOpenEndDialog() -->
+<!-- ko if: gameState() === "GAME_END_FAIL" && shouldOpenEndDialog() -->
 <div class="popup-overlay">
   <div class="popup">
     <div class="popup-title">
