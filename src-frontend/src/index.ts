@@ -8,7 +8,6 @@ import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 import { Application } from "./app.component";
 import { SELECTOR } from "./app.selector";
 import TEMPLATE from "./app.template.html?raw";
-import { State } from "./state";
 
 import "./assets/styles/normalize.scss";
 import "./assets/styles/variables.scss";
@@ -36,11 +35,6 @@ Router.useRoutes([
 ]);
 
 async function bootstrap() {
-  const response = await fetch('/config.json');
-  if (!response.ok) throw new Error('Failed to load configuration');
-  const config = await response.json();
-
-  State.config(config);
   ko.applyBindings("body");
 }
 

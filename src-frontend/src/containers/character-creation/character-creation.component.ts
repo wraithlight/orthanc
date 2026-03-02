@@ -4,6 +4,7 @@ import { GameChatClient } from "../game/game-chat.client";
 import { State } from "../../state";
 
 import { CharacterCreationClient } from "./character-creation.client";
+import { Environment } from "../../environment";
 
 interface CharacterCreationContainerParams { }
 
@@ -26,8 +27,8 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   public readonly chatMembers = observableArray([]);
   public readonly chatMessages = observableArray([]);
 
-  private readonly _gameChatClient = new GameChatClient(State.config()!.apiUrl);
-  private readonly _characterCreationClient = new CharacterCreationClient(State.config()!.apiUrl);
+  private readonly _gameChatClient = new GameChatClient(Environment.apiBaseUrl);
+  private readonly _characterCreationClient = new CharacterCreationClient(Environment.apiBaseUrl);
 
   constructor() {
     this.onGenerate = new subscribable();

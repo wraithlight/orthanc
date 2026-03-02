@@ -2,32 +2,22 @@
 class ConfigurationManager
 {
 
+  private $_versionService;
+  private $_configurationService;
+
   public function __construct()
   {
+    $this->_versionService = new VersionService();
+    $this->_configurationService = new ConfigurationService();
   }
 
   public function getConfiguration(): object {
-    $payload = new stdClass();
-    $payload->availableLocales = [
-      "en",
-      // "hr", "hu", "de"
-    ];
-    $payload->featureStates = [
-      [
-        "key" => "applicationDefaultLanguage",
-        "value" => "en"
-      ],
-      [
-        "key" => "loginScreenLanguageSwitch",
-        "isEnabled" => false,
-      ],
-      [
-        "key" => "loginScreenModeScreen",
-        "isEnabled" => false,
-        "defaultValue" => "Vanilla"
-      ]
-    ];
-    return $payload;
+    $versionInfo = $this->_versionService->getVersion();
+    $configuration = $this->_configurationService->getConfiguration();
+
+    $configuration->version = $versionInfo->version;
+
+    return $configuration;
   }
 
 }
