@@ -24,7 +24,7 @@ jobs:
 
       - name: Run Trivy scan
         id: trivy
-        uses: aquasecurity/trivy-action@0.33.1
+        uses: aquasecurity/trivy-action@0.34.2
         with:
           scan-type: fs
           input: ./src-server
@@ -32,7 +32,6 @@ jobs:
           format: json
           output: trivy-output/result.json
           exit-code: 0
-          scan-ref: ${{ github.sha }}
 
       - name: Build Markdown table
         id: table

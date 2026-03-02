@@ -20,5 +20,10 @@ class SessionService {
   public function getLastChatMessageId(): int {
     return $this->_sessionState->getLastChatMessageId();
   }
-
+  public function setGameMode(GameMode $gameMode): GameMode {
+    return $this->_sessionState->setGameMode($gameMode);
+  }
+  public function getGameMode(): GameMode {
+    return $this->_sessionState->getGameMode();
+  }
 }
