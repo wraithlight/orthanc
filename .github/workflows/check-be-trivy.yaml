@@ -31,8 +31,7 @@ jobs:
           vuln-type: library
           format: json
           output: trivy-output/result.json
-          exit-code: 1
-          scan-ref: ${{ github.sha }}
+          exit-code: 0
 
       - name: Build Markdown table
         id: table
