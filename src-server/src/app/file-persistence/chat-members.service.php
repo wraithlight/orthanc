@@ -9,14 +9,16 @@ class ChatMembersService extends BaseIOService
 
   public function addMember(
     string $name,
-    string $id
+    string $id,
+    string $tunnel,
   ): string
   {
     $members = $this->read();
     $member = [
       'name' => $name,
       'id' => $id,
-      'last_seen' => time()
+      'last_seen' => time(),
+      'tunnel' => $tunnel
     ];
     $members[] = $member;
     $this->write($members);
@@ -24,23 +26,35 @@ class ChatMembersService extends BaseIOService
     return $id;
   }
 
-  public function updateLastSeen(string $id): void
+  public function updateLastSeen(
+    string $id,
+    string $tunnel,
+  ): void
   {
     $members = $this->read();
     foreach ($members as &$m) {
-      if ($m['id'] === $id) {
-        $m['last_seen'] = time();
-        break;
-      }
+        if ($m['id'] === $id && $m['tunnel'] === $tunnel) {
+          $m['last_seen'] = time();
+          break;
+        }
     }
     $this->write($members);
   }
 
-  public function getActiveMembers($ttl = 5): array
+  public function getActiveMembers(
+    string $tunnel,
+    int $ttl = 5,
+  ): array
   {
     $members = $this->read();
     $now = time();
-    $members = array_filter($members, fn($m) => isset($m['last_seen']) && ($now - $m['last_seen']) < $ttl);
+    $members = array_filter(
+      $members,
+        fn($m) =>
+          isset($m['last_seen'], $m['tunnel']) &&
+          $m['tunnel'] === $tunnel &&
+          ($now - $m['last_seen']) < $ttl
+    );
     return array_values(array_map(fn($m) => $m['name'], $members));
   }
 
