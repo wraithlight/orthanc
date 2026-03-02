@@ -17,9 +17,13 @@ class ChatManager
     string $id
   ) {
     $username = $this->_sessionService->getPlayerName();
-    $lastMessageId = $this->_chatMessageService->getLastMessageId();
+    $lastMessageId = $this->_chatMessageService->getLastMessageId($this->_sessionService->getGameMode()->value);
 
-    $this->_chatMembersService->addMember($username, $id);
+    $this->_chatMembersService->addMember(
+      $username,
+      $id,
+      $this->_sessionService->getGameMode()->value,
+    );
     $this->_sessionService->setLastChatMessageId($lastMessageId);
   }
 
@@ -30,8 +34,10 @@ class ChatManager
       "payload" => [
         'sender' => $this->_sessionService->getPlayerName(),
         'message' => $message
-      ]
-    ]);
+      ],
+      ],
+      $this->_sessionService->getGameMode()->value,
+    );
   }
 
   public function sendSystemMessage(
@@ -40,9 +46,11 @@ class ChatManager
     $this->_chatMessageService->addMessage([
       "payload" => [
         'sender' => "[PLATOSYS]",
-        'message' => $message
-      ]
-    ]);
+        'message' => $message,
+      ],
+      ],
+      $this->_sessionService->getGameMode()->value,
+    );
   }
 
   public function onPoll(
@@ -51,9 +59,12 @@ class ChatManager
   {
     $lastMessageId = $this->_sessionService->getLastChatMessageId();
 
-    $this->_chatMembersService->updateLastSeen($id);
-    $members = $this->_chatMembersService->getActiveMembers();
-    $messages = $this->_chatMessageService->getMessagesSince($lastMessageId);
+    $this->_chatMembersService->updateLastSeen(
+      $id,
+      $this->_sessionService->getGameMode()->value,
+    );
+    $members = $this->_chatMembersService->getActiveMembers($this->_sessionService->getGameMode()->value);
+    $messages = $this->_chatMessageService->getMessagesSince($lastMessageId, $this->_sessionService->getGameMode()->value);
 
     return [
       "payload" => [
