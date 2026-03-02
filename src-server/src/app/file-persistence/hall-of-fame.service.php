@@ -19,6 +19,7 @@ class HallOfFameService extends BaseIOService
     int $numberOfActions,
     int $characterLevel,
     string $gameVersion,
+    GameMode $gameMode,
   ): string
   {
     $members = $this->read();
@@ -35,6 +36,7 @@ class HallOfFameService extends BaseIOService
       'numberOfActions' => $numberOfActions,
       'characterLevel' => $characterLevel,
       'gameVersion' => $gameVersion,
+      'gameMode' => $gameMode->value
     ];
     $members[] = $member;
     $this->write($members);

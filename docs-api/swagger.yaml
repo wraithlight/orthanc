@@ -166,6 +166,10 @@ components:
                       numberOfActions:
                         type: number
                         example: 10
+                      gameMode:
+                        type: string
+                        enum: ["Vanilla", "Retail"]
+                        example: "Vanilla"
 
     CharacterGenerateSuccessResponse:
       allOf:
