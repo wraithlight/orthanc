@@ -1,0 +1,11 @@
+<div class="game-hits" data-bind="text: maxHits() + '/' + curHits() + ' HITS left.'"></div>
+<!-- ko foreach: actions -->
+  <div
+    class="game-action"
+    data-bind="
+      text: label,
+      click: $parent.onActionItemClickEvent.bind($parent, key, payload)
+    "
+  >
+  </div>
+<!-- /ko -->

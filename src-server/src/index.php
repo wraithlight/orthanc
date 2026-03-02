@@ -12,8 +12,9 @@ require_once("./app/file-persistence/chat-members.service.php");
 require_once("./app/file-persistence/chat-messages.service.php");
 require_once("./app/file-persistence/maze.service.php");
 require_once("./app/file-persistence/hall-of-fame.service.php");
-require_once("./app/file-persistence/config.service.php");
 require_once("./app/file-persistence/swadoc.service.php");
+require_once("./app/file-persistence/version.service.php");
+require_once("./app/file-persistence/configuration.service.php");
 
 require_once("./app/utils/guid.php");
 
@@ -67,12 +68,16 @@ require_once("./app/managers/items-on-map.manager.php");
 require_once("./app/managers/npcs-on-map.manager.php");
 require_once("./app/managers/session.manager.php");
 require_once("./app/managers/swadoc.manager.php");
+require_once("./app/managers/hall-of-fame.manager.php");
+require_once("./app/managers/configuration.manager.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
 require_once("./app/controllers/game.controller.php");
 require_once("./app/controllers/chat.controller.php");
 require_once("./app/controllers/swadoc.controller.php");
+require_once("./app/controllers/hall-of-fame.controller.php");
+require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
@@ -93,6 +98,12 @@ $chatControllerFactory = function () {
 $swadocControllerFactory = function () {
   return new SwadocController();
 };
+$hallOfFameControllerFactory = function () {
+  return new HallOfFameController();
+};
+$configurationControllerFactory = function() {
+  return new ConfigurationController();
+};
 
 Wrapper::RegisterPath("GET", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
@@ -101,6 +112,8 @@ Wrapper::RegisterPath("POST", "/api/v1/game/start", $gameControllerFactory, "sta
 Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
 Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
 Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
+Wrapper::RegisterPath("GET", "/api/v1/main/hall-of-fame", $hallOfFameControllerFactory, "getRecords");
+Wrapper::RegisterPath("GET", "/api/v1/configuration", $configurationControllerFactory, "getConfiguration");
 strtolower($isSwadocEnabled) === "true" && Wrapper::RegisterPath("GET", "/api/v1/swadoc", $swadocControllerFactory, "getSwadoc");
 
 Wrapper::Listen(true);

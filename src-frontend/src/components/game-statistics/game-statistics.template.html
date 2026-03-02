@@ -1,0 +1,31 @@
+<strong>Statistics</strong>
+<table>
+  <tr>
+    <td>Experience</td>
+    <td data-bind="text: stats().experience"></td>
+  </tr>
+  <tr>
+    <td>Money</td>
+    <td data-bind="text: stats().money"></td>
+  </tr>
+  <tr>
+    <td>Next Level</td>
+    <td data-bind="text: stats().nextLevelInXp"></td>
+  </tr>
+  <tr>
+    <td>XP from kills</td>
+    <td data-bind="text: stats().xpPercentageFromKills + '%'"></td>
+  </tr>
+  <tr>
+    <td>Weight</td>
+    <td data-bind="text: stats().weight"></td>
+  </tr>
+  <tr>
+    <td>Player level</td>
+    <td data-bind="text: stats().playerLevel"></td>
+  </tr>
+  <tr>
+    <td>Spell units</td>
+    <td data-bind="text: stats().spellUnits.current + '/' + stats().spellUnits.current"></td>
+  </tr>
+</table>

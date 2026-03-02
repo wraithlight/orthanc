@@ -1,0 +1,20 @@
+game-actions {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spacing-00);
+
+  .game-action,
+  .game-hits {
+    padding: var(--spacing-04) var(--spacing-08);
+  }
+
+  .game-hits {
+    font-weight: 700;
+  }
+
+  .game-action:hover {
+    cursor: pointer;
+    background: var(--color-primary);
+    color: #000;
+  }
+}

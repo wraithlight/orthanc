@@ -1,0 +1,27 @@
+<!-- ko foreach: tiles -->
+<div class="game-tile"
+  data-bind="css: { 'wall-top': top === 'TILE_WALL', 'wall-bottom': bottom === 'TILE_WALL', 'wall-right': right === 'TILE_WALL', 'wall-left': left === 'TILE_WALL' }">
+  <!-- ko if: containsItems?.length > 0 -->
+  <!-- ko if: !['item_gold', 'item_orb', 'item_grail'].includes(containsItems[0].iconName.toLowerCase()) -->
+  <img data-bind="attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.png' }">
+  <!-- /ko -->
+  <!-- ko if: ['item_gold', 'item_orb', 'item_grail'].includes(containsItems[0].iconName.toLowerCase()) -->
+  <img data-bind="
+            attr: { src: '/assets/' + containsItems[0].iconName.toLowerCase() + '.svg' },
+            class: containsItems[0].iconName.toLowerCase()
+          ">
+  <!-- /ko -->
+  <!-- /ko -->
+  <!-- ko if: occupiedBy?.key -->
+  <img class="character-tile" data-bind="attr: { src: '/assets/' + occupiedBy.key.toLowerCase() + '.svg' }">
+  <!-- /ko -->
+</div>
+<!-- /ko -->
+<div class="game-view-endgame-items">
+  <!-- ko if: endgameItemIcons().includes('item_grail') -->
+  <img data-bind="attr: { src: '/assets/item_grail.svg' }">
+  <!-- /ko -->
+  <!-- ko if: endgameItemIcons().includes('item_orb') -->
+  <img data-bind="attr: { src: '/assets/item_orb.svg' }">
+  <!-- /ko -->
+</div>

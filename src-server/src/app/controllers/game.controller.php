@@ -125,7 +125,7 @@ class GameController
 
     $playerName = $sessionService->getPlayerName();
     if ($gameState === GameState::EndSuccess && $previousGameState !== GameState::EndSuccess) {
-      $configService = new ConfigService();
+      $versionService = new VersionService();
       $userInteractionsService = new UserInteractionsService();
 
       $hallOfFameService->addUser(
@@ -137,7 +137,7 @@ class GameController
         $userInteractionsService->getMoves(),
         $userInteractionsService->getActions(),
         $levelService->getLevel(),
-        $configService->getVersion()
+        $versionService->getVersion()
       );
       $this->_chatManager->sendSystemMessage("All hail to $playerName who is just conquered the dungeon!"); 
     }

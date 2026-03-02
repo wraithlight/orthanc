@@ -1,0 +1,27 @@
+{
+  "availableLocales": [
+    "en"
+  ],
+  "featureStates": {
+    "applicationDefaultLanguageDefault": {
+      "value": "en",
+      "type": "VALUE"
+    },
+    "loginScreenLanguageSwitchEnabled": {
+      "value": false,
+      "type": "FLAG"
+    },
+    "loginScreenLanguageSwitchDefault": {
+      "value": "en",
+      "type": "VALUE"
+    },
+    "loginScreenModeScreenEnabled": {
+      "value": false,
+      "type": "FLAG"
+    },
+    "loginScreenModeScreenDefault": {
+      "value": "Vanilla",
+      "type": "VALUE"
+    }
+  }
+}
