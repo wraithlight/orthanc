@@ -5,11 +5,11 @@ import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-
 import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
-import { State } from "./state"
+import { State, createConfigState } from "./state"
 import { ConfigurationService, DialogQueueService } from "./services";
+import { Environment } from "./environment";
 
 export class Application {
-  public readonly config = State.config();
   public readonly isLoading = observable(true);
 
   private readonly _dialogQueueService = DialogQueueService.getInstance();
@@ -22,8 +22,10 @@ export class Application {
 
     Promise.all([
       this._configurationService.fetchConfiguration(),
-      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 500))
-    ]).catch(() => {
+      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1000))
+    ])
+      .then(([m, _]) => createConfigState(m))
+      .catch(() => {
         const closeErrorDialog = new subscribable();
         this._dialogQueueService.openDialog(
           "config-fetch-failed-dialog",
@@ -55,8 +57,8 @@ export class Application {
   }
 
   public async onNextFromCharacterCreationHandler(): Promise<void> {
-    this.config && await fetch(
-      `${this.config.apiUrl}/api/v1/game/start`,
+    await fetch(
+      `${Environment.apiBaseUrl}/api/v1/game/start`,
       {
         method: "POST",
         credentials: "include"

@@ -19,27 +19,29 @@ export default defineConfig({
   },
   plugins: [
     {
-      name: "update-config-json",
-      apply: "build",
-      writeBundle() {
-        const args = process.argv[4];
-        const environment = args
-          ? args.split("=")[1]
-          : "local-development"
-        ;
+      name: "use-env-serve",
+      apply: "serve",
+      configResolved() {
+        const environmentsPath = join(__dirname, "src", "environment");
+        const developmentConfig = "environment.local-dev.ts";
+        const defaultConfig = "environment.ts";
 
-        const configFilePath = resolve(__dirname, join("dist", "config.json"));
-        const packageJsonFilePath = resolve(__dirname, "package.json");
-        let gitHash = "local";
-        try {
-          gitHash = execSync("git rev-parse --short HEAD").toString().trim();
-        } catch {};
-        const configContent = JSON.parse(readFileSync(configFilePath, "utf-8"));
-        const packageJsonContent = JSON.parse(readFileSync(packageJsonFilePath, "utf-8"));
-        configContent.apiUrl = "";
-        configContent.version = `${packageJsonContent.version}-${gitHash}`;
-        configContent.environment = environment;
-        writeFileSync(configFilePath, JSON.stringify(configContent), "utf-8");
+        const devContent = readFileSync(join(environmentsPath, developmentConfig), "utf-8");
+        writeFileSync(join(environmentsPath, defaultConfig), devContent, "utf-8");
+      }
+    },
+    {
+      name: "use-env-build",
+      apply: "build",
+      configResolved() {
+        const targetEnv = process.argv[4] || "local-development";
+
+        const environmentsPath = join(__dirname, "src", "environment");
+        const developmentConfig = `environment.${targetEnv}.ts`;
+        const defaultConfig = "environment.ts";
+
+        const devContent = readFileSync(join(environmentsPath, developmentConfig), "utf-8");
+        writeFileSync(join(environmentsPath, defaultConfig), devContent, "utf-8");
       }
     }
   ]
