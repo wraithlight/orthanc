@@ -7,9 +7,11 @@
     }
   ],
   "require-dev": {
-    "phpunit/phpunit": "^10.0"
+    "phpunit/phpunit": "^10.0",
+    "squizlabs/php_codesniffer": "^3.8"
   },
   "scripts": {
-    "gha:test:unit": "phpunit --test-suffix spec.php ."
+    "gha:test:unit": "phpunit --test-suffix spec.php .",
+    "gha:lint": "vendor/bin/phpcs --standard=phpcs.xml --runtime-set ignore_warnings_on_exit 1 src/"
   }
 }
