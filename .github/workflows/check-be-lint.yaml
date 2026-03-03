@@ -1,9 +1,9 @@
-name: "GHA - BE test (unit)"
-run-name: "Test (unit) Backend"
+name: "GHA - BE lint"
+run-name: "Lint Backend"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  backendTestUnit:
+  backendLint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
         run: composer install --no-interaction --prefer-dist
         working-directory: ./src-server
 
-      - name: Run test (unit)
+      - name: Run lint
         run: composer gha:lint
         working-directory: ./src-server
