@@ -11,10 +11,12 @@ class HallOfFameController
   }
 
 
-  public function getRecords()
+  public function getRecords(string $gameMode)
   {
-    $result = $this->_hallOfFameManager->listHallOfFame();
+    $validGameMode = GameMode::tryFrom($gameMode) ?? GameMode::Vanilla;
+    $result = $this->_hallOfFameManager->listHallOfFame($validGameMode);
 
     echo json_encode($result, JSON_UNESCAPED_UNICODE);
   }
+
 }
