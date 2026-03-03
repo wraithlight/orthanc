@@ -1,8 +1,10 @@
 import { observable, subscribable } from "knockout";
+
 import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
-import { LoginClient } from "./login.client";
 import { State } from "../../state";
 import { Environment } from "../../environment";
+
+import { LoginClient } from "./login.client";
 
 interface LoginContainerParams { }
 
@@ -14,11 +16,11 @@ export class LoginContainer implements LoginContainerParams {
   private readonly _loginClient = new LoginClient(Environment.apiBaseUrl);
 
   constructor() {
-    this.loginAsGuestEvent.subscribe((_m) => this.loginAsGuestEventHandler());
+    this.loginAsGuestEvent.subscribe((m) => this.loginAsGuestEventHandler(m));
   }
 
-  private async loginAsGuestEventHandler(): Promise<void> {
-    await this._loginClient.loginGuest();
+  private async loginAsGuestEventHandler(m: LoginAsGuestEvent): Promise<void> {
+    await this._loginClient.loginGuest(m.gameMode);
     State.events.loginSuccess.notifySubscribers();
   }
 

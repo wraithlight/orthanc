@@ -4,6 +4,7 @@ class GameController
 {
   private $_actionsManager;
   private $_chatManager;
+  private $_hallOfFameManager;
   private $_itemsOnMapManager;
   private $_sessionManager;
 
@@ -11,6 +12,7 @@ class GameController
   {
     $this->_actionsManager = new ActionsManager();
     $this->_chatManager = new ChatManager();
+    $this->_hallOfFameManager = new HallOfFameManager();
     $this->_itemsOnMapManager = new ItemsOnMapManager();
     $this->_sessionManager = new SessionManager();
   }
@@ -98,7 +100,6 @@ class GameController
     $stateService = new StateService();
     $sessionService = new SessionService();
     $levelService = new LevelService();
-    $hallOfFameService = new HallOfFameService();
     $playerLocationService = new PlayerLocationService();
 
     $location = $playerLocationService->getPlayerCurrentLocation();
@@ -125,19 +126,9 @@ class GameController
 
     $playerName = $sessionService->getPlayerName();
     if ($gameState === GameState::EndSuccess && $previousGameState !== GameState::EndSuccess) {
-      $versionService = new VersionService();
-      $userInteractionsService = new UserInteractionsService();
-
-      $hallOfFameService->addUser(
-        $playerName,
+      $this->_hallOfFameManager->addUser(
         $this->_sessionManager->getSessionId(),
-        $stateService->getStartTime(),
-        $levelService->getCurrentXp(),
-        $levelService->getXpPercentageFromKills(),
-        $userInteractionsService->getMoves(),
-        $userInteractionsService->getActions(),
-        $levelService->getLevel(),
-        $versionService->getVersion()
+        $stateService->getStartTime()
       );
       $this->_chatManager->sendSystemMessage("All hail to $playerName who is just conquered the dungeon!"); 
     }
