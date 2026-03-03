@@ -599,6 +599,16 @@ paths:
       operationId: getHallOfFame
       tags:
         - main
+      parameters:
+        - name: game-mode
+          in: query
+          required: true
+          description: Game mode to filter Hall of Fame stats
+          schema:
+            type: string
+            enum:
+              - Vanilla
+              - Retail
       responses:
         '200':
           description: Successfully fetched the hall of fame
