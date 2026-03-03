@@ -36,8 +36,8 @@ class HallOfFameManager
     );
   }
 
-  public function listHallOfFame(): array {
-    return $this->_hallOfFameService->list();
+  public function listHallOfFame(GameMode $gameMode): array {
+    return $this->_hallOfFameService->list($gameMode);
   }
 
 }
