@@ -93,6 +93,7 @@ The `composer.json` file under `src-server` contains the following scripts:
 ```sh
 
   gha:test:unit         - Used by GitHub | Runs the unit tests for server.
+  gha:lint              - Used by GitHub | Runs the lint for server.
 
 ```
 
