@@ -1,0 +1,27 @@
+name: "GHA - BE lint"
+run-name: "Lint Backend"
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  backendLint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up PHP with Composer
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+          tools: composer
+          coverage: none
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist
+        working-directory: ./src-server
+
+      - name: Run lint
+        run: composer gha:lint
+        working-directory: ./src-server
