@@ -12,7 +12,8 @@ class ConfigurationService extends BaseIOService {
 
   public function getConfiguration(): object
   {
-    $readResult = $this->read();
+    // TODO: In scope of #14
+    $readResult = $this->read()['common'];
     return (object)$readResult;
   }
 

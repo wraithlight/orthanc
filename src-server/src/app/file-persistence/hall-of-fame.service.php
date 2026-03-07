@@ -44,11 +44,13 @@ class HallOfFameService extends BaseIOService
     return $id;
   }
 
-  public function list(int $limit): array {
+  public function list(
+    int $limit,
+    GameMode $gameMode
+  ): array {
     $data = $this->read();
-    return array_slice($data, 0, $limit);
+    $records = array_slice($data, 0, $limit);
+    return array_filter($records, fn($item) => $item['gameMode'] === $gameMode->value);
   }
 
-
 }
-?>
