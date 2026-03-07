@@ -57,9 +57,6 @@ export class Application {
     const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
     const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
 
-    console.log("retailResults", retailResults);
-    console.log("vanillaResults", vanillaResults);
-
     const retailRowHtml = retailResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level.toString()}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
     const vanillaRowHtml = vanillaResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
 
@@ -67,10 +64,12 @@ export class Application {
     const retailHtml = `<table>${commonHead}${retailRowHtml}</table>`;
     const vanillaHtml = `<table>${commonHead}${vanillaRowHtml}</table>`;
 
+    const html = `<h2>Retail</h2>${retailHtml}<h2>Vanilla</h2>${vanillaHtml}`;
+
     this._dialogQueueService.openDialog(
       "hall-of-fame",
       "Hall of Fame",
-      vanillaHtml,
+      html,
       [
         {
           id: "close-hall-of-fame",
