@@ -1,6 +1,6 @@
 import { ApplicationConfiguration } from "../domain";
 
-export class ConfiguartionClient {
+export class ConfiugartionClient {
 
   constructor(
     private readonly _baseUrl: string
