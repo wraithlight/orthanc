@@ -6,17 +6,20 @@ import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
 import { State, createConfigState } from "./state"
-import { ConfigurationService, DialogQueueService } from "./services";
+import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { Environment } from "./environment";
+import { GameMode } from "./domain";
 
 export class Application {
   public readonly isLoading = observable(true);
 
   private readonly _dialogQueueService = DialogQueueService.getInstance();
   private readonly _configurationService = new ConfigurationService();
+  private readonly _hallOfFameService = new HallOfFameService();
 
   constructor() {
     State.events.loginSuccess.subscribe(() => this.onLoginSuccessHandler());
+    State.events.openHallOfFame.subscribe(() => this.onOpenHallOfFameHandler());
     State.events.nextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
     State.events.backFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
 
@@ -48,6 +51,35 @@ export class Application {
     setTimeout(() => {
       Router.update(`/${CHARACTER_CREATION_SELECTOR}`);
     }, 500);
+  }
+
+  public async onOpenHallOfFameHandler(): Promise<void> {
+    const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
+    const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
+
+    console.log("retailResults", retailResults);
+    console.log("vanillaResults", vanillaResults);
+
+    const retailRowHtml = retailResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level.toString()}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
+    const vanillaRowHtml = vanillaResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
+
+    const commonHead = "<tr><td>Name</td><td>Level</td><td>Session start</td><td>Session end</td><td>Session length</td><td>Experience</td><td>Experience from kills</td><td>Game version</td><td>Number of moves</td><td>Number of actions</td></tr>";
+    const retailHtml = `<table>${commonHead}${retailRowHtml}</table>`;
+    const vanillaHtml = `<table>${commonHead}${vanillaRowHtml}</table>`;
+
+    this._dialogQueueService.openDialog(
+      "hall-of-fame",
+      "Hall of Fame",
+      vanillaHtml,
+      [
+        {
+          id: "close-hall-of-fame",
+          label: "Close",
+          onClick: () => State.events.closeHallOfFame.notifySubscribers()
+        }
+      ],
+      State.events.closeHallOfFame
+    )
   }
 
   public async onBackFromCharacterCreationHandler(): Promise<void> {

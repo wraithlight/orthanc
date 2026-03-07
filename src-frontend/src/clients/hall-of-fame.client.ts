@@ -17,7 +17,7 @@ export class HallOfFameClient {
     );
 
     const content = JSON.parse(await response.text());
-    return content.payload;
+    return { items: content }; // TODO: Payload
   }
 
 }
