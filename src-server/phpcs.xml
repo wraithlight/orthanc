@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="CustomDoubleQuoteRule">
+    <description>Enforce double quotes for all strings</description>
+    <rule ref="Squiz.Strings.DoubleQuoteUsage">
+      <type>warning</type>
+    </rule>
+</ruleset>

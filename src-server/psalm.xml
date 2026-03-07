@@ -1,0 +1,9 @@
+<psalm
+  phpVersion="8.1"
+  errorLevel="8"
+>
+  <projectFiles>
+    <file name="src/index.php"/>
+    <file name="src/swagger.php"/>
+  </projectFiles>
+</psalm>
