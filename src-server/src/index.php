@@ -4,6 +4,8 @@ require_once("./phpapi/api.php");
 // TODO: Move these to `domain` folder. (domain/enum).
 require_once("./app/enums/game-state.enum.php");
 require_once("./app/enums/movement-direction.enum.php");
+// End move.
+require_once("./app/enums/platform.enum.php");
 
 // TODO: Cleanup range start.
 
@@ -56,6 +58,7 @@ require_once("./app/states/player.state.php");
 require_once("./app/states/session.state.php");
 require_once("./app/states/user-interactions.state.php");
 
+require_once("./app/services/platform.service.php");
 require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
