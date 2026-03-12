@@ -7,6 +7,7 @@ import { DEFAULT_GAME_MODE, GAME_MODE_OPTIONS } from "./login.const";
 interface LoginFormComponentParams {
   loginAsGuestEvent: Subscribable;
   loginAsMemberEvent: Subscribable;
+  openHallOfFame: Subscribable;
   hasLoginError: Observable<boolean>;
 }
 
@@ -16,6 +17,7 @@ export class LoginFormComponent implements LoginFormComponentParams {
   public hasLoginError: Observable<boolean>;
   public loginAsGuestEvent: Subscribable<LoginAsGuestEvent>;
   public loginAsMemberEvent: Subscribable<LoginAsMemberEvent>;
+  public openHallOfFame: Subscribable;
   public readonly gameMode = observable(DEFAULT_GAME_MODE);
   public readonly gameModeOptions = observableArray(GAME_MODE_OPTIONS);
 
@@ -23,6 +25,7 @@ export class LoginFormComponent implements LoginFormComponentParams {
     this.loginAsGuestEvent = params.loginAsGuestEvent;
     this.loginAsMemberEvent = params.loginAsMemberEvent;
     this.hasLoginError = params.hasLoginError;
+    this.openHallOfFame = params.openHallOfFame;
   }
 
   public onMemberLogin(): void {
@@ -37,6 +40,10 @@ export class LoginFormComponent implements LoginFormComponentParams {
     this.loginAsGuestEvent.notifySubscribers({
       gameMode: this.gameMode()
     });
+  }
+
+  public onHallOfFameClick(): void {
+    this.openHallOfFame.notifySubscribers();
   }
 
 }
