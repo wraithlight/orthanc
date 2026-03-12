@@ -1,9 +1,9 @@
+vi.mock('./internal', () => ({ isNilCore: vi.fn() }));
+
 import { vi, describe, it, expect } from 'vitest';
 
 import { isNil } from './is-nil';
-
-const isNilCoreSpy = vi.fn();
-vi.mock('./internal', () => ({ isNilCore: isNilCoreSpy }));
+import { isNilCore as isNilCoreSpy } from './internal';
 
 describe('isNilSpecs', () => {
   it('must call isNilCore', () => {
