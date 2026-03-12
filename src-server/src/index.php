@@ -35,6 +35,8 @@ require_once("./app/utils/maze.php");
 
 require_once("./app/domain/game-mode.enum.php");
 
+require_once("./app/dto/hall-of-fame-item.dto.php");
+
 require_once("./app/core/error-code.enum.php");
 require_once("./app/core/create-api-responses.php");
 
@@ -61,6 +63,9 @@ require_once("./app/services/player-location.service.php");
 require_once("./app/services/player.service.php");
 require_once("./app/services/session.service.php");
 require_once("./app/services/user-interactions.service.php");
+
+require_once("./app/mappers/_base.mapper.php");
+require_once("./app/mappers/hall-of-fame.mapper.php");
 
 require_once("./app/managers/actions.manager.php");
 require_once("./app/managers/chat.manager.php");

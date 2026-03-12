@@ -3,6 +3,7 @@
 class HallOfFameManager
 {
   private $_sessionService;
+  private $_hallOfFameMapper;
   private $_hallOfFameService;
   private $_levelService;
   private $_userInteractionsService;
@@ -11,6 +12,7 @@ class HallOfFameManager
   public function __construct()
   {
     $this->_sessionService = new SessionService();
+    $this->_hallOfFameMapper = new HallOfFameItemMapper();
     $this->_hallOfFameService = new HallOfFameService();
     $this->_levelService = new LevelService();
     $this->_userInteractionsService = new UserInteractionsService();
@@ -37,7 +39,8 @@ class HallOfFameManager
   }
 
   public function listHallOfFame(GameMode $gameMode): array {
-    return $this->_hallOfFameService->list(10, $gameMode);
+    $result = $this->_hallOfFameService->list(10, $gameMode);
+    return $this->_hallOfFameMapper->mapListToDto($result);
   }
 
 }
