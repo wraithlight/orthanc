@@ -56,6 +56,7 @@ require_once("./app/states/player.state.php");
 require_once("./app/states/session.state.php");
 require_once("./app/states/user-interactions.state.php");
 
+require_once("./app/services/device.service.php");
 require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
