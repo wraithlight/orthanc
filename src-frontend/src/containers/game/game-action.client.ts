@@ -1,3 +1,6 @@
+import { HeaderNames } from "../../domain";
+import { Environment } from "../../environment";
+
 export class GameActionClient {
   constructor(
     private readonly _baseUrl: string
@@ -16,7 +19,10 @@ export class GameActionClient {
         body: JSON.stringify({
           action: action,
           payload: payload
-        })
+        }),
+        headers: {
+          [HeaderNames.Platform]: Environment.platform
+        }
       }
     );
 
