@@ -6,6 +6,7 @@ function createSuccessResponse(
   $result = new stdClass();
   $result->correlationId = _getCorrelationId();
   $result->payload = $payload;
+  $result->requestId = _getRequestId();
   return $result;
 }
 
@@ -18,6 +19,7 @@ function createFailResponse(
   $result->payload = null;
   $result->errorCode = $errorCode;
   $result->message = $errorMessage;
+  $result->requestId = _getRequestId();
   return $result;
 }
 
@@ -26,4 +28,14 @@ function _getCorrelationId(): string {
   $data[6] = chr(ord($data[6]) & 0x0f | 0x40);
   $data[8] = chr(ord($data[8]) & 0x3f | 0x80);
   return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+}
+
+function _getRequestId(): string {
+  $mockGuid = "07112ba2-1e54-45b0-8db1-69f8a4459af6";
+  $header = $_SERVER['HTTP_X_ORTHANC_REQUEST_ID'];
+  
+  return isGuid($header)
+    ? $header
+    : $mockGuid
+  ;
 }
