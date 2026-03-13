@@ -25,6 +25,15 @@ components:
         type: string
       description: Session identifier cookie, required for all endpoints except login
 
+    REQUESTID:
+      in: header
+      name: HTTP_X_ORTHANC_REQUEST_ID
+      required: true
+      schema:
+        type: string
+        format: uuid
+      description: Request identifier header, required for all endpoints
+
   schemas:
     BaseSuccessResponse:
       type: object
@@ -32,13 +41,18 @@ components:
         correlationId:
           type: string
           format: uuid
-          description: Unique identifier for the request
+          description: Unique identifier for the request (BE only)
+        requestId:  
+          type: string
+          format: uuid
+          description: Unique identifier for the request (E2E)
         payload:
           type: object
           description: Endpoint-specific payload
       required:
         - correlationId
         - payload
+        - requestId
 
     UnauthorizedResponse:
       type: object
@@ -46,6 +60,11 @@ components:
         correlationId:
           type: string
           format: uuid
+          description: Unique identifier for the request (BE only)
+        requestId:  
+          type: string
+          format: uuid
+          description: Unique identifier for the request (E2E)
         payload:
           type: object
           nullable: true
@@ -60,6 +79,7 @@ components:
         - correlationId
         - errorCode
         - message
+        - requestId
 
     ErrorResponse:
       type: object
@@ -67,6 +87,11 @@ components:
         correlationId:
           type: string
           format: uuid
+          description: Unique identifier for the request (BE only)
+        requestId:  
+          type: string
+          format: uuid
+          description: Unique identifier for the request (E2E)
         payload:
           type: object
           nullable: true
@@ -81,6 +106,7 @@ components:
         - correlationId
         - errorCode
         - message
+        - requestId
 
     ChatSendRequest:
       type: object
@@ -600,6 +626,7 @@ paths:
       tags:
         - main
       parameters:
+        - $ref: '#/components/parameters/REQUESTID'
         - name: game-mode
           in: query
           required: true
@@ -629,6 +656,8 @@ paths:
       operationId: loginGuestPost
       tags:
         - session
+      parameters:
+        - $ref: '#/components/parameters/REQUESTID'
       responses:
         '200':
           description: Successfully logged in as guest
@@ -651,6 +680,7 @@ paths:
         - game
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
+        - $ref: '#/components/parameters/REQUESTID'
       requestBody:
         required: true
         content:
@@ -685,6 +715,7 @@ paths:
         - game
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
+        - $ref: '#/components/parameters/REQUESTID'
       responses:
         '200':
           description: Game started successfully
@@ -713,6 +744,7 @@ paths:
         - chat
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
+        - $ref: '#/components/parameters/REQUESTID'
       requestBody:
         required: true
         content:
@@ -747,6 +779,7 @@ paths:
         - chat
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
+        - $ref: '#/components/parameters/REQUESTID'
       responses:
         '200':
           description: Chat messages retrieved
@@ -775,6 +808,7 @@ paths:
         - game
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
+        - $ref: '#/components/parameters/REQUESTID'
       requestBody:
         required: true
         content:
@@ -807,6 +841,8 @@ paths:
       operationId: getConfiguration
       tags:
        - configuration
+      parameters:
+        - $ref: '#/components/parameters/REQUESTID'
       responses:
         '200':
           description: Successfully fetched the configuration
