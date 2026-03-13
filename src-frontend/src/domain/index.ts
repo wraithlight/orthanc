@@ -5,3 +5,4 @@ export * from "./game-mode.enum";
 export * from "./game-statistics.model";
 export * from "./hall-of-fame.model";
 export * from "./header-names.const";
+export * from "./header-values.const";
