@@ -5,10 +5,11 @@ import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-
 import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
-import { State, createConfigState } from "./state"
-import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { Environment } from "./environment";
 import { GameMode, HeaderNames } from "./domain";
+import { newGuid } from "./framework";
+import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
+import { State, createConfigState } from "./state"
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -94,7 +95,8 @@ export class Application {
         method: "POST",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );

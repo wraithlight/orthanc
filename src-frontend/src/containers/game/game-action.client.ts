@@ -1,5 +1,6 @@
 import { HeaderNames } from "../../domain";
 import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
 
 export class GameActionClient {
   constructor(
@@ -21,7 +22,8 @@ export class GameActionClient {
           payload: payload
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );
