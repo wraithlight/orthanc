@@ -1,4 +1,6 @@
-import { GameMode, HallOfFameListModel } from "../domain";
+import { GameMode, HallOfFameListModel, HeaderNames } from "../domain";
+import { Environment } from "../environment";
+import { newGuid } from "../framework";
 
 export class HallOfFameClient {
 
@@ -12,7 +14,11 @@ export class HallOfFameClient {
     const response = await fetch(
       `${baseUrl}${queryParams}`,
       {
-        method: "GET"
+        method: "GET",
+        headers: {
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
+        }
       }
     );
 

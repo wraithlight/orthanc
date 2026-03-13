@@ -11,6 +11,7 @@ const config: KnipConfig = {
   ignore: [
     "src/dal/enum/error-code.enum.ts",  // TODO: Remove once used.
     "src/domain/game-mode.enum.ts",     // TODO: Remove once used.
+    "src/domain/header-names.const.ts", // TODO: Remove once used.
   ]
 };
 
