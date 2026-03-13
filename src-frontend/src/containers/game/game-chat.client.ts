@@ -1,5 +1,6 @@
 import { HeaderNames } from "../../domain";
 import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
 
 export class GameChatClient {
   constructor(
@@ -17,7 +18,8 @@ export class GameChatClient {
           message: message
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );
@@ -30,7 +32,8 @@ export class GameChatClient {
         method: "GET",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );

@@ -1,5 +1,6 @@
 import { HeaderNames } from "../../domain";
 import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
 
 import { CharacterCreationStats } from "./character-creation.model";
 
@@ -16,7 +17,9 @@ export class CharacterCreationClient {
         method: "POST",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
+
         }
       }
     );

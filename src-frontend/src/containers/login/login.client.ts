@@ -1,5 +1,6 @@
 import { GameMode, HeaderNames } from "../../domain";
 import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
 
 export class LoginClient {
 
@@ -19,7 +20,8 @@ export class LoginClient {
           gameMode: gameMode
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );

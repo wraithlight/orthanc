@@ -1,5 +1,6 @@
 import { ApplicationConfiguration, HeaderNames } from "../domain";
 import { Environment } from "../environment";
+import { newGuid } from "../framework";
 
 export class ConfiugartionClient {
 
@@ -13,7 +14,8 @@ export class ConfiugartionClient {
       {
         method: "GET",
         headers: {
-          [HeaderNames.Platform]: Environment.platform
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
         }
       }
     );
