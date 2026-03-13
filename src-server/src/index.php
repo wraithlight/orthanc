@@ -35,6 +35,8 @@ require_once("./app/utils/maze.php");
 
 require_once("./app/domain/game-mode.enum.php");
 
+require_once("./app/guards/is-valid-guid.php");
+
 require_once("./app/dto/hall-of-fame-item.dto.php");
 
 require_once("./app/core/error-code.enum.php");
