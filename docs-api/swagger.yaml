@@ -856,3 +856,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+  /api/v1/localization/{locale}:
+    get:
+      summary: Returns the localization key-value-pairs for the given locale.
+      operationId: getLocalizationLocale 
+      tags:
+        - localization
+      parameters:
+        - $ref: '#/components/parameters/REQUESTID'
+        - name: locale
+          in: path
+          required: true
+          description: The locale to fetch the key-value-pairs for.
+          schema:
+            type: string
+            enum:
+              - en
+              - hu
+      responses:
+        '200':
+          description: Successful get.
+          content:
+            application/json:
+              schema:
+                type: object
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
