@@ -1,7 +1,6 @@
 import { defineConfig } from "vite";
 import { resolve, join } from "path";
 import { readFileSync, writeFileSync } from "fs";
-import { execSync } from "child_process";
 
 export default defineConfig({
   root: ".",
