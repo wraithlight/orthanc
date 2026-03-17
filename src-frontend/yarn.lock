@@ -2670,8 +2670,6 @@ __metadata:
     "@types/jsdom": "npm:27.0.0"
     "@types/knockout": "npm:3.4.77"
     "@types/node": "npm:25.0.3"
-    "@typescript-eslint/eslint-plugin": "npm:8.57.1"
-    "@typescript-eslint/parser": "npm:8.57.1"
     "@vitest/coverage-v8": "npm:4.0.18"
     deepmerge-ts: "npm:7.1.5"
     eslint: "npm:10.0.3"
