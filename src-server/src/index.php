@@ -34,6 +34,7 @@ require_once("./app/utils/maze.php");
 // TODO: Cleanup range end.
 
 require_once("./app/header/header-names.enum.php");
+require_once("./app/header/header-values.enum.php");
 
 require_once("./app/domain/game-mode.enum.php");
 
