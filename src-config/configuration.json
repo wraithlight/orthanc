@@ -1,5 +1,7 @@
 {
   "app_web": {
+    "platform_mobile": {},
+    "platform_desktop": {}
   },
   "app_desktop": {
   },
