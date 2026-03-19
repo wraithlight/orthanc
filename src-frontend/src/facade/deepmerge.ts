@@ -1,8 +1,8 @@
 import { deepmerge as _deepmerge } from "deepmerge-ts";
 
-export function deepmerge<T>(
+export function deepmerge<T, U>(
   left: T,
-  right: T
+  right: U
 ) {
   _deepmerge(left, right);
 }
