@@ -40,6 +40,7 @@ require_once("./app/api-guard/is-header-valid.php");
 require_once("./app/api-guard/get-header-value.php");
 
 require_once("./app/domain/game-mode.enum.php");
+require_once("./app/domain/locale.enum.php");
 
 require_once("./app/guards/is-valid-guid.php");
 
