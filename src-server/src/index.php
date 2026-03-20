@@ -36,6 +36,8 @@ require_once("./app/utils/maze.php");
 require_once("./app/header/header-names.enum.php");
 require_once("./app/header/header-values.enum.php");
 
+require_once("./app/api-guard/is-header-valid.php");
+
 require_once("./app/domain/game-mode.enum.php");
 
 require_once("./app/guards/is-valid-guid.php");
