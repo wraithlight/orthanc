@@ -14,9 +14,12 @@ class HallOfFameController
   public function getRecords(string $gameMode)
   {
     $validGameMode = GameMode::tryFrom($gameMode) ?? GameMode::Vanilla;
-    $result = $this->_hallOfFameManager->listHallOfFame($validGameMode);
+    $payload = $this->_hallOfFameManager->listHallOfFame($validGameMode);
 
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    $result = new stdClass();
+    $result->items = $payload;
+
+    echo json_encode(createSuccessResponse($result));
   }
 
 }
