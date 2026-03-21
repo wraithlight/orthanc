@@ -11,7 +11,7 @@ describe("isNilSpecs", () => {
   const MOCK_RIGHT = { a: [2], c: 3 }
 
   it("must call isNilCore", () => {
-    deepmerge<any>(MOCK_LEFT, MOCK_RIGHT);
+    deepmerge(MOCK_LEFT, MOCK_RIGHT);
     expect(deepmergeSpy).toHaveBeenCalled();
     expect(deepmergeSpy).toHaveBeenCalledTimes(1);
     expect(deepmergeSpy).toHaveBeenCalledWith(MOCK_LEFT, MOCK_RIGHT);

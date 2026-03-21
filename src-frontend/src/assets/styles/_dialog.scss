@@ -25,6 +25,7 @@
 
 .popup-message {
   padding: var(--spacing-10) var(--spacing-00);
+  overflow: scroll;
 }
 
 .popup-actions {
