@@ -52,6 +52,15 @@ components:
         enum: ["application/json"]
       description: Request identifier header, required for all endpoints
 
+    CONTENTYPEJSON:
+      in: header
+      name: Content-Type
+      required: true
+      schema:
+        type: string
+        enum: ["application/json"]
+      description: Content-Type header, required for all endpoints
+
   schemas:
     BaseSuccessResponse:
       type: object
@@ -645,8 +654,9 @@ paths:
         - main
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - name: game-mode
           in: query
           required: true
@@ -678,8 +688,9 @@ paths:
         - session
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Successfully logged in as guest
@@ -703,8 +714,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
         required: true
         content:
@@ -740,8 +752,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Game started successfully
@@ -771,8 +784,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
         required: true
         content:
@@ -808,8 +822,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Chat messages retrieved
@@ -839,8 +854,9 @@ paths:
       parameters:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
         required: true
         content:
@@ -875,8 +891,9 @@ paths:
        - configuration
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Successfully fetched the configuration
@@ -898,8 +915,9 @@ paths:
         - localization
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
-        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
         - name: locale
           in: path
           required: true
