@@ -27,7 +27,7 @@ components:
 
     REQUESTID:
       in: header
-      name: HTTP_X_ORTHANC_REQUEST_ID
+      name: X-ORTHANC-REQUEST-ID
       required: true
       schema:
         type: string
