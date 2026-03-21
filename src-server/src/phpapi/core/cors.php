@@ -11,7 +11,7 @@ namespace PhpAPI2 {
 
       header("Access-Control-Allow-Origin: $corsAllowedOrigins");
       header("Access-Control-Allow-Credentials: true");
-      header("Access-Control-Allow-Headers: X-Orthanc-Request-Id, X-Orthanc-Platform, Content-Type");
+      header("Access-Control-Allow-Headers: X-Orthanc-Request-Id, X-Orthanc-Platform, Content-Type Accept");
       header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
     }
   }
