@@ -6,7 +6,7 @@ import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
 import { Environment } from "./environment";
-import { GameMode, HeaderNames } from "./domain";
+import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
 import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { State, createConfigState } from "./state"
@@ -97,6 +97,7 @@ export class Application {
         headers: {
           [HeaderNames.Platform]: Environment.platform,
           [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
       }
     );
