@@ -34,6 +34,15 @@ components:
         format: uuid
       description: Request identifier header, required for all endpoints
 
+    PLATFORM:
+      in: header
+      name: X-ORTHANC-PLATFORM
+      required: true
+      schema:
+        type: string
+        enum: ["web", "mobile", "application"]
+      description: Platform identifier header, required for all endpoints
+
     ACCEPTSAPPJSON:
       in: header
       name: Accept
@@ -637,6 +646,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
         - name: game-mode
           in: query
           required: true
@@ -669,6 +679,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       responses:
         '200':
           description: Successfully logged in as guest
@@ -693,6 +704,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       requestBody:
         required: true
         content:
@@ -729,6 +741,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       responses:
         '200':
           description: Game started successfully
@@ -759,6 +772,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       requestBody:
         required: true
         content:
@@ -795,6 +809,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       responses:
         '200':
           description: Chat messages retrieved
@@ -825,6 +840,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       requestBody:
         required: true
         content:
@@ -860,6 +876,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
       responses:
         '200':
           description: Successfully fetched the configuration
@@ -882,6 +899,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/PLATFORM'
         - name: locale
           in: path
           required: true
