@@ -1,3 +1,7 @@
+import { HeaderNames, HeaderValueAccept } from "../../domain";
+import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
+
 export class GameActionClient {
   constructor(
     private readonly _baseUrl: string
@@ -16,7 +20,12 @@ export class GameActionClient {
         body: JSON.stringify({
           action: action,
           payload: payload
-        })
+        }),
+        headers: {
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+        }
       }
     );
 

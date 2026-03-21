@@ -1,4 +1,6 @@
-import { ApplicationConfiguration } from "../domain";
+import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../domain";
+import { Environment } from "../environment";
+import { newGuid } from "../framework";
 
 export class ConfiugartionClient {
 
@@ -10,7 +12,12 @@ export class ConfiugartionClient {
     const response = await fetch(
       `${this._baseUrl}/api/v1/configuration`,
       {
-        method: "GET"
+        method: "GET",
+        headers: {
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+        }
       }
     );
 

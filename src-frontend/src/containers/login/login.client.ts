@@ -1,4 +1,6 @@
-import { GameMode } from "../../domain";
+import { GameMode, HeaderNames, HeaderValueAccept } from "../../domain";
+import { Environment } from "../../environment";
+import { newGuid } from "../../framework";
 
 export class LoginClient {
 
@@ -16,7 +18,12 @@ export class LoginClient {
         credentials: "include",
         body: JSON.stringify({
           gameMode: gameMode
-        })
+        }),
+        headers: {
+          [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+        }
       }
     );
     const content = JSON.parse(await response.text());

@@ -33,7 +33,16 @@ require_once("./app/utils/maze.php");
 
 // TODO: Cleanup range end.
 
+require_once("./app/header/header-names.enum.php");
+require_once("./app/header/header-values.enum.php");
+
+require_once("./app/api-guard/is-header-valid.php");
+require_once("./app/api-guard/get-header-value.php");
+
 require_once("./app/domain/game-mode.enum.php");
+require_once("./app/domain/locale.enum.php");
+
+require_once("./app/guards/is-valid-guid.php");
 
 require_once("./app/dto/hall-of-fame-item.dto.php");
 
@@ -56,6 +65,7 @@ require_once("./app/states/player.state.php");
 require_once("./app/states/session.state.php");
 require_once("./app/states/user-interactions.state.php");
 
+require_once("./app/services/device.service.php");
 require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
@@ -85,6 +95,19 @@ require_once("./app/controllers/hall-of-fame.controller.php");
 require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
+
+if (!isHeaderValid(
+  getHeaderValue(HeaderName::Accept->value, ""),
+  [HeaderValueAccept::ApplicationJson->value])
+) {
+  http_response_code(400);
+  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+}
+
+if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+  http_response_code(400);
+  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+}
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
