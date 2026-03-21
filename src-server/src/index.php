@@ -95,6 +95,19 @@ require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
+if (!isHeaderValid(
+  getHeaderValue(HeaderName::Accept->value, ""),
+  [HeaderValueAccept::ApplicationJson->value])
+) {
+  http_response_code(400);
+  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+}
+
+if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+  http_response_code(400);
+  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+}
+
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
 $loginControllerFactory = function () {
