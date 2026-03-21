@@ -1,4 +1,4 @@
-import { HeaderNames } from "../../domain";
+import { HeaderNames, HeaderValueAccept } from "../../domain";
 import { Environment } from "../../environment";
 import { newGuid } from "../../framework";
 
@@ -24,6 +24,7 @@ export class GameActionClient {
         headers: {
           [HeaderNames.Platform]: Environment.platform,
           [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
       }
     );

@@ -1,4 +1,4 @@
-import { ApplicationConfiguration, HeaderNames } from "../domain";
+import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 
@@ -16,6 +16,7 @@ export class ConfiugartionClient {
         headers: {
           [HeaderNames.Platform]: Environment.platform,
           [HeaderNames.RequestId]: newGuid(),
+          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
       }
     );
