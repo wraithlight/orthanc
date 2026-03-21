@@ -31,8 +31,9 @@ function _getCorrelationId(): string {
 }
 
 function _getRequestId(): string {
+  // TODO: Remove mock logic as it is enforced to be a valid GUID on root API layer.
   $mockGuid = "07112ba2-1e54-45b0-8db1-69f8a4459af6";
-  $header = $_SERVER['HTTP_X_ORTHANC_REQUEST_ID'];
+  $header = getHeaderValue(HeaderName::RequestId->value, $mockGuid);
   
   return isGuid($header)
     ? $header
