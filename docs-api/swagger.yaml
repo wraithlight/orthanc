@@ -50,7 +50,7 @@ components:
       schema:
         type: string
         enum: ["application/json"]
-      description: Request identifier header, required for all endpoints
+      description: Accept header, required for all endpoints
 
     CONTENTYPEJSON:
       in: header
