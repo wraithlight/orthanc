@@ -6,8 +6,7 @@ describe("OperationResultSuccess", () => {
   it("should set isSuccess and isError correctly", () => {
     const result = new OperationResultSuccess("payload");
 
-    expect(result.isSuccess).toBe(true);
-    expect(result.isError).toBe(false);
+    expect(result["severity"]).toBe("SUCCESS");
   });
 
   it("should store payload correctly", () => {

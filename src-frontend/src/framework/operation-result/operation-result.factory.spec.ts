@@ -10,8 +10,7 @@ describe("OperationResultFactory", () => {
     const result = OperationResultFactory.success(payload);
 
     expect(result).toBeInstanceOf(OperationResultSuccess);
-    expect(result.isSuccess).toBe(true);
-    expect(result.isError).toBe(false);
+    expect(result["severity"]).toBe("SUCCESS");
     expect(result.payload).toEqual(payload);
   });
 
@@ -27,8 +26,7 @@ describe("OperationResultFactory", () => {
     const result = OperationResultFactory.error(errorMessage);
 
     expect(result).toBeInstanceOf(OperationResultError);
-    expect(result.isError).toBe(true);
-    expect(result.isSuccess).toBe(false);
+    expect(result["severity"]).toBe("ERROR");
     expect(result.errors).toEqual([errorMessage]);
   });
 

@@ -7,8 +7,7 @@ describe("OperationResultError", () => {
     const errors = ["Something went wrong"];
     const result = new OperationResultError(...errors);
 
-    expect(result.isError).toBe(true);
-    expect(result.isSuccess).toBe(false);
+    expect(result["severity"]).toBe("ERROR");
   });
 
   it("should store errors correctly", () => {
