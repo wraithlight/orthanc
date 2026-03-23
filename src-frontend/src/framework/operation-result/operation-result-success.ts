@@ -2,8 +2,7 @@ import { OperationResultBase } from "./operation-result-base";
 
 export class OperationResultSuccess<T = undefined>
   extends OperationResultBase {
-  public readonly isError = false;
-  public readonly isSuccess = true;
+  protected readonly severity = "SUCCESS";
   public readonly payload: T;
 
   constructor(

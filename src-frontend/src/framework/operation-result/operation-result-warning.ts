@@ -1,7 +1,7 @@
 import { OperationResultBase } from "./operation-result-base";
 
-export class OperationResultError extends OperationResultBase {
-    protected readonly severity = "ERROR";
+export class OperationResultWarning extends OperationResultBase {
+  protected readonly severity = "WARNING";
   public readonly errors: ReadonlyArray<string>;
 
 
