@@ -10,10 +10,11 @@ export class OperationResultFactory {
     return new OperationResultSuccess(payload);
   }
 
-  public static warning(
+  public static warning<T = undefined>(
+    payload: T,
     ...errors: ReadonlyArray<string>
-  ): OperationResultWarning {
-    return new OperationResultWarning(...errors);
+  ): OperationResultWarning<T> {
+    return new OperationResultWarning(payload, ...errors);
   }
 
   public static error(
