@@ -11,7 +11,7 @@ export abstract class OperationResultBase {
     return this.severity === "ERROR";
   }
 
-  public isWarnTC(): this is OperationResultWarning {
+  public isWarnTC<T>(): this is OperationResultWarning<T> {
     return this.severity === "WARNING";
   }
 
