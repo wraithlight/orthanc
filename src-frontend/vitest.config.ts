@@ -19,6 +19,9 @@ export default defineConfig({
         "src/**/*.model.ts",
         "src/**/*.type.ts",
         "src/environment/**/*.ts",
+        "src/**/*.const.ts",
+        "src/state/events.ts",
+        "src/state/player-name.ts",
       ],
     }
   }
