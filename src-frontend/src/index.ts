@@ -1,6 +1,8 @@
 import { Route, Router } from "@profiscience/knockout-contrib-router";
 import ko from "knockout";
 
+import "./knockout-utils";
+
 import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-creation/character-creation.selector';
 import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';

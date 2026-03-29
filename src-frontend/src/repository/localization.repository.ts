@@ -1,3 +1,4 @@
+import { Observable, observable, unwrap } from "knockout";
 import { isNil, Nullable } from "../framework";
 
 export class LocalizationRepository {
@@ -8,23 +9,23 @@ export class LocalizationRepository {
     return this._instance;
   }
 
-  private _dictionary: Nullable<Record<string, string>>;
+  private _dictionary = observable<Nullable<Record<string, string>>>();
 
   public setLocalization(
     dictionary: Record<string, string>
   ): void {
-    this._dictionary = dictionary;
+    this._dictionary(dictionary);
   }
 
   public getOrDefault(
     key: string,
     defaultValue: string
-  ): string {
-    const result = this._dictionary?.[key];
+  ): Observable<string> {
+    const result = unwrap(this._dictionary)?.[key];
     if (isNil(result)) {
-      return defaultValue;
+      return observable(defaultValue);
     }
-    return result;
+    return observable(result);
   }
 
 }
