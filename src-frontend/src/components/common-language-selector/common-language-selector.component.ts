@@ -1,18 +1,23 @@
-import ko, { Observable, unwrap } from "knockout";
+import ko, { Observable, Subscribable, unwrap } from "knockout";
 
 import { readFromConfigState } from "../../state";
 import { LocaleService } from "../../services";
 
-interface CommonLanguageSelectorComponentProps { }
+interface CommonLanguageSelectorComponentProps {
+  onLocaleChange: Subscribable<string>;
+}
 
 export class CommonLanguageSelectorComponent implements CommonLanguageSelectorComponentProps {
 
   public readonly currentLocale: Observable;
   public readonly availableLocales: Observable;
+  public readonly onLocaleChange: Subscribable<string>;
 
   private readonly _localeService = new LocaleService();
 
-  constructor() {
+  constructor(params: CommonLanguageSelectorComponentProps) {
+    this.onLocaleChange = params.onLocaleChange;
+
     const availableLocales = readFromConfigState<ReadonlyArray<string>, ReadonlyArray<string>>(m => m.availableLocales, ["en"])  
     const currentLocale = this.getCurrentLocale(availableLocales);
     this.currentLocale = ko.observable(currentLocale);
@@ -25,6 +30,7 @@ export class CommonLanguageSelectorComponent implements CommonLanguageSelectorCo
     }
     this._localeService.setCurrentLocale(locale as any);
     this.currentLocale(locale);
+    this.onLocaleChange.notifySubscribers(locale);
   }
 
   private getCurrentLocale(
