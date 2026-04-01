@@ -1,4 +1,6 @@
 export * from "./locale";
+export * from "./localization";
+
 // TODO: Move these to folders
 export * from "./configuration.service";
 export * from "./device.service";
