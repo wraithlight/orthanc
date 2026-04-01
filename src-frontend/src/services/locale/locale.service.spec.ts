@@ -3,8 +3,7 @@ import { CookieRepository } from "../../repository";
 import { LocaleService } from "./locale.service";
 import {
   LOCALE_COOKIE_NAME,
-  LOCALE_COOKIE_EXPIRY_DAYS,
-  DEFAULT_LOCALE
+  LOCALE_COOKIE_EXPIRY_DAYS
 } from "./locale.const";
 import type { Locale } from "./locale.type";
 
@@ -44,11 +43,11 @@ describe("LocaleService", () => {
   it("getCurrentLocale should call repository.getOrDefault with correct args", () => {
     vi.mocked(repo.getOrDefault).mockReturnValue("en");
 
-    service.getCurrentLocale();
+    service.getCurrentLocale("en");
 
     expect(repo.getOrDefault).toHaveBeenCalledWith(
       LOCALE_COOKIE_NAME,
-      DEFAULT_LOCALE
+      "en"
     );
   });
 
@@ -57,7 +56,7 @@ describe("LocaleService", () => {
 
     vi.mocked(repo.getOrDefault).mockReturnValue(expectedLocale);
 
-    const result = service.getCurrentLocale();
+    const result = service.getCurrentLocale("en");
 
     expect(result).toBe(expectedLocale);
   });
