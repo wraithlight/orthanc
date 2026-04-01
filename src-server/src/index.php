@@ -102,12 +102,17 @@ if (!isHeaderValid(
 ) {
   http_response_code(400);
   echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+  return;
 }
 
 if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
   http_response_code(400);
   echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+  return;
 }
+
+$configManager = new ConfigurationManager();
+header(HeaderName::OrthancPlafromVersion->value . ": " . $configManager->getConfiguration()->version);
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
