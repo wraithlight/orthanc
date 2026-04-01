@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { ConfiugartionClient } from "./configuration.client";
+import { ConfigurationClient } from "./configuration.client";
 
 vi.mock("../framework", () => ({
   newGuid: vi.fn(),
@@ -16,7 +16,7 @@ import { newGuid } from "../framework";
 import { Environment } from "../environment";
 import { HeaderNames } from "../domain";
 
-describe("ConfiugartionClient", () => {
+describe("ConfigurationClient", () => {
   const baseUrl = "http://test.com";
 
   beforeEach(() => {
@@ -40,7 +40,7 @@ describe("ConfiugartionClient", () => {
       .spyOn(JSON, "parse")
       .mockReturnValue({ payload: { key: "value" } });
 
-    const client = new ConfiugartionClient(baseUrl);
+    const client = new ConfigurationClient(baseUrl);
 
     const result = await client.getConfiguration();
 
@@ -74,7 +74,7 @@ describe("ConfiugartionClient", () => {
       payload: { foo: "bar" },
     });
 
-    const client = new ConfiugartionClient(baseUrl);
+    const client = new ConfigurationClient(baseUrl);
 
     const result = await client.getConfiguration();
 
