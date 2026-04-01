@@ -1,7 +1,6 @@
 import { CookieRepository } from "../../repository";
 
 import {
-  DEFAULT_LOCALE,
   LOCALE_COOKIE_EXPIRY_DAYS,
   LOCALE_COOKIE_NAME
 } from "./locale.const";
@@ -20,10 +19,12 @@ export class LocaleService {
     return locale;
   }
 
-  public getCurrentLocale(): Locale {
+  public getCurrentLocale(
+    defaultLocale: Locale
+  ): Locale {
     return this._cookieRepository.getOrDefault(
       LOCALE_COOKIE_NAME,
-      DEFAULT_LOCALE
+      defaultLocale
     );
   }
 
