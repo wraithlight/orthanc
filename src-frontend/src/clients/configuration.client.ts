@@ -2,7 +2,7 @@ import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../dom
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 
-export class ConfiugartionClient {
+export class ConfigurationClient {
 
   constructor(
     private readonly _baseUrl: string
