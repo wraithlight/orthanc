@@ -1,6 +1,9 @@
 <?php
 require_once("./phpapi/api.php");
 
+require_once("./app/core/request/get-request-method.php");
+require_once("./app/core/request/request-method.enum.php");
+
 // TODO: Move these to `domain` folder. (domain/enum).
 require_once("./app/enums/game-state.enum.php");
 require_once("./app/enums/movement-direction.enum.php");
