@@ -96,19 +96,21 @@ require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
-if (!isHeaderValid(
-  getHeaderValue(HeaderName::Accept->value, ""),
-  [HeaderValueAccept::ApplicationJson->value])
-) {
-  http_response_code(400);
-  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
-  return;
-}
+if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') { 
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Accept->value, ""),
+    [HeaderValueAccept::ApplicationJson->value])
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+    return;
+  }
 
-if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
-  http_response_code(400);
-  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
-  return;
+  if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+    return;
+  }
 }
 
 $configManager = new ConfigurationManager();
