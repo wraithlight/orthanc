@@ -1,6 +1,7 @@
 import { HeaderNames, HeaderValueAccept } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
+import { InterceptorCache } from "../http";
 
 export class LocalizationClient {
 
@@ -22,6 +23,10 @@ export class LocalizationClient {
     );
 
     const content = JSON.parse(await response.text());
+
+    const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
+    interceptors.forEach(m => m(response));
+
     return content.payload;
   }
 

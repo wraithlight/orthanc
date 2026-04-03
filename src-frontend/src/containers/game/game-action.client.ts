@@ -1,6 +1,7 @@
 import { HeaderNames, HeaderValueAccept } from "../../domain";
 import { Environment } from "../../environment";
 import { newGuid } from "../../framework";
+import { InterceptorCache } from "../../http";
 
 export class GameActionClient {
   constructor(
@@ -30,6 +31,10 @@ export class GameActionClient {
     );
 
     const content = await result.text();
+
+    const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
+    interceptors.forEach(m => m(result));
+
     return JSON.parse(content).payload;
   }
 }
