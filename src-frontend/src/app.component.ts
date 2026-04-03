@@ -10,6 +10,7 @@ import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
 import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { State, createConfigState } from "./state"
+import { createAfterInterceptor } from "./http";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -28,9 +29,39 @@ export class Application {
       this._configurationService.fetchConfiguration(),
       new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1000))
     ])
-      .then(([m, _]) => createConfigState(m))
+      .then(([m, _]) => {
+        createConfigState(m);
+        let isVersionDialogVisible = false;
+        createAfterInterceptor((res: Response) => {
+          if (isVersionDialogVisible) {
+            return;
+          }
+          const platformVersion = res.headers.get(HeaderNames.PlatformVersion.toLowerCase());
+          const configVersion = m.version;
+
+          if (platformVersion !== configVersion) {
+            isVersionDialogVisible = true;
+            const closeVersionMismatchDialog = new subscribable();
+            closeVersionMismatchDialog.subscribe(() => location.reload());
+            this._dialogQueueService.openDialog(
+              "version-mismatch-dialog",
+              "Warning!",
+              "You have an outdated version of the game! Some features may not work, please refresh the window to avoid version mismatch issues.",
+              [
+                {
+                  id: "cta-refresh",
+                  label: "Refresh",
+                  onClick: () => closeVersionMismatchDialog.notifySubscribers()
+                }
+              ],
+              closeVersionMismatchDialog
+            )
+          }
+        });
+      })
       .catch(() => {
         const closeErrorDialog = new subscribable();
+        closeErrorDialog.subscribe(() => location.reload());
         this._dialogQueueService.openDialog(
           "config-fetch-failed-dialog",
           "Error!",
