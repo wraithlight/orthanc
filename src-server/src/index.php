@@ -1,10 +1,10 @@
 <?php
-require_once("./phpapi/api.php");
-
 require_once("./app/core/request/get-request-method.php");
 require_once("./app/core/request/request-method.enum.php");
 require_once("./app/core/request/is-options-request.php");
 require_once("./app/core/request/is-not-options-request.php");
+
+require_once("./phpapi/api.php");
 
 // TODO: Move these to `domain` folder. (domain/enum).
 require_once("./app/enums/game-state.enum.php");
@@ -101,7 +101,7 @@ require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
-if ($_SERVER['REQUEST_METHOD'] !== 'OPTIONS') { 
+if (isNotOptionsRequest()) { 
   if (!isHeaderValid(
     getHeaderValue(HeaderName::Accept->value, ""),
     [HeaderValueAccept::ApplicationJson->value])
