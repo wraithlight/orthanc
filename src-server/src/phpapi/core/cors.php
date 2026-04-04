@@ -15,7 +15,7 @@ namespace PhpAPI2 {
       header("Access-Control-Allow-Headers: X-Orthanc-Request-Id, X-Orthanc-Platform, Content-Type, Accept");
       header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 
-      if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { 
+      if (isOptionsRequest()) { 
           http_response_code(200);
           exit;
       }
