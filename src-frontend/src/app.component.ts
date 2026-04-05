@@ -11,6 +11,7 @@ import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { State, createConfigState } from "./state"
 import { createAfterInterceptor } from "./http";
+import { RuntimeContext } from "./runtime-context";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -127,6 +128,7 @@ export class Application {
         credentials: "include",
         headers: {
           [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.Device]: RuntimeContext.device,
           [HeaderNames.RequestId]: newGuid(),
           [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
