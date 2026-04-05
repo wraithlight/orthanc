@@ -1,4 +1,4 @@
-orthanc-loader {
+orthanc-dialog {
   .popup-overlay {
     width: 100%;
     height: 100%;
@@ -32,7 +32,7 @@ orthanc-loader {
   .popup-actions {
     display: flex;
 
-    &>button {
+    & > button {
       background: #000;
       color: var(--color-primary);
       border-bottom: 0;
