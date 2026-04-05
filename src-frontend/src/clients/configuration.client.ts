@@ -2,6 +2,7 @@ import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../dom
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
+import { RuntimeContext } from "../runtime-context";
 
 export class ConfigurationClient {
 
@@ -16,6 +17,7 @@ export class ConfigurationClient {
         method: "GET",
         headers: {
           [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.Device]: RuntimeContext.device,
           [HeaderNames.RequestId]: newGuid(),
           [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
