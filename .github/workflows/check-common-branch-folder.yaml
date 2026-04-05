@@ -29,6 +29,7 @@ jobs:
           test/
           docs/
           fix/
+          refactor/
           EOF
 
           VALID=false
