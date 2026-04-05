@@ -20,7 +20,6 @@ import TEMPLATE from "./app.template.html?raw";
 
 import "./assets/styles/normalize.scss";
 import "./assets/styles/variables.scss";
-import "./assets/styles/_dialog.scss";
 import "./global.scss";
 import { RuntimeContext } from "./runtime-context";
 import { Device } from "./domain";
