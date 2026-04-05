@@ -7,3 +7,8 @@ export const enum HeaderValuesContentType {
 export const enum HeaderValueAccept {
   ApplicationJson = APPLICATION_JSON,
 }
+
+export const enum Device {
+  Mobile = "mobile",
+  Desktop = "desktop",
+}
