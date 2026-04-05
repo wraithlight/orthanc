@@ -43,6 +43,15 @@ components:
         enum: ["web", "mobile", "application"]
       description: Platform identifier header, required for all endpoints
 
+    DEVICE:
+      in: header
+      name: X-ORTHANC-DEVICE
+      required: true
+      schema:
+        type: string
+        enum: ["desktop", "mobile"]
+      description: Device identifier header, required for all endpoints
+
     ACCEPTSAPPJSON:
       in: header
       name: Accept
@@ -60,6 +69,12 @@ components:
         type: string
         enum: ["application/json"]
       description: Content-Type header, required for all endpoints
+
+  headers:
+    X-ORTHANC-PLATFORM-VERSION:
+      description: Current platform version
+      schema:
+        type: string
 
   schemas:
     BaseSuccessResponse:
@@ -655,6 +670,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - name: game-mode
@@ -669,12 +685,18 @@ paths:
       responses:
         '200':
           description: Successfully fetched the hall of fame
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/HallOfFameSuccessResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -689,17 +711,24 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Successfully logged in as guest
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/LoginGuestSuccessResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -715,6 +744,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -726,18 +756,27 @@ paths:
       responses:
         '200':
           description: Character generated successfully
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/CharacterGenerateSuccessResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -753,23 +792,33 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Game started successfully
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameStartSuccessResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -785,6 +834,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -796,18 +846,27 @@ paths:
       responses:
         '200':
           description: Message sent successfully
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatSendSuccessResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -823,23 +882,33 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Chat messages retrieved
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatPollSuccessResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -855,6 +924,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -866,18 +936,27 @@ paths:
       responses:
         '200':
           description: Action performed
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GameActionSuccessResponse'
         '401':
           description: Unauthorized
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/UnauthorizedResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -892,17 +971,24 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
         '200':
           description: Successfully fetched the configuration
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ConfigurationSuccessResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
@@ -916,6 +1002,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
         - name: locale
@@ -930,12 +1017,18 @@ paths:
       responses:
         '200':
           description: Successful get.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:
                 type: object
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
           content:
             application/json:
               schema:

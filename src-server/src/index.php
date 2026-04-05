@@ -1,4 +1,9 @@
 <?php
+require_once("./app/core/request/get-request-method.php");
+require_once("./app/core/request/request-method.enum.php");
+require_once("./app/core/request/is-options-request.php");
+require_once("./app/core/request/is-not-options-request.php");
+
 require_once("./phpapi/api.php");
 
 // TODO: Move these to `domain` folder. (domain/enum).
@@ -96,18 +101,38 @@ require_once("./app/controllers/configuration.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
-if (!isHeaderValid(
-  getHeaderValue(HeaderName::Accept->value, ""),
-  [HeaderValueAccept::ApplicationJson->value])
-) {
-  http_response_code(400);
-  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+if (isNotOptionsRequest()) { 
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Accept->value, ""),
+    [HeaderValueAccept::ApplicationJson->value])
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+    return;
+  }
+
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Device->value, ""),
+      [
+        HeaderValueDevice::Desktop->value,
+        HeaderValueDevice::Mobile->value
+      ]
+    )
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Device->value . ")"));
+    return;
+  }
+
+  if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+    return;
+  }
 }
 
-if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
-  http_response_code(400);
-  echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
-}
+$configManager = new ConfigurationManager();
+header(HeaderName::OrthancPlafromVersion->value . ": " . $configManager->getConfiguration()->version);
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 

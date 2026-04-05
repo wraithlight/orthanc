@@ -4,7 +4,7 @@ namespace PhpAPI2 {
   {
     public static function Enable()
     {
-      header('Content-type: application/json');
+      header('Content-Type: application/json');
     }
   }
 }
