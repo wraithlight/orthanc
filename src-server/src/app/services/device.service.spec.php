@@ -3,62 +3,42 @@
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/device.service.php';
+require_once("./src/app/header/header-values.enum.php");
 
 class Device extends TestCase
 {
-
-  public function mobileUserAgentsProvider(): array
+  protected function tearDown(): void
   {
-    return [
-      ['Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15', true],
-      ['Mozilla/5.0 (Linux; Android 10; SM-G973F) AppleWebKit/537.36', true],
-      ['Mozilla/5.0 (iPad; CPU OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15', true],
-      ['Mozilla/5.0 (Windows Phone 10.0; Android 6.0; Microsoft; RM-1152)', true],
-      ['Mozilla/5.0 (BlackBerry; U; BlackBerry 9900)', true],
-    ];
+    unset($_SERVER['HTTP_X_ORTHANC_DEVICE']);
   }
 
-  public function desktopUserAgentsProvider(): array
+  public function testIsMobileReturnsTrue()
   {
-    return [
-      ['Mozilla/5.0 (Windows NT 10.0; Win64; x64)', false],
-      ['Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7)', false],
-      ['Mozilla/5.0 (X11; Linux x86_64)', false],
-      ['', false],
-    ];
+    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = HeaderValueDevice::Mobile->value;
+
+    $service = new DeviceService();
+
+    $this->assertTrue($service->isMobile());
+    $this->assertFalse($service->isDesktop());
   }
 
-  /**
-   * @dataProvider mobileUserAgentsProvider
-   */
-  public function testIsMobileReturnsTrueForMobileAgents(string $userAgent, bool $expected)
+  public function testIsDesktopReturnsTrue()
   {
-    $detector = new DeviceService($userAgent);
-    $this->assertSame($expected, $detector->isMobile());
-    $this->assertSame(!$expected, $detector->isDesktop());
+    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = HeaderValueDevice::Desktop->value;
+
+    $service = new DeviceService();
+
+    $this->assertTrue($service->isDesktop());
+    $this->assertFalse($service->isMobile());
   }
 
-  /**
-   * @dataProvider desktopUserAgentsProvider
-   */
-  public function testIsDesktopReturnsTrueForDesktopAgents(string $userAgent, bool $expected)
+  public function testIsMobileReturnsFalseForOtherValues()
   {
-    $detector = new DeviceService($userAgent);
-    $this->assertSame($expected, $detector->isMobile());
-    $this->assertSame(!$expected, $detector->isDesktop());
-  }
+    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = 'tablet';
 
-  public function testCustomUserAgentCanBeOverridden()
-  {
-    $detector = new DeviceService('custom mobile agent android');
-    $this->assertTrue($detector->isMobile());
-    $this->assertFalse($detector->isDesktop());
-  }
+    $service = new DeviceService();
 
-  public function testNoUserAgentDefaultsToDesktop()
-  {
-    $detector = new DeviceService('');
-    $this->assertFalse($detector->isMobile());
-    $this->assertTrue($detector->isDesktop());
+    $this->assertFalse($service->isMobile());
+    $this->assertFalse($service->isDesktop());
   }
 }
