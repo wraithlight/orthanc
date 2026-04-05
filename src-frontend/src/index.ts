@@ -2,6 +2,13 @@ import { Route, Router } from "@profiscience/knockout-contrib-router";
 import ko from "knockout";
 
 import "./knockout-utils";
+import { DeviceService } from "./services";
+
+const deviceService = DeviceService.getInstance();
+RuntimeContext.device = deviceService.isDesktop()
+  ? Device.Desktop
+  : Device.Mobile
+;
 
 import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-creation/character-creation.selector';
 import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
@@ -15,6 +22,8 @@ import "./assets/styles/normalize.scss";
 import "./assets/styles/variables.scss";
 import "./assets/styles/_dialog.scss";
 import "./global.scss";
+import { RuntimeContext } from "./runtime-context";
+import { Device } from "./domain";
 
 import.meta.glob('./components/**/index.ts', { eager: true });
 import.meta.glob('./containers/**/index.ts', { eager: true });

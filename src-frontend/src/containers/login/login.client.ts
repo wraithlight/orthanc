@@ -1,6 +1,8 @@
 import { GameMode, HeaderNames, HeaderValueAccept } from "../../domain";
 import { Environment } from "../../environment";
 import { newGuid } from "../../framework";
+import { InterceptorCache } from "../../http";
+import { RuntimeContext } from "../../runtime-context";
 
 export class LoginClient {
 
@@ -21,12 +23,17 @@ export class LoginClient {
         }),
         headers: {
           [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.Device]: RuntimeContext.device,
           [HeaderNames.RequestId]: newGuid(),
           [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
         }
       }
     );
     const content = JSON.parse(await response.text());
+
+    const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
+    interceptors.forEach(m => m(response));
+
     return content.payload;
   }
 
