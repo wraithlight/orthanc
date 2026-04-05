@@ -15,6 +15,7 @@ vi.mock("../environment", () => ({
 import { newGuid } from "../framework";
 import { Environment } from "../environment";
 import { GameMode, HeaderNames } from "../domain";
+import { RuntimeContext } from "../runtime-context";
 
 describe("HallOfFameClientSpecs", () => {
   const baseUrl = "http://test.com";
@@ -50,6 +51,7 @@ describe("HallOfFameClientSpecs", () => {
         method: "GET",
         headers: {
           [HeaderNames.Platform]: Environment.platform,
+          [HeaderNames.Device]: RuntimeContext.device,
           [HeaderNames.RequestId]: "test-guid",
           [HeaderNames.Accept]: "application/json",
         },
