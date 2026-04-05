@@ -1,0 +1,47 @@
+name: "GHA - COMMON branch folder"
+run-name: "Branch folder Common"
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  check-branch-folder:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Determine branch name
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            BRANCH_NAME="${{ github.head_ref }}"
+          else
+            BRANCH_NAME="${{ github.ref_name }}"
+          fi
+
+          echo "BRANCH_NAME=$BRANCH_NAME" >> $GITHUB_ENV
+
+      - name: Validate branch name
+        run: |
+          BRANCH_NAME="$BRANCH_NAME"
+
+          readarray -t ALLOWED_PREFIXES <<EOF
+          feat/
+          chore/
+          style/
+          release/
+          test/
+          docs/
+          fix/
+          EOF
+
+          VALID=false
+
+          for prefix in "${ALLOWED_PREFIXES[@]}"; do
+            if [[ "$BRANCH_NAME" == "$prefix"* ]]; then
+              VALID=true
+              break
+            fi
+          done
+
+          if [ "$VALID" = false ]; then
+            echo "Invalid branch name: $BRANCH_NAME"
+            echo "Must start with one of: ${ALLOWED_PREFIXES[*]}"
+            exit 1
+          fi
