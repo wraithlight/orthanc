@@ -43,6 +43,15 @@ components:
         enum: ["web", "mobile", "application"]
       description: Platform identifier header, required for all endpoints
 
+    DEVICE:
+      in: header
+      name: X-ORTHANC-DEVICE
+      required: true
+      schema:
+        type: string
+        enum: ["desktop", "mobile"]
+      description: Device identifier header, required for all endpoints
+
     ACCEPTSAPPJSON:
       in: header
       name: Accept
@@ -661,6 +670,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - name: game-mode
@@ -701,6 +711,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
@@ -733,6 +744,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -780,6 +792,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
@@ -821,6 +834,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -868,6 +882,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
@@ -909,6 +924,7 @@ paths:
         - $ref: '#/components/parameters/PHPSESSID'
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       requestBody:
@@ -955,6 +971,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
       responses:
@@ -985,6 +1002,7 @@ paths:
       parameters:
         - $ref: '#/components/parameters/REQUESTID'
         - $ref: '#/components/parameters/PLATFORM'
+        - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
         - name: locale
