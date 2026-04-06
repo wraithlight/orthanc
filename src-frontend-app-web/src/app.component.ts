@@ -10,8 +10,9 @@ import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
 import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
 import { State, createConfigState } from "./state"
-import { createAfterInterceptor } from "./http";
 import { RuntimeContext } from "./runtime-context";
+import { createVersionCheckerInterceptor } from "./interceptors";
+import { doVersionCheck } from "./version-check";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -26,39 +27,15 @@ export class Application {
     State.events.nextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
     State.events.backFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
 
+    createVersionCheckerInterceptor();
+
     Promise.all([
       this._configurationService.fetchConfiguration(),
-      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1000))
+      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1_000))
     ])
-      .then(([m, _]) => {
-        createConfigState(m);
-        let isVersionDialogVisible = false;
-        createAfterInterceptor((res: Response) => {
-          if (isVersionDialogVisible) {
-            return;
-          }
-          const platformVersion = res.headers.get(HeaderNames.PlatformVersion.toLowerCase());
-          const configVersion = m.version;
-
-          if (platformVersion !== configVersion) {
-            isVersionDialogVisible = true;
-            const closeVersionMismatchDialog = new subscribable();
-            closeVersionMismatchDialog.subscribe(() => location.reload());
-            this._dialogQueueService.openDialog(
-              "version-mismatch-dialog",
-              "Warning!",
-              "You have an outdated version of the game! Some features may not work, please refresh the window to avoid version mismatch issues.",
-              [
-                {
-                  id: "cta-refresh",
-                  label: "Refresh",
-                  onClick: () => closeVersionMismatchDialog.notifySubscribers()
-                }
-              ],
-              closeVersionMismatchDialog
-            )
-          }
-        });
+      .then(([[version, config], _]) => {
+        createConfigState(config);
+        doVersionCheck(version);
       })
       .catch(() => {
         const closeErrorDialog = new subscribable();

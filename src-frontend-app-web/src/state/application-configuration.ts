@@ -2,7 +2,7 @@ import { ApplicationConfiguration } from "../domain";
 import { Predicate } from "../framework";
 
 export class ApplicationConfigurationState {
-  
+
   constructor(
     private readonly _config: ApplicationConfiguration
   ) { }

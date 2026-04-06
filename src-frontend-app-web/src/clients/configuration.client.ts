@@ -1,6 +1,6 @@
 import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../domain";
 import { Environment } from "../environment";
-import { newGuid } from "../framework";
+import { newGuid, Nullable } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
@@ -10,7 +10,7 @@ export class ConfigurationClient {
     private readonly _baseUrl: string
   ) { }
 
-  public async getConfiguration(): Promise<ApplicationConfiguration> {
+  public async getConfiguration(): Promise<[Nullable<string>, ApplicationConfiguration]> {
     const response = await fetch(
       `${this._baseUrl}/api/v1/configuration`,
       {
@@ -29,7 +29,10 @@ export class ConfigurationClient {
     const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
     interceptors.forEach(m => m(response));
 
-    return content.payload;
+    return [
+      response.headers.get(HeaderNames.PlatformVersion),
+      content.payload
+    ];
   }
 
 }

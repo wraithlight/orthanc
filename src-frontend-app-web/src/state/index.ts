@@ -31,4 +31,7 @@ export const createConfigState = (config: ApplicationConfiguration) => {
 export const readFromConfigState = <T, U extends T>(
   predicate: Predicate<ApplicationConfiguration, T>,
   defaultValue: U
-) => _config.getOrDefault<T, U>(predicate, defaultValue);
+) => _config
+  ? _config.getOrDefault<T, U>(predicate, defaultValue)
+  : defaultValue
+;
