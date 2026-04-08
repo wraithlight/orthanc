@@ -1,5 +1,5 @@
-name: "GHA - FE trivy"
-run-name: "Trivy Frontend"
+name: "GHA - FE LIB APP trivy"
+run-name: "Trivy Frontend Lib App"
 
 on:
   pull_request:
@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  frontendTrivy:
+  frontendLibAppTrivy:
     runs-on: ubuntu-latest
 
     steps:

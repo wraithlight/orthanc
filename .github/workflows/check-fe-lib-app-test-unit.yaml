@@ -1,9 +1,9 @@
-name: "GHA - FE stylelint"
-run-name: "Stylelint Frontend"
+name: "GHA - FE LIB APP test (unit)"
+run-name: "Test (unit) Frontend Lib App"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  frontendStylelint:
+  frontendLibAppTestUnit:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
           yarn install --frozen-lockfile
         working-directory: ./src-frontend
 
-      - name: Run lint
-        run: yarn gha:stylelint
+      - name: Run test (unit)
+        run: yarn gha:test:unit
         working-directory: ./src-frontend

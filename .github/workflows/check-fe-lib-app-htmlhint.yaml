@@ -1,9 +1,9 @@
-name: "GHA - FE htmlhint"
-run-name: "Htmlhint Frontend"
+name: "GHA - FE LIB APP htmlhint"
+run-name: "Htmlhint Frontend Lib App"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  frontendHtmlhint:
+  frontendLibAppHtmlhint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout

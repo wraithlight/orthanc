@@ -1,9 +1,9 @@
-name: "GHA - FE knip"
-run-name: "Knip Frontend"
+name: "GHA - FE LIB APP build"
+run-name: "Build Frontend Lib App"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  frontendKnip:
+  frontendLibAppBuildProd:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
           yarn install --frozen-lockfile
         working-directory: ./src-frontend
 
-      - name: Run knip
-        run: yarn gha:knip
+      - name: Run build
+        run: yarn gha:build:prod
         working-directory: ./src-frontend
