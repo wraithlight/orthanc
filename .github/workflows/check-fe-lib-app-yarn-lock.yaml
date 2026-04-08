@@ -1,12 +1,12 @@
-name: GHA - FE yarn.lock
-run-name: "yarn.lock Frontend"
+name: GHA - FE LIB APP yarn.lock
+run-name: "yarn.lock Frontend Lib App"
 
 on:
   pull_request:
   workflow_dispatch:
 
 jobs:
-  frontendYarnlock:
+  frontendLibAppYarnlock:
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write

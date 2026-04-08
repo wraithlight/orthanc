@@ -1,9 +1,9 @@
-name: "GHA - FE lint"
-run-name: "Lint Frontend"
+name: "GHA - FE LIB APP sherif"
+run-name: "Sherif Frontend Lib App"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  frontendLint:
+  frontendLibAppSherif:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
           yarn install --frozen-lockfile
         working-directory: ./src-frontend
 
-      - name: Run lint
-        run: yarn gha:lint
+      - name: Run sherif
+        run: yarn gha:sherif
         working-directory: ./src-frontend

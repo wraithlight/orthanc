@@ -1,9 +1,9 @@
-name: "GHA - FE build"
-run-name: "Build Frontend"
+name: "GHA - FE LIB APP lint"
+run-name: "Lint Frontend Lib App"
 on: [pull_request, workflow_dispatch]
 
 jobs:
-  frontendBuildProd:
+  frontendLibAppLint:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,6 +22,6 @@ jobs:
           yarn install --frozen-lockfile
         working-directory: ./src-frontend
 
-      - name: Run build
-        run: yarn gha:build:prod
+      - name: Run lint
+        run: yarn gha:lint
         working-directory: ./src-frontend
