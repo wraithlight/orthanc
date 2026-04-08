@@ -20,8 +20,8 @@ jobs:
         run: |
           volta install node yarn
           yarn install --frozen-lockfile
-        working-directory: ./src-frontend
+        working-directory: ./src-frontend-app-web
 
       - name: Run test (unit)
         run: yarn gha:test:unit
-        working-directory: ./src-frontend
+        working-directory: ./src-frontend-app-web

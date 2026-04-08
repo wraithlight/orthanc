@@ -20,8 +20,8 @@ jobs:
         run: |
           volta install node yarn
           yarn install --frozen-lockfile
-        working-directory: ./src-frontend
+        working-directory: ./src-frontend-app-web
 
       - name: Run lint
         run: yarn gha:lint
-        working-directory: ./src-frontend
+        working-directory: ./src-frontend-app-web
