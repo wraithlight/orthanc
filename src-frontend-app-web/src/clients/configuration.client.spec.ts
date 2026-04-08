@@ -33,6 +33,9 @@ describe("ConfigurationClient", () => {
 
     const fetchMock = vi.fn().mockResolvedValue({
       text: vi.fn().mockResolvedValue('{"payload":{"key":"value"}}'),
+      headers: {
+        get: vi.fn().mockReturnValue(null),
+      },
     });
 
     globalThis.fetch = fetchMock as any;
@@ -62,7 +65,10 @@ describe("ConfigurationClient", () => {
       '{"payload":{"key":"value"}}'
     );
 
-    expect(result).toEqual({ key: "value" });
+    expect(result).toEqual([
+      null,
+      { key: "value" },
+    ]);
   });
 
   it("should return payload from parsed response", async () => {
@@ -70,6 +76,9 @@ describe("ConfigurationClient", () => {
 
     globalThis.fetch = vi.fn().mockResolvedValue({
       text: vi.fn().mockResolvedValue("raw-response"),
+      headers: {
+        get: vi.fn().mockReturnValue(null),
+      },
     }) as any;
 
     vi.spyOn(JSON, "parse").mockReturnValue({
@@ -80,6 +89,9 @@ describe("ConfigurationClient", () => {
 
     const result = await client.getConfiguration();
 
-    expect(result).toEqual({ foo: "bar" });
+    expect(result).toEqual([
+      null,
+      { foo: "bar" },
+    ]);
   });
 });
