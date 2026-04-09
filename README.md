@@ -87,6 +87,15 @@ During Docker build, the `run-dev.sh` script will create its own docker image na
 
 As you may see the Docker Image and the Docker Container have the same name.
 
+### Database scripts
+The `package.json` file under `src-database` contains the following scripts:
+
+```sh
+
+  gha:build             - Used by GitHub | Runs the build.
+
+```
+
 ### BE scripts
 The `composer.json` file under `src-server` contains the following scripts:
 

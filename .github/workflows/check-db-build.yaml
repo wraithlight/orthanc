@@ -1,0 +1,27 @@
+name: "GHA - DB build"
+run-name: "Build Database"
+on: [pull_request, workflow_dispatch]
+
+jobs:
+  databaseBuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install Volta
+        run: |
+          curl https://get.volta.sh | bash
+          echo "$HOME/.volta/bin" >> $GITHUB_PATH
+
+      - name: Install packages
+        run: |
+          volta install node yarn
+          yarn install --frozen-lockfile
+        working-directory: ./src-database
+
+      - name: Run build
+        run: yarn gha:build
+        working-directory: ./src-database
