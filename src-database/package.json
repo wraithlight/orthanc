@@ -1,0 +1,12 @@
+{
+  "name": "orthanc-database",
+  "version": "0.0.1",
+  "license": "MIT",
+  "scripts": {
+    "gha:build": "node build.mjs"
+  },
+  "volta": {
+    "node": "24.12.0",
+    "yarn": "4.12.0"
+  }
+}
