@@ -23,7 +23,7 @@ cd orthanc                                              # navigate to the repo
 cd src-server                                           # navigate to server folder
 composer install                                        # install dependencies via composer
 cd ..                                                   # navigate to the repo root
-cd src-frontend                                         # navigate to frontend folder
+cd src-frontend-app-web                                 # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
 
 ```
@@ -34,7 +34,7 @@ yarn                                                    # install dependencies v
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to the repo
 sh run-dev.sh                                           # run the server in docker (port 3100)
-cd src-frontend                                         # navigate to frontend folder
+cd src-frontend-app-web                                 # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
 yarn dev                                                # start dev mode via yarn
 open localhost:3000                                     # open the app in your browser
@@ -87,6 +87,15 @@ During Docker build, the `run-dev.sh` script will create its own docker image na
 
 As you may see the Docker Image and the Docker Container have the same name.
 
+### Database scripts
+The `package.json` file under `src-database` contains the following scripts:
+
+```sh
+
+  gha:build             - Used by GitHub | Runs the build.
+
+```
+
 ### BE scripts
 The `composer.json` file under `src-server` contains the following scripts:
 
@@ -100,7 +109,7 @@ The `composer.json` file under `src-server` contains the following scripts:
 ```
 
 ### FE scripts
-The `package.json` file under `src-frontend` contains the following scripts:
+The `package.json` file under `src-frontend-app-web` contains the following scripts:
 
 ```sh
 

@@ -111,6 +111,19 @@ if (isNotOptionsRequest()) {
     return;
   }
 
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Device->value, ""),
+      [
+        HeaderValueDevice::Desktop->value,
+        HeaderValueDevice::Mobile->value
+      ]
+    )
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Device->value . ")"));
+    return;
+  }
+
   if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
     http_response_code(400);
     echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));

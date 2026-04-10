@@ -2,40 +2,20 @@
 
 class DeviceService
 {
-  private string $_userAgent;
+  private string $_device;
 
-  public function __construct(?string $userAgent = null)
+  public function __construct()
   {
-    $this->_userAgent = $userAgent ?? ($_SERVER['HTTP_USER_AGENT'] ?? '');
+    $this->_device = $_SERVER['HTTP_X_ORTHANC_DEVICE'];
   }
 
   public function isMobile(): bool
   {
-    $mobileAgents = [
-      'android',
-      'webos',
-      'iphone',
-      'ipad',
-      'ipod',
-      'blackberry',
-      'windows phone',
-      'opera mini',
-      'mobile'
-    ];
-
-    $ua = strtolower($this->_userAgent);
-
-    foreach ($mobileAgents as $agent) {
-      if (strpos($ua, $agent) !== false) {
-        return true;
-      }
-    }
-
-    return false;
+    return $this->_device === HeaderValueDevice::Mobile->value;
   }
 
   public function isDesktop(): bool
   {
-    return !$this->isMobile();
+    return $this->_device === HeaderValueDevice::Desktop->value;
   }
 }
