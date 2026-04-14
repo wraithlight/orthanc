@@ -62,3 +62,12 @@ jobs:
           ftp_pass: ${{ secrets.FTP_PASS }}
           remote_dir: ${{ secrets.FTP_VERSION_FOLDER }}
           local_dir: "./version.json"
+
+      - name: Deploy to Localization FTP
+        uses: ./.github/actions/deploy-ftp
+        with:
+          ftp_host: ${{ secrets.FTP_HOST }}
+          ftp_user: ${{ secrets.FTP_USER }}
+          ftp_pass: ${{ secrets.FTP_PASS }}
+          remote_dir: ${{ secrets.FTP_LOCALIZATION_FOLDER }}
+          local_dir: "./src-localization"
