@@ -20,6 +20,7 @@ require_once("./app/file-persistence/hall-of-fame.service.php");
 require_once("./app/file-persistence/swadoc.service.php");
 require_once("./app/file-persistence/version.service.php");
 require_once("./app/file-persistence/configuration.service.php");
+require_once("./app/file-persistence/localization.service.php");
 
 require_once("./app/utils/guid.php");
 
