@@ -13,6 +13,7 @@ export const doVersionCheck = (requiredVersion: Nullable<string>) => {
   const platformVersion = requiredVersion;
 
   if (isNil(platformVersion)) {
+    // eslint-disable-next-line no-console
     console.warn(`The header '${HeaderNames.PlatformVersion}' was not present on the response!`);
     return;
   }
