@@ -1,10 +1,10 @@
 import { observable, subscribable } from "knockout";
 
+import { LoginClient } from "../../clients";
 import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
 import { State } from "../../state";
 import { Environment } from "../../environment";
 
-import { LoginClient } from "./login.client";
 
 interface LoginContainerParams { }
 
