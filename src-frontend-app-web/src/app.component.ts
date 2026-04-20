@@ -63,7 +63,7 @@ export class Application {
     };
 
     Promise.all([
-      configAndLocale$,
+      configAndLocale$(),
       new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1_000))
     ]).finally(() => this.isLoading(false));
   }
@@ -74,7 +74,7 @@ export class Application {
     }, 500);
   }
 
-  public async onOpenHallOfFameHandler(): Promise<void> {
+  private async onOpenHallOfFameHandler(): Promise<void> {
     const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
     const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
 
