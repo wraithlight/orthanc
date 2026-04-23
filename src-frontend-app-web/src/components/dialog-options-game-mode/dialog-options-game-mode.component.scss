@@ -1,0 +1,15 @@
+.orthanc-dialog-options-game-mode {
+  padding: var(--spacing-16);
+  text-align: justify;
+  overflow-y: scroll;
+
+  .orthanc-dialog-options-game-mode-spacer {
+    border-color: var(--color-primary);
+    margin-top: var(--spacing-08);
+  }
+
+  h2,
+  h3 {
+    padding: var(--spacing-08) 0;
+  }
+}

@@ -8,11 +8,12 @@ import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 import { Environment } from "./environment";
 import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
 import { newGuid } from "./framework";
-import { ConfigurationService, DialogQueueService, HallOfFameService } from "./services";
+import { ConfigurationService, DialogQueueService, HallOfFameService, LocaleService, LocalizationService } from "./services";
 import { State, createConfigState } from "./state"
 import { RuntimeContext } from "./runtime-context";
 import { createVersionCheckerInterceptor } from "./interceptors";
 import { doVersionCheck } from "./version-check";
+import { LocalizationRepository } from "./repository";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -20,24 +21,30 @@ export class Application {
   private readonly _dialogQueueService = DialogQueueService.getInstance();
   private readonly _configurationService = new ConfigurationService();
   private readonly _hallOfFameService = new HallOfFameService();
+  private readonly _localizationService = new LocalizationService();
+  private readonly _localeService = new LocaleService();
+  private readonly _localizationRepository = LocalizationRepository.getInstance();
 
   constructor() {
     State.events.loginSuccess.subscribe(() => this.onLoginSuccessHandler());
     State.events.openHallOfFame.subscribe(() => this.onOpenHallOfFameHandler());
+    State.events.openOptionsDialog.subscribe(() => this.onOpenOptionsDialogHandler());
     State.events.nextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
     State.events.backFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
 
     createVersionCheckerInterceptor();
 
-    Promise.all([
-      this._configurationService.fetchConfiguration(),
-      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1_000))
-    ])
-      .then(([[version, config], _]) => {
+    const configAndLocale$ = async () => {
+      try {
+        const [version, config] = await this._configurationService.fetchConfiguration();
         createConfigState(config);
         doVersionCheck(version);
-      })
-      .catch(() => {
+
+        const locale = config.featureStates.applicationDefaultLanguageDefault.value;
+        const localization = await this._localizationService.getLocalization(locale);
+        this._localeService.setCurrentLocale(locale);
+        this._localizationRepository.setLocalization(localization);
+      } catch {
         const closeErrorDialog = new subscribable();
         closeErrorDialog.subscribe(() => location.reload());
         this._dialogQueueService.openDialog(
@@ -53,8 +60,13 @@ export class Application {
           ],
           closeErrorDialog
         )
-      })
-      .finally(() => this.isLoading(false));
+      }
+    };
+
+    Promise.all([
+      configAndLocale$(),
+      new Promise((resolve, _reject) => setTimeout(() => resolve(undefined), 1_000))
+    ]).finally(() => this.isLoading(false));
   }
 
   public async onLoginSuccessHandler(): Promise<void> {
@@ -63,7 +75,17 @@ export class Application {
     }, 500);
   }
 
-  public async onOpenHallOfFameHandler(): Promise<void> {
+  private onOpenOptionsDialogHandler(): void {
+    this._dialogQueueService.openDialogWithComponent(
+      "options-dialog",
+      "Options",
+      "orthanc-dialog-options",
+      (_params: unknown) => {},
+      State.events.closeOptionsDialog
+    );
+  }
+
+  private async onOpenHallOfFameHandler(): Promise<void> {
     const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
     const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
 

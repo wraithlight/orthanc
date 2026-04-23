@@ -13,6 +13,7 @@
     "gha:sherif": "echo 0",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
+    "dev:storbook": "storybook dev",
     "build:local": "vite build -- local",
     "build:local-dev": "vite build -- local-development",
     "test:unit": "vitest run",
@@ -24,6 +25,7 @@
     "knockout": "3.5.1"
   },
   "devDependencies": {
+    "@storybook/html-vite": "10.3.5",
     "@types/jsdom": "27.0.0",
     "@types/knockout": "3.4.77",
     "@types/node": "25.0.3",
@@ -32,6 +34,7 @@
     "jsdom": "28.0.0",
     "knip": "5.82.1",
     "sass": "1.97.1",
+    "storybook": "10.3.5",
     "typescript": "5.9.3",
     "typescript-eslint": "8.57.1",
     "vite": "7.3.0",
