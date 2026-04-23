@@ -1,0 +1,29 @@
+<div class="options-container">
+  <div class="options-content">
+    <div class="options-menu">
+      <!-- ko foreach: items -->
+       <span
+        class="options-menu-item"
+        data-bind="
+          text: label,
+          css: { 'options-menu-item--active': $parent.activeItem().key === key },
+          click: () => $parent.onMenuItemClick(key),
+        "
+       ></span>
+      <!-- /ko -->
+    </div>
+    <div class="options-workbench" data-bind="css: activeItem().selector">
+      <!-- ko component: {
+       name: activeItem().selector,
+        params: {
+        saveSubscription: saveSubscription
+       }
+      }-->
+      <!-- /ko -->
+    </div>
+  </div>
+  <div class="options-actions">
+    <button data-bind="click: () => onCancelClick()">Cancel</button>
+    <button data-bind="click: () => onSaveAndCloseClick()">Save and Close</button>
+  </div>
+</div>
