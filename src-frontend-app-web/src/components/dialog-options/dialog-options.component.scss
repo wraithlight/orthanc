@@ -1,0 +1,56 @@
+.orthanc-dialog-options {
+  height: 540px;
+  width: 100%;
+
+  .options-content {
+    height: 90%;
+    display: flex;
+
+    .options-menu {
+      width: 200px;
+      border-left: var(--border-2px0-primary-solid);
+      border-right: var(--border-2px0-primary-solid);
+      border-bottom: var(--border-2px0-primary-solid);
+      height: 95%;
+      display: flex;
+      flex-direction: column;
+
+      .options-menu-item {
+        padding: var(--spacing-04) var(--spacing-06) var(--spacing-04) var(--spacing-06);
+        cursor: pointer;
+
+        &:hover {
+          background: var(--color-primary);
+          color: #000;
+        }
+
+        &--active {
+          font-weight: bold;
+        }
+      }
+    }
+
+    .options-workbench {
+      flex-grow: 1;
+      border-bottom: var(--border-2px0-primary-solid);
+      border-right: var(--border-2px0-primary-solid);
+      height: 95%;
+    }
+  }
+
+  .options-actions {
+    display: flex;
+  }
+
+  button {
+    background: #000;
+    color: var(--color-primary);
+    border: var(--border-2px0-primary-solid);
+    padding: var(--spacing-06) var(--spacing-16);
+    font-family: inherit;
+    font-size: 16px;
+    cursor: pointer;
+    flex-grow: 1;
+    // width: 100%;
+  }
+}

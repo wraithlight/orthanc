@@ -1,50 +1,36 @@
-import ko, { Observable, Subscribable, unwrap } from "knockout";
+import ko, { Observable, ObservableArray, unwrap } from "knockout";
 
 import { readFromConfigState } from "../../state";
-import { LocaleService } from "../../services";
+// TODO: Export this properly or move to domain.
+import { Locale } from "../../services/locale/locale.type";
 
 interface CommonLanguageSelectorComponentProps {
-  onLocaleChange: Subscribable<string>;
+  currentLocale: Observable<Locale>;
 }
 
 export class CommonLanguageSelectorComponent implements CommonLanguageSelectorComponentProps {
 
-  public readonly currentLocale: Observable;
-  public readonly availableLocales: Observable;
-  public readonly onLocaleChange: Subscribable<string>;
-
-  private readonly _localeService = new LocaleService();
+  public readonly currentLocale: Observable<Locale>;
+  public readonly availableLocales: ObservableArray<any>;
 
   constructor(params: CommonLanguageSelectorComponentProps) {
-    this.onLocaleChange = params.onLocaleChange;
-
     const availableLocales = readFromConfigState<ReadonlyArray<string>, ReadonlyArray<string>>(m => m.availableLocales, ["en"])  
-    const currentLocale = this.getCurrentLocale(availableLocales);
-    this.currentLocale = ko.observable(currentLocale);
-    this.availableLocales = ko.observable(availableLocales);
+    this.currentLocale = params.currentLocale;
+    this.availableLocales = ko.observableArray([...availableLocales.map(m => ({
+      value: m,
+      label: m
+    }))]);
+
+    this.currentLocale.subscribe(m => this.setCurrentLocale(m));
   }
 
   public setCurrentLocale(locale: string): void {
+    // TODO: Typeguard for locale.
     if (!unwrap(this.availableLocales).includes(locale)) {
       return;
     }
-    this._localeService.setCurrentLocale(locale as any);
-    this.currentLocale(locale);
-    this.onLocaleChange.notifySubscribers(locale);
+    this.currentLocale(locale as Locale);
   }
 
-  private getCurrentLocale(
-    allowedLocales: ReadonlyArray<string>
-  ): string {
-    const configDefaultLocale = readFromConfigState(m => m.featureStates.applicationDefaultLanguageDefault, allowedLocales[0]! as any);
-    const cookieLocale = this._localeService.getCurrentLocale(configDefaultLocale as any);
-
-    const currentLocale = allowedLocales.includes(cookieLocale)
-      ? cookieLocale
-      : configDefaultLocale
-    ;
-
-    return currentLocale as string;
-  }
 
 }
