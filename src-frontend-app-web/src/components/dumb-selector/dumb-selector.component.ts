@@ -1,5 +1,6 @@
 import { Observable, ObservableArray } from "knockout";
 
+// TODO: Move this to a model and export.
 interface OrthancSelectorOption {
   value: string;
   label: string;
