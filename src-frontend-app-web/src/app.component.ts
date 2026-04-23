@@ -28,6 +28,7 @@ export class Application {
   constructor() {
     State.events.loginSuccess.subscribe(() => this.onLoginSuccessHandler());
     State.events.openHallOfFame.subscribe(() => this.onOpenHallOfFameHandler());
+    State.events.openOptionsDialog.subscribe(() => this.onOpenOptionsDialogHandler());
     State.events.nextFromCharacterCreation.subscribe(() => this.onNextFromCharacterCreationHandler());
     State.events.backFromCharacterCreation.subscribe(() => this.onBackFromCharacterCreationHandler());
 
@@ -72,6 +73,16 @@ export class Application {
     setTimeout(() => {
       Router.update(`/${CHARACTER_CREATION_SELECTOR}`);
     }, 500);
+  }
+
+  private onOpenOptionsDialogHandler(): void {
+    this._dialogQueueService.openDialogWithComponent(
+      "options-dialog",
+      "Options",
+      "orthanc-dialog-options",
+      (_params: unknown) => {},
+      State.events.closeOptionsDialog
+    );
   }
 
   private async onOpenHallOfFameHandler(): Promise<void> {
