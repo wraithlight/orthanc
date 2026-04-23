@@ -3,23 +3,9 @@
     ORTHANC LOGIN
   </div>
 
-  <!-- ko if: hasLoginError() -->
-  <div class="error-message">
-    ERROR WHILE LOGGING IN
-  </div>
-  <!-- /ko -->
-
-  <orthanc-selector
-    params="{
-      label: 'Mode',
-      name: 'game-mode',
-      value: gameMode,
-      options: gameModeOptions
-    }"
-  ></orthanc-selector>
-
   <div class="actions">
     <button data-bind="click: onGuestLogin">Play as Guest</button>
+    <button data-bind="click: onOptionsClick">Options</button>
     <button data-bind="click: onHallOfFameClick">Hall of Fame</button>
   </div>
 </div>

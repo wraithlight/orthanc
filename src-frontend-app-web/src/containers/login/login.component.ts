@@ -1,4 +1,4 @@
-import { observable, subscribable } from "knockout";
+import { subscribable } from "knockout";
 
 import { LoginAsGuestEvent, LoginAsMemberEvent } from "../../model/login-events";
 import { State } from "../../state";
@@ -11,14 +11,15 @@ interface LoginContainerParams { }
 export class LoginContainer implements LoginContainerParams {
   public loginAsGuestEvent = new subscribable<LoginAsGuestEvent>();
   public loginAsMemberEvent = new subscribable<LoginAsMemberEvent>();
+  public openOptionsDialogEvent = new subscribable();
   public openHallOfFameEvent = new subscribable();
-  public hasLoginError = observable(false);
 
   private readonly _loginClient = new LoginClient(Environment.apiBaseUrl);
 
   constructor() {
     this.loginAsGuestEvent.subscribe((m) => this.loginAsGuestEventHandler(m));
     this.openHallOfFameEvent.subscribe(() => this.openHallOfFame());
+    this.openOptionsDialogEvent.subscribe(() => this.openOptionsDialog());
   }
 
   private async loginAsGuestEventHandler(m: LoginAsGuestEvent): Promise<void> {
@@ -28,6 +29,10 @@ export class LoginContainer implements LoginContainerParams {
 
   private openHallOfFame(): void {
     State.events.openHallOfFame.notifySubscribers();
+  }
+
+  private openOptionsDialog(): void {
+    State.events.openOptionsDialog.notifySubscribers();
   }
 
 }
