@@ -17,9 +17,12 @@
            data-bind="component: {
              name: componentSelector,
              params: {
-               payload: componentPayload
-             }
-           }">
+               payload: componentPayload,
+               closeSubscription: closeSubscription,
+             },
+           },
+           class: componentSelector
+          ">
       </div>
     <!-- /ko -->
   </div>
