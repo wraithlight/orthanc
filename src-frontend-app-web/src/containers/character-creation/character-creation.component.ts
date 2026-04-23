@@ -1,9 +1,9 @@
 import { observable, observableArray, Subscribable, subscribable } from "knockout";
 
+import { CharacterCreationClient } from "../../clients";
 import { GameChatClient } from "../game/game-chat.client";
 import { State } from "../../state";
 
-import { CharacterCreationClient } from "./character-creation.client";
 import { Environment } from "../../environment";
 
 interface CharacterCreationContainerParams { }

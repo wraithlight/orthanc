@@ -16,6 +16,9 @@ interface OrthancDialogComponentParams {
   closeSubscription: Subscribable<void>;
   onOpen?: () => boolean;
   onClose?: () => void;
+  type: Observable<"HTML" | "COMPONENT">;
+  componentSelector: Observable<string>;
+  componentPayload: Observable<any>;
 }
 
 export class OrthancDialogComponent implements OrthancDialogComponentParams {
@@ -28,6 +31,9 @@ export class OrthancDialogComponent implements OrthancDialogComponentParams {
   public readonly onOpen?: (() => boolean) | undefined;
   public readonly onClose?: (() => void) | undefined;
   public readonly closeSubscription: Subscribable<void>;
+  public readonly type: Observable<"HTML" | "COMPONENT">;
+  public readonly componentSelector: Observable<string>;
+  public readonly componentPayload: Observable<any>;
 
   constructor(params: OrthancDialogComponentParams) {
     this.id = params.id;
@@ -37,6 +43,9 @@ export class OrthancDialogComponent implements OrthancDialogComponentParams {
     this.onOpen = params.onOpen;
     this.onClose = params.onClose;
     this.closeSubscription = params.closeSubscription;
+    this.type = params.type;
+    this.componentSelector = params.componentSelector;
+    this.componentPayload = params.componentPayload;
 
     this.openDialog();
     this.closeSubscription.subscribe(() => {

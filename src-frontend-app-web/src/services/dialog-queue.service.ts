@@ -34,7 +34,33 @@ export class DialogQueueService {
       actions: observableArray(actions),
       closeSubscription: closeSubscription,
       onOpen: onOpen,
-      onClose: () => this.onDialogClose(onClose)
+      onClose: () => this.onDialogClose(onClose),
+      type: "HTML",
+      componentSelector: observable(undefined),
+      componentPayload: observable(undefined)
+    });
+  }
+
+  public openDialogWithComponent<T>(
+    id: string,
+    title: string,
+    componentSelector: string,
+    componentPayload: T,
+    closeSubscription: Subscribable<void>,
+    onOpen?: () => boolean,
+    onClose?: () => void,
+  ): void {
+    this._dialogQueue.push({
+      id: observable(id),
+      title: observable(title),
+      componentSelector: observable(componentSelector),
+      componentPayload: observable(componentPayload),
+      closeSubscription: closeSubscription,
+      onOpen: onOpen,
+      onClose: () => this.onDialogClose(onClose),
+      type: "COMPONENT",
+      messageHtml: observable(undefined),
+      actions: observable(undefined),
     });
   }
 
