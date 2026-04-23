@@ -1,10 +1,11 @@
-import { HeaderNames, HeaderValueAccept } from "../../domain";
-import { Environment } from "../../environment";
-import { newGuid } from "../../framework";
-import { InterceptorCache } from "../../http";
-import { RuntimeContext } from "../../runtime-context";
+import { HeaderNames, HeaderValueAccept } from "../domain";
+import { Environment } from "../environment";
+import { newGuid } from "../framework";
+import { InterceptorCache } from "../http";
+import { RuntimeContext } from "../runtime-context";
 
-import { CharacterCreationStats } from "./character-creation.model";
+// TODO: Replace with generated DTO.
+import { CharacterCreationStats } from "../containers/character-creation/character-creation.model";
 
 export class CharacterCreationClient {
 

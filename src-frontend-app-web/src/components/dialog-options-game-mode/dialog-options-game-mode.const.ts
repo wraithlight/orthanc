@@ -1,7 +1,5 @@
 import { GameMode } from "../../domain";
 
-export const DEFAULT_GAME_MODE = GameMode.Vanilla;
-
 export const GAME_MODE_OPTIONS = [
   {
     value: GameMode.Retail,

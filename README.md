@@ -87,6 +87,15 @@ During Docker build, the `run-dev.sh` script will create its own docker image na
 
 As you may see the Docker Image and the Docker Container have the same name.
 
+### Database scripts
+The `package.json` file under `src-database` contains the following scripts:
+
+```sh
+
+  gha:build             - Used by GitHub | Runs the build.
+
+```
+
 ### BE scripts
 The `composer.json` file under `src-server` contains the following scripts:
 
@@ -114,6 +123,7 @@ The `package.json` file under `src-frontend-app-web` contains the following scri
   gha:knip              - Used by GitHub | Runs the knip check for frontend.
   gha:sherif            - Used by GitHub | Runs the sherif check for frontend.
   dev                   - Runs the FE locally on port 3000.
+  dev:storbook          - Runs and opens StoryBook on a random port.
   build                 - Runs the build with local-development env.
   test:unit             - Runs the FE unit tests.
   test:unit:coverage    - Runs the FE unit tests with coverage report.
@@ -128,6 +138,7 @@ The following technologies are used during the development of this game:
 * HTML
 * HTML Canvas with Typescript
 * PHP
+* StoryBook
 * typescript/javascript
 * Vite
 * vitest

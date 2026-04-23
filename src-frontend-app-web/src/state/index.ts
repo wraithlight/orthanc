@@ -5,9 +5,11 @@ import { ApplicationConfigurationState } from "./application-configuration";
 import {
   EVENT_BACK_FROM_CHARACTER_CREATION,
   EVENT_CLOSE_HALL_OF_FAME,
+  EVENT_CLOSE_OPTIONS_DIALOG,
   EVENT_LOGIN_SUCCESS,
   EVENT_NEXT_FROM_CHARACTER_CREATION,
-  EVENT_OPEN_HALL_OF_FAME
+  EVENT_OPEN_HALL_OF_FAME,
+  EVENT_OPEN_OPTIONS_DIALOG
 } from "./events";
 import { STATE_NAME } from "./player-name";
 
@@ -19,6 +21,8 @@ export const State = {
     loginSuccess: EVENT_LOGIN_SUCCESS,
     openHallOfFame: EVENT_OPEN_HALL_OF_FAME,
     closeHallOfFame: EVENT_CLOSE_HALL_OF_FAME,
+    openOptionsDialog: EVENT_OPEN_OPTIONS_DIALOG,
+    closeOptionsDialog: EVENT_CLOSE_OPTIONS_DIALOG,
     nextFromCharacterCreation: EVENT_BACK_FROM_CHARACTER_CREATION,
     backFromCharacterCreation: EVENT_NEXT_FROM_CHARACTER_CREATION,
   }

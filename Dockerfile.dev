@@ -7,4 +7,6 @@ RUN mkdir -p /var/www/data \
   && chown -R www-data:www-data /var/www/data \
   && chmod -R 775 /var/www/data
 
+COPY src-localization /var/www/data
+
 RUN a2enmod rewrite
