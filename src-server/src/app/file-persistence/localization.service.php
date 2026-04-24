@@ -7,7 +7,8 @@ class LocalizationService extends BaseIOService
     string $locale,
   ): array
   {
-    $this->filePath = __DIR__ . getenv("LOCALIZATION_FILES_PATH") ."/$locale.json";
+    $envPath = getenv("LOCALIZATION_FILES_PATH") ?: "/../..";
+    $this->filePath = __DIR__ . $envPath ."/$locale.json";
     $localization = $this->read();
 
     return $localization;
