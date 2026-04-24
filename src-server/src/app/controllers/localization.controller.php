@@ -12,7 +12,7 @@ class LocalizationController
 
   public function getLocalization(string $locale)
   {
-    $appLocale = Locale::tryFrom($locale);
+    $appLocale = AppLocale::tryFrom($locale);
 
     if ($appLocale === null) {
       http_response_code(400);

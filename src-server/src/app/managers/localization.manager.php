@@ -10,7 +10,7 @@ class LocalizationManager {
   }
 
   public function getLocalization(
-    Locale $locale
+    AppLocale $locale
   ): object {
     $localization = $this->_localizationService->getLocalizationForLocale($locale->value);
     return (object) $localization;
