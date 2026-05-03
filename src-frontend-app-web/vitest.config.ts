@@ -23,6 +23,7 @@ export default defineConfig({
         "src/**/*.enum.ts",
         "src/state/events.ts",
         "src/state/player-name.ts",
+        "src/**/*.stories.ts",
       ],
     }
   }
