@@ -54,6 +54,7 @@ game-screen-component {
     width: 40px;
     height: 61px;
     background-color: var(--color-primary);
+    transform: translateZ(0);
   }
 
   img.item_orb,
