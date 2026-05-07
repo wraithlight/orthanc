@@ -39,6 +39,7 @@ character-creation {
     width: 40px;
     height: 61px;
     background-color: var(--color-primary);
+    transform: translateZ(0);
   }
 
   .character-creation-stats-box {
