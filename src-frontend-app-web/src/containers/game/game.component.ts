@@ -2,8 +2,7 @@ import { Router } from "@profiscience/knockout-contrib-router";
 import { observable, observableArray, subscribable } from "knockout";
 
 import { INITIAL_GAME_CHARACTER, INITIAL_GAME_EQUIPMENT, INITIAL_GAME_STATISTICS } from "../../constant";
-import { KeyboardEventService } from "../../services";
-import { State } from "../../state";
+import { DialogQueueService, KeyboardEventService } from "../../services";
 import { SELECTOR } from "../character-creation/character-creation.selector";
 
 import { GameChatClient } from "./game-chat.client";
@@ -39,6 +38,8 @@ export class GameContainer {
   public readonly actions = observableArray([]);
   public readonly activeSpells = observableArray([]);
 
+  private readonly _dialogCloseSubscription = new subscribable();
+  private readonly _dialogQueueService = DialogQueueService.getInstance();
   private readonly _keyboardEventService = KeyboardEventService.getInstance();
   private readonly _gameChatClient = new GameChatClient(Environment.apiBaseUrl);
   private readonly _gameActionClient = new GameActionClient(Environment.apiBaseUrl);
@@ -82,6 +83,24 @@ export class GameContainer {
 
     if (action === "EVENT_RETIRE") {
       this.shouldOpenRetireDialog(true);
+      this._dialogQueueService.openDialog(
+        "retire",
+        "Retire?",
+        "Would you really like to retire from this session?<br />All progress will be lost!<br />",
+        [
+          {
+            id: "cta-no",
+            label: "No",
+            onClick: () => this.closeRetireDialog()
+          },
+          {
+            id: "cta-yes",
+            label: "Yes",
+            onClick: () => this.restartGame()
+          }
+        ],
+        this._dialogCloseSubscription
+      )
       this._keyboardEventService.subscribe("Enter", () => this.restartGame());
       this._keyboardEventService.subscribe("KeyY", () => this.restartGame());
       this._keyboardEventService.subscribe("KeyN", () => this.closeRetireDialog());
@@ -111,10 +130,54 @@ export class GameContainer {
         this._keyboardEventService.subscribe("Escape", () => this.closeEndDialog());
         this._keyboardEventService.subscribe("KeyR", () => this.restartGame());
       }
+
+      if (this.gameState() === "GAME_END_SUCCESS") {
+        this._dialogQueueService.openDialog(
+          "end-win",
+          "You won!",
+          "Against all perils of the dungeon, you have emerged victorious! The Orb, long hidden in the depths, is now safely in your hands. Legends will speak of your bravery for ages to come!",
+          [
+            {
+              id: "cta-restart",
+              label: "[R]estart",
+              onClick: () => this.restartGame()
+            },
+            {
+              id: "cta-ok",
+              label: "[O]k",
+              onClick: () => this.closeEndDialog()
+            }
+          ],
+          this._dialogCloseSubscription
+        )
+      }
+
+      if (this.gameState() === "GAME_END_FAIL") {
+        this._dialogQueueService.openDialog(
+          "end-lose",
+          "You died!",
+          "Against the merciless trials of the dungeon, your journey ends here.<br /> The Orb remains lost in the depths, and your tale fades into silence.<br /> Not all legends are meant to be told.",
+          [
+            {
+              id: "cta-restart",
+              label: "[R]estart",
+              onClick: () => this.restartGame()
+            },
+            {
+              id: "cta-ok",
+              label: "[O]k",
+              onClick: () => this.closeEndDialog()
+            }
+          ],
+          this._dialogCloseSubscription
+        )
+      }
+
     });
   }
 
   public closeEndDialog() {
+    this._dialogCloseSubscription.notifySubscribers();
     this.shouldOpenEndDialog(false);
     this._keyboardEventService.unsubscribe("Enter");
     this._keyboardEventService.unsubscribe("KeyO");
@@ -122,6 +185,7 @@ export class GameContainer {
   }
 
   public restartGame() {
+    this._dialogCloseSubscription.notifySubscribers();
     this._keyboardEventService.unsubscribe("KeyR");
     this._keyboardEventService.unsubscribe("Enter");
     this._keyboardEventService.unsubscribe("KeyY");
@@ -129,9 +193,10 @@ export class GameContainer {
   }
 
   public closeRetireDialog() {
+    this._dialogCloseSubscription.notifySubscribers();
+    this.shouldOpenRetireDialog(false);
     this._keyboardEventService.unsubscribe("KeyN");
     this._keyboardEventService.unsubscribe("Escape");
-    this.shouldOpenRetireDialog(false);
   }
 
   private async pollChat(): Promise<void> {
