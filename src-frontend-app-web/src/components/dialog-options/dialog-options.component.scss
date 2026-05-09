@@ -31,7 +31,7 @@
     }
 
     .options-workbench {
-      flex-grow: 1;
+      flex: 1;
       border-bottom: var(--border-2px0-primary-solid);
       border-right: var(--border-2px0-primary-solid);
       height: 95%;
@@ -51,6 +51,5 @@
     font-size: 16px;
     cursor: pointer;
     flex-grow: 1;
-    // width: 100%;
   }
 }
