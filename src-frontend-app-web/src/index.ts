@@ -1,0 +1,51 @@
+import { Route, Router } from "@profiscience/knockout-contrib-router";
+import ko from "knockout";
+
+import "./knockout-utils";
+import { DeviceService } from "./services";
+
+const deviceService = DeviceService.getInstance();
+RuntimeContext.device = deviceService.isDesktop()
+  ? Device.Desktop
+  : Device.Mobile
+;
+
+import { SELECTOR as CHARACTER_CREATION_SELECTOR } from './containers/character-creation/character-creation.selector';
+import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
+import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
+
+import { Application } from "./app.component";
+import { SELECTOR } from "./app.selector";
+import TEMPLATE from "./app.template.html?raw";
+
+import "./assets/styles/normalize.scss";
+import "./assets/styles/variables.scss";
+import "./global.scss";
+import { RuntimeContext } from "./runtime-context";
+import { Device } from "./domain";
+
+import.meta.glob('./components/**/index.ts', { eager: true });
+import.meta.glob('./containers/**/index.ts', { eager: true });
+
+ko.components.register(
+  SELECTOR,
+  {
+    viewModel: Application,
+    template: TEMPLATE
+  }
+);
+
+const createRoute = (selector: string) => `/${selector}`;
+
+Router.useRoutes([
+  new Route('/', LOGIN_SELECTOR),
+  new Route(createRoute(LOGIN_SELECTOR), LOGIN_SELECTOR),
+  new Route(createRoute(CHARACTER_CREATION_SELECTOR), CHARACTER_CREATION_SELECTOR),
+  new Route(createRoute(GAME_SELECTOR), GAME_SELECTOR),
+]);
+
+async function bootstrap() {
+  ko.applyBindings("body");
+}
+
+bootstrap();

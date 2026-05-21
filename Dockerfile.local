@@ -9,7 +9,7 @@ ENV VOLTA_HOME=/root/.volta
 ENV PATH=$VOLTA_HOME/bin:$PATH
 
 WORKDIR /temp
-COPY src-frontend /temp
+COPY src-frontend-app-web /temp
 
 RUN volta install node yarn
 RUN yarn --frozen-lockfile
@@ -29,5 +29,7 @@ RUN mkdir -p /var/www/data \
   && touch /var/www/data/hall_of_fame.json \
   && chown -R www-data:www-data /var/www/data \
   && chmod -R 775 /var/www/data
+
+COPY src-localization /var/www/data
 
 RUN a2enmod rewrite

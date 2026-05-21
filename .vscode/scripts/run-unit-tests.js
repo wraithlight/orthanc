@@ -30,7 +30,7 @@ if (normalized.endsWith(".spec.ts")) {
   run(
     "node",
     ["node_modules/vitest/vitest.mjs", "run", file],
-    resolve(workspace, "src-frontend")
+    resolve(workspace, "src-frontend-app-web")
   );
 
 } else if (normalized.endsWith(".spec.php")) {

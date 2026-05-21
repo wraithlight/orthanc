@@ -1,4 +1,9 @@
 <?php
+require_once("./app/core/request/get-request-method.php");
+require_once("./app/core/request/request-method.enum.php");
+require_once("./app/core/request/is-options-request.php");
+require_once("./app/core/request/is-not-options-request.php");
+
 require_once("./phpapi/api.php");
 
 // TODO: Move these to `domain` folder. (domain/enum).
@@ -17,6 +22,7 @@ require_once("./app/file-persistence/hall-of-fame.service.php");
 require_once("./app/file-persistence/swadoc.service.php");
 require_once("./app/file-persistence/version.service.php");
 require_once("./app/file-persistence/configuration.service.php");
+require_once("./app/file-persistence/localization.service.php");
 
 require_once("./app/utils/guid.php");
 
@@ -35,7 +41,16 @@ require_once("./app/utils/maze.php");
 
 // TODO: Cleanup range end.
 
+require_once("./app/header/header-names.enum.php");
+require_once("./app/header/header-values.enum.php");
+
+require_once("./app/api-guard/is-header-valid.php");
+require_once("./app/api-guard/get-header-value.php");
+
 require_once("./app/domain/game-mode.enum.php");
+require_once("./app/domain/locale.enum.php");
+
+require_once("./app/guards/is-valid-guid.php");
 
 require_once("./app/dto/hall-of-fame-item.dto.php");
 
@@ -59,6 +74,7 @@ require_once("./app/states/session.state.php");
 require_once("./app/states/user-interactions.state.php");
 
 require_once("./app/services/platform.service.php");
+require_once("./app/services/device.service.php");
 require_once("./app/services/feedback-events.service.php");
 require_once("./app/services/items.service.php");
 require_once("./app/services/level.service.php");
@@ -78,6 +94,7 @@ require_once("./app/managers/session.manager.php");
 require_once("./app/managers/swadoc.manager.php");
 require_once("./app/managers/hall-of-fame.manager.php");
 require_once("./app/managers/configuration.manager.php");
+require_once("./app/managers/localization.manager.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
@@ -86,8 +103,42 @@ require_once("./app/controllers/chat.controller.php");
 require_once("./app/controllers/swadoc.controller.php");
 require_once("./app/controllers/hall-of-fame.controller.php");
 require_once("./app/controllers/configuration.controller.php");
+require_once("./app/controllers/localization.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
+
+if (isNotOptionsRequest()) { 
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Accept->value, ""),
+    [HeaderValueAccept::ApplicationJson->value])
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+    return;
+  }
+
+  if (!isHeaderValid(
+    getHeaderValue(HeaderName::Device->value, ""),
+      [
+        HeaderValueDevice::Desktop->value,
+        HeaderValueDevice::Mobile->value
+      ]
+    )
+  ) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Device->value . ")"));
+    return;
+  }
+
+  if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+    http_response_code(400);
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+    return;
+  }
+}
+
+$configManager = new ConfigurationManager();
+header(HeaderName::OrthancPlafromVersion->value . ": " . $configManager->getConfiguration()->version);
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
@@ -112,6 +163,9 @@ $hallOfFameControllerFactory = function () {
 $configurationControllerFactory = function() {
   return new ConfigurationController();
 };
+$localizationControllerFactory = function() {
+  return new LocalizationController();
+};
 
 Wrapper::RegisterPath("GET", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
@@ -122,6 +176,7 @@ Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMe
 Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
 Wrapper::RegisterPath("GET", "/api/v1/main/hall-of-fame", $hallOfFameControllerFactory, "getRecords");
 Wrapper::RegisterPath("GET", "/api/v1/configuration", $configurationControllerFactory, "getConfiguration");
+Wrapper::RegisterPath("GET", "/api/v1/localization/:locale", $localizationControllerFactory, "getLocalization");
 strtolower($isSwadocEnabled) === "true" && Wrapper::RegisterPath("GET", "/api/v1/swadoc", $swadocControllerFactory, "getSwadoc");
 
 Wrapper::Listen(true);

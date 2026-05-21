@@ -22,4 +22,4 @@ vite.config.ts.timestamp-*
 src-server/vendor
 
 # vitest
-src-frontend/coverage
+src-frontend-app-web/coverage

@@ -1,0 +1,14 @@
+.orthanc-dialog-options-language {
+  padding: var(--spacing-16);
+  text-align: justify;
+  overflow-y: scroll;
+
+  .orthanc-dialog-options-language-spacer {
+    border-color: var(--color-primary);
+    margin-top: var(--spacing-08);
+  }
+
+  h2 {
+    padding: var(--spacing-08) 0;
+  }
+}

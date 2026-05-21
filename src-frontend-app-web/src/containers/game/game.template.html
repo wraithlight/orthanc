@@ -1,0 +1,71 @@
+<div class="game-screen">
+  <div class="game-screen-layout">
+    <game-screen-component
+      params="{
+        tiles: tiles,
+        endgameItemIcons: endgameItemIcons,
+      }"
+    >
+    </game-screen-component>
+    <div class="game-feedback">
+      <game-events
+        params="{
+          events: events
+        }"
+      >
+      </game-events>
+    </div>
+    <div class="game-minimap">
+      <game-minimap params="{
+          minimapState: minimapState
+        }">
+      </game-minimap>
+    </div>
+    <div class="game-stats">
+      <game-spells
+        params="{
+          activeSpells: activeSpells
+        }"
+      >
+      </game-spells>
+    </div>
+    <div class="game-actions">
+      <game-actions
+        params="{
+          actions: actions,
+          maxHits: maxHits,
+          curHits: curHits,
+          onActionItemClick: onActionItemClickHandler
+        }"
+      >
+      </game-actions>
+    </div>
+    <div class="game-stats">
+      <game-character-info
+        params="{
+          character: character,
+          equipment: equipment
+        }"
+      >
+      </game-character-info>
+    </div>
+    <div class="game-stats">
+      <game-statistics
+        params="{
+          stats: stats
+        }"
+      >
+      </game-statistics>
+    </div>
+  </div>
+  <div class="game-screen-chat">
+    <game-chat params="{
+        members: chatMembers,
+        messages: chatMessages,
+        toPoll: onChatPoll,
+        toSendMessage: onSendChatMessage,
+        playerName: playerName
+    }">
+    </game-chat>
+  </div>
+</div>

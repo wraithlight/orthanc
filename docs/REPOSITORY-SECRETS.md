@@ -12,3 +12,4 @@ The following secrets must be created within the repository for each environment
 | `FTP_SWADOC_FOLDER`         | `string`    | `/api-docs`        | The folder where the swadoc file will be copied. |
 | `FTP_VERSION_FOLDER`        | `string`    | `/`                | The folder where version.json will be copied. |
 | `FTP_CONFIGURATION_FOLDER`  | `string`    | `/`                | The folder where src-config will be copied. |
+| `FTP_LOCALIZATION_FOLDER`   | `string`    | `/`                | The folder where src-localization will be copied. |
