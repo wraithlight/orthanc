@@ -1,8 +1,8 @@
-import { HeaderNames, HeaderValueAccept } from "../../domain";
-import { Environment } from "../../environment";
-import { newGuid } from "../../framework";
-import { InterceptorCache } from "../../http";
-import { RuntimeContext } from "../../runtime-context";
+import { HeaderNames, HeaderValueAccept } from "../domain";
+import { Environment } from "../environment";
+import { newGuid } from "../framework";
+import { InterceptorCache } from "../http";
+import { RuntimeContext } from "../runtime-context";
 
 export class GameActionClient {
   constructor(
