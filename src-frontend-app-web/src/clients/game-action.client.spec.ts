@@ -1,19 +1,20 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { GameActionClient } from "./game-action.client";
-import { HeaderNames, HeaderValueAccept } from "../../domain";
 
-vi.mock("../../framework", () => ({
+import { HeaderNames, HeaderValueAccept } from "../domain";
+
+vi.mock("../framework", () => ({
   newGuid: vi.fn(() => "test-guid"),
 }));
 
-vi.mock("../../environment", () => ({
+vi.mock("../environment", () => ({
   Environment: {
     platform: "test-platform",
   },
 }));
 
-vi.mock("../../runtime-context", () => ({
+vi.mock("../runtime-context", () => ({
   RuntimeContext: {
     device: "test-device",
   },
@@ -22,7 +23,7 @@ vi.mock("../../runtime-context", () => ({
 const afterInterceptorMock = vi.fn();
 const getAfterInterceptorsMock = vi.fn(() => [afterInterceptorMock]);
 
-vi.mock("../../http", () => ({
+vi.mock("../http", () => ({
   InterceptorCache: {
     getInstance: vi.fn(() => ({
       getAfterInterceptors: getAfterInterceptorsMock,
