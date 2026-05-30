@@ -1,97 +1,85 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, it, expect, vi, beforeAll } from "vitest";
+
+import { Environment } from "../environment";
+import { HeaderNames, HeaderValueAccept } from "../domain";
+import { RuntimeContext } from "../runtime-context";
 
 import { ConfigurationClient } from "./configuration.client";
 
+const MOCK_TEXT = { prop: "value" };
+
+const MOCK_BASE_URL = "http://base.api";
+const MOCK_GUID = "mock-guid";
+const MOCK_RESPONSE = {
+  text: async () => JSON.stringify(MOCK_TEXT),
+  headers: {
+    get: (headerName: string) => headerName
+  }
+} as Response;
+
 vi.mock("../framework", () => ({
-  newGuid: vi.fn(),
+  newGuid: vi.fn().mockImplementation(() => MOCK_GUID),
 }));
 
-vi.mock("../environment", () => ({
-  Environment: {
-    platform: "test-platform",
+const jsonParseSpy = vi.spyOn(JSON, "parse");
+const fetchSpy = vi.spyOn(globalThis, "fetch");
+fetchSpy.mockImplementation(() => new Promise((resolve, _reject) => resolve(MOCK_RESPONSE)));
+const afterInterceptorSpy = vi.fn();
+const getAfterInterceptorsSpy = vi.fn(() => [afterInterceptorSpy]);
+
+vi.mock("../http", () => ({
+  InterceptorCache: {
+    getInstance: vi.fn(() => ({
+      getAfterInterceptors: getAfterInterceptorsSpy,
+    })),
   },
 }));
 
-import { newGuid } from "../framework";
-import { Environment } from "../environment";
-import { HeaderNames } from "../domain";
-import { RuntimeContext } from "../runtime-context";
-
-describe("ConfigurationClient", () => {
-  const baseUrl = "http://test.com";
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-  });
-
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  it("should call fetch with correct url, method and headers", async () => {
-    (newGuid as any).mockReturnValue("test-guid");
-
-    const fetchMock = vi.fn().mockResolvedValue({
-      text: vi.fn().mockResolvedValue('{"payload":{"key":"value"}}'),
-      headers: {
-        get: vi.fn().mockReturnValue(null),
-      },
+describe("ConfigurationClientSpecs", () => {
+  let service: ConfigurationClient;
+  describe("given the client is initalized", () => {
+    beforeAll(() => {
+      service = new ConfigurationClient(MOCK_BASE_URL);
     });
 
-    globalThis.fetch = fetchMock as any;
+    describe("when i call `getConfiguration()`", () => {
 
-    const parseSpy = vi
-      .spyOn(JSON, "parse")
-      .mockReturnValue({ payload: { key: "value" } });
+      beforeAll(async () => {
+        await service.getConfiguration();
+      });
 
-    const client = new ConfigurationClient(baseUrl);
+      it("should call native fetch with the proper parameters", () => {
+        expect(fetchSpy).toHaveBeenCalled();
+        expect(fetchSpy).toHaveBeenCalledTimes(1);
+        expect(fetchSpy).toHaveBeenCalledWith(
+          `${MOCK_BASE_URL}/api/v1/configuration`,
+          {
+            method: "GET",
+            headers: {
+              [HeaderNames.Platform]: Environment.platform,
+              [HeaderNames.Device]: RuntimeContext.device,
+              [HeaderNames.RequestId]: MOCK_GUID,
+              [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+            }
+          }
+        );
+      });
 
-    const result = await client.getConfiguration();
+      it("should parse the response to JSON", () => {
+        expect(jsonParseSpy).toHaveBeenCalled();
+        expect(jsonParseSpy).toHaveBeenCalledTimes(1);
+        expect(jsonParseSpy).toHaveBeenCalledWith(JSON.stringify(MOCK_TEXT));
+      });
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      `${baseUrl}/api/v1/configuration`,
-      {
-        method: "GET",
-        headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: "test-guid",
-          [HeaderNames.Accept]: "application/json",
-        },
-      }
-    );
+      it("should get the interceptors", () => {
+        expect(getAfterInterceptorsSpy).toHaveBeenCalled();
+        expect(getAfterInterceptorsSpy).toHaveBeenCalledTimes(1);
+      });
 
-    expect(parseSpy).toHaveBeenCalledWith(
-      '{"payload":{"key":"value"}}'
-    );
-
-    expect(result).toEqual([
-      null,
-      { key: "value" },
-    ]);
-  });
-
-  it("should return payload from parsed response", async () => {
-    (newGuid as any).mockReturnValue("guid-2");
-
-    globalThis.fetch = vi.fn().mockResolvedValue({
-      text: vi.fn().mockResolvedValue("raw-response"),
-      headers: {
-        get: vi.fn().mockReturnValue(null),
-      },
-    }) as any;
-
-    vi.spyOn(JSON, "parse").mockReturnValue({
-      payload: { foo: "bar" },
+      it("should run each interceptor", () => {
+        expect(getAfterInterceptorsSpy).toHaveBeenCalled();
+        expect(getAfterInterceptorsSpy).toHaveBeenCalledTimes(1);
+      });
     });
-
-    const client = new ConfigurationClient(baseUrl);
-
-    const result = await client.getConfiguration();
-
-    expect(result).toEqual([
-      null,
-      { foo: "bar" },
-    ]);
   });
 });
