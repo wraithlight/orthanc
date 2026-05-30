@@ -4,11 +4,9 @@ import { observable, observableArray, subscribable } from "knockout";
 import { INITIAL_GAME_CHARACTER, INITIAL_GAME_EQUIPMENT, INITIAL_GAME_STATISTICS } from "../../constant";
 import { DialogQueueService, KeyboardEventService } from "../../services";
 import { SELECTOR } from "../character-creation/character-creation.selector";
-import { GameActionClient } from "../../clients";
+import { GameActionClient, GameChatClient } from "../../clients";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 import { Environment } from "../../environment";
-
-import { GameChatClient } from "./game-chat.client";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();

@@ -3,13 +3,13 @@ import { GameChatClient } from "./game-chat.client";
 import {
   HeaderNames,
   HeaderValueAccept,
-} from "../../domain";
-import { Environment } from "../../environment";
-import { RuntimeContext } from "../../runtime-context";
-import { InterceptorCache } from "../../http";
-import * as framework from "../../framework";
+} from "../domain";
+import { Environment } from "../environment";
+import { RuntimeContext } from "../runtime-context";
+import { InterceptorCache } from "../http";
+import * as framework from "../framework";
 
-vi.mock("../../framework", () => ({
+vi.mock("../framework", () => ({
   newGuid: vi.fn(),
 }));
 
