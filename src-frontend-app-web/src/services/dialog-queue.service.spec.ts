@@ -1,91 +1,159 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
+import { describe, it, expect, vi, beforeAll, afterEach } from "vitest";
+import { subscribable, unwrap } from "knockout";
 
 import { DialogQueueService } from "./dialog-queue.service";
 
-describe("DialogQueueService", () => {
+const createMockCloseSubscription = () => new subscribable();
+
+describe("DialogQueueServiceSpecs", () => {
   let service: DialogQueueService;
 
-  beforeEach(() => {
+  beforeAll(() => {
     service = DialogQueueService.getInstance();
-    service.getDialogQueue()().length = 0;
+  });
+
+  afterEach(() => {
+    const queue = service.getDialogQueue();
+    queue([]);
   });
 
   it("is a singleton", () => {
     expect(DialogQueueService.getInstance()).toBe(service);
   });
 
-  it("opens dialog and stores data", () => {
-    const onClick = vi.fn();
+  it("openDialog adds an HTML dialog", () => {
+    const closeFn = vi.fn();
 
     service.openDialog(
-      "id",
-      "title",
-      "<b>msg</b>",
-      [{ id: "a", label: "A", onClick }],
-      {} as any
+      "id-1",
+      "title-1",
+      "<p>hello</p>",
+      [
+        { id: "a1", label: "Action", onClick: vi.fn() }
+      ] as any,
+      createMockCloseSubscription(),
+      () => true,
+      closeFn
     );
 
-    const queue = service.getDialogQueue()();
-    expect(queue.length).toBe(1);
+    const items = unwrap(service.getDialogQueue());
+    expect(items).toHaveLength(1);
 
-    const d = queue[0];
-    expect(d.id()).toBe("id");
-    expect(d.title()).toBe("title");
-    expect(d.messageHtml()).toBe("<b>msg</b>");
-    expect(d.actions().length).toBe(1);
+    const dialog = items[0];
+    expect(dialog.type).toBe("HTML");
+    expect(dialog.messageHtml()).toBe("<p>hello</p>");
+    expect(dialog.actions().length).toBe(1);
   });
 
-  it("calls onOpen if provided", () => {
-    const onOpen = vi.fn(() => true);
-
-    service.openDialog(
-      "id",
-      "t",
-      "m",
-      [{ id: "a", label: "A", onClick: vi.fn() }],
-      {} as any,
-      onOpen
+  it("openDialogWithComponent adds a component dialog", () => {
+    service.openDialogWithComponent(
+      "id-2",
+      "title-2",
+      "my-selector",
+      { foo: "bar" },
+      createMockCloseSubscription()
     );
 
-    const d = service.getDialogQueue()()[0];
-    expect(d.onOpen()).toBe(true);
-    expect(onOpen).toHaveBeenCalled();
+    const items = unwrap(service.getDialogQueue());
+    expect(items).toHaveLength(1);
+
+    const dialog = items[0];
+    expect(dialog.type).toBe("COMPONENT");
+    expect(dialog.componentSelector()).toBe("my-selector");
+    expect(dialog.componentPayload()).toEqual({ foo: "bar" });
   });
 
-  it("closes dialog and calls onClose", () => {
-    const onClose = vi.fn();
+  it("onClose shifts queue and calls provided closeFn (HTML dialog)", () => {
+    const closeFn = vi.fn();
 
     service.openDialog(
-      "id",
-      "t",
-      "m",
-      [{ id: "a", label: "A", onClick: vi.fn() }],
-      {} as any,
+      "id-3",
+      "title-3",
+      "<div/>",
+      [] as any,
+      createMockCloseSubscription(),
       undefined,
-      onClose
+      closeFn
     );
 
-    const queue = service.getDialogQueue();
-    const d = queue()[0];
+    const dialog = unwrap(service.getDialogQueue())[0];
 
-    d.onClose();
+    dialog.onClose();
 
-    expect(queue().length).toBe(0);
-    expect(onClose).toHaveBeenCalled();
+    expect(closeFn).toHaveBeenCalledTimes(1);
+    expect(unwrap(service.getDialogQueue())).toHaveLength(0);
   });
 
-  it("closes dialog without onClose safely", () => {
+  it("onClose works without closeFn", () => {
     service.openDialog(
-      "id",
-      "t",
-      "m",
-      [{ id: "a", label: "A", onClick: vi.fn() }],
-      {} as any
+      "id-4",
+      "title-4",
+      "<div/>",
+      [] as any,
+      createMockCloseSubscription()
     );
 
-    const queue = service.getDialogQueue();
-    queue()[0].onClose();
+    const dialog = unwrap(service.getDialogQueue())[0];
 
-    expect(queue().length).toBe(0);
+    expect(() => dialog.onClose()).not.toThrow();
+    expect(unwrap(service.getDialogQueue())).toHaveLength(0);
+  });
+
+  it("onClose works for component dialog", () => {
+    const closeFn = vi.fn();
+
+    service.openDialogWithComponent(
+      "id-5",
+      "title-5",
+      "selector",
+      { a: 1 },
+      createMockCloseSubscription(),
+      undefined,
+      closeFn
+    );
+
+    const dialog = unwrap(service.getDialogQueue())[0];
+
+    dialog.onClose();
+
+    expect(closeFn).toHaveBeenCalledTimes(1);
+    expect(unwrap(service.getDialogQueue())).toHaveLength(0);
+  });
+
+  it("queue behaves FIFO when multiple dialogs are added and closed", () => {
+    const closeFn1 = vi.fn();
+    const closeFn2 = vi.fn();
+
+    service.openDialog(
+      "first",
+      "First",
+      "A",
+      [] as any,
+      createMockCloseSubscription(),
+      undefined,
+      closeFn1
+    );
+
+    service.openDialog(
+      "second",
+      "Second",
+      "B",
+      [] as any,
+      createMockCloseSubscription(),
+      undefined,
+      closeFn2
+    );
+
+    const queue1 = unwrap(service.getDialogQueue());
+    expect(queue1[0].id()).toBe("first");
+    expect(queue1[1].id()).toBe("second");
+
+    queue1[0].onClose();
+
+    expect(closeFn1).toHaveBeenCalledTimes(1);
+
+    const queue2 = unwrap(service.getDialogQueue());
+    expect(queue2).toHaveLength(1);
+    expect(queue2[0].id()).toBe("second");
   });
 });
