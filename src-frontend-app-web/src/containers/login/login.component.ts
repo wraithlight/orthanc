@@ -23,8 +23,10 @@ export class LoginContainer implements LoginContainerParams {
   }
 
   private async loginAsGuestEventHandler(m: LoginAsGuestEvent): Promise<void> {
-    await this._loginClient.loginGuest(m.gameMode);
-    State.events.loginSuccess.notifySubscribers();
+    const response = await this._loginClient.loginGuest(m.gameMode);
+    if (response.isSuccessTC()) {
+      State.events.loginSuccess.notifySubscribers();
+    }
   }
 
   private openHallOfFame(): void {

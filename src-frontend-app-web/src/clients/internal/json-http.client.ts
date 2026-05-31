@@ -14,40 +14,40 @@ export abstract class JsonHttpClient extends BaseHttpClient {
     return this.getJsonHeaders();
   }
 
-  protected async get<T>(
+  protected async get<TS, TW>(
     path: string
-  ): Promise<OperationResult<T>> {
+  ): Promise<OperationResult<TS, TW>> {
     const opRes = await super.get(path);
     return this.handleResult(opRes);
   }
 
-  protected async post<T, U>(
+  protected async post<T, US, UW>(
     path: string,
     payload?: T
-  ): Promise<OperationResult<U>> {
+  ): Promise<OperationResult<US, UW>> {
     const opRes = await super.post(path, JSON.stringify(payload));
     return this.handleResult(opRes);
   }
 
-  protected async patch<T, U>(
+  protected async patch<T, US, UW>(
     path: string,
     payload?: T
-  ): Promise<OperationResult<U>> {
+  ): Promise<OperationResult<US, UW>> {
     const opRes = await super.patch(path, JSON.stringify(payload));
     return this.handleResult(opRes);
   }
 
-  protected async put<T, U>(
+  protected async put<T, US, UW>(
     path: string,
     payload?: T
-  ): Promise<OperationResult<U>> {
+  ): Promise<OperationResult<US, UW>> {
     const opRes = await super.patch(path, JSON.stringify(payload));
     return this.handleResult(opRes);
   }
 
-  protected async delete<T>(
+  protected async delete<TS, TW>(
     path: string
-  ): Promise<OperationResult<T>> {
+  ): Promise<OperationResult<TS, TW>> {
     const opRes = await super.delete(path);
     return this.handleResult(opRes);
   }
@@ -59,20 +59,20 @@ export abstract class JsonHttpClient extends BaseHttpClient {
     };
   }
 
-  private handleResult<T>(
+  private handleResult<TS, TW>(
     opRes: OperationResult<string>
-  ): OperationResult<T> {
+  ): OperationResult<TS, TW> {
     if (opRes.isErrorTC()) {
       return opRes;
     }
     // TODO: fw-level cast<T>(a: unknown): T
-    const result = JSON.parse(opRes.payload) as T;
+    const result = JSON.parse(opRes.payload);
 
     if (opRes.isWarnTC()) {
-      return OperationResultFactory.warning(result, ...opRes.errors);
+      return OperationResultFactory.warning(result as TW, ...opRes.errors);
     }
 
-    return OperationResultFactory.success(result);
+    return OperationResultFactory.success(result as TS);
   }
 
 }

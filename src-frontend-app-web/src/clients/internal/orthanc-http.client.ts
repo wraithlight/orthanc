@@ -1,3 +1,4 @@
+import { IErrorResponse, ISuccessResponse } from "../../dal";
 import { HeaderNames } from "../../domain";
 import { Environment } from "../../environment";
 import { newGuid } from "../../framework";
@@ -39,6 +40,13 @@ export abstract class OrthancHttpClient extends JsonHttpClient {
       [HeaderNames.Platform]: Environment.platform,
       [HeaderNames.RequestId]: newGuid(),
     };
+  }
+
+  protected async postOrthanc<U, TS>(
+    path: string,
+    payload?: U
+  ) {
+    return super.post<U, ISuccessResponse<TS>, IErrorResponse>(path, payload);
   }
 
 }

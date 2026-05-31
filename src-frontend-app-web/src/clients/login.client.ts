@@ -1,40 +1,22 @@
-import { GameMode, HeaderNames, HeaderValueAccept } from "../domain";
-import { Environment } from "../environment";
-import { newGuid } from "../framework";
-import { InterceptorCache } from "../http";
-import { RuntimeContext } from "../runtime-context";
+import { GameMode } from "../domain";
+import { Nullable } from "../framework";
+import { Credentials, OrthancHttpClient } from "./internal";
 
-export class LoginClient {
+export class LoginClient extends OrthancHttpClient {
 
-  constructor(
-    private readonly _baseUrl: string
-  ) { }
+  protected getCredentialsMode(): Nullable<Credentials> {
+    return "include";
+  }
 
   public async loginGuest(
     gameMode: GameMode
-  ): Promise<{ username: string }> {
-    const response = await fetch(
-      `${this._baseUrl}/api/v1/login/guest`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          gameMode: gameMode
-        }),
-        headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
-        }
-      }
-    );
-    const content = JSON.parse(await response.text());
-
-    const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
-    interceptors.forEach(m => m(response));
-
-    return content.payload;
+  ) {
+    const path = "/api/v1/login/guest";
+    const result = await super.postOrthanc<
+      { gameMode: GameMode },
+      { username: string }
+    >(path, { gameMode: gameMode });
+    return result;
   }
 
 }
