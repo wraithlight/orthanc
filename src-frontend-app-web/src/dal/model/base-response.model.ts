@@ -1,6 +1,6 @@
 import { Guid } from "../../framework";
 
-export interface IBaseResponse<TPayload = unknown> {
+export interface IBaseResponse<TPayload> {
   correlationId: Guid;
   payload: TPayload;
 }
