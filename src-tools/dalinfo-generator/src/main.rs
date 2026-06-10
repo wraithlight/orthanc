@@ -14,6 +14,7 @@ mod managers {
   pub mod path_manager;
   pub mod header_manager;
   pub mod yaml_to_json_manager;
+  pub mod dto_manager;
 }
 
 use managers::{
@@ -22,6 +23,7 @@ use managers::{
   path_manager::PathManager,
   header_manager::HeaderManager,
   yaml_to_json_manager::YamlToJsonManager,
+  dto_manager::DTOManager,
 };
 
 use std::env;
@@ -47,12 +49,14 @@ fn main() {
   let pathfiles = PathManager::generate_paths_sync(&json).expect("path generation failed");
   let headernamefiles = HeaderManager::generate_headers_names_sync(&json).expect("header name generation failed");
   let headervaluesfiles = HeaderManager::generate_header_values_sync(&json).expect("header value generation failed");
+  let dtofiles = DTOManager::create_dtos(&json, "TYPESCRIPT").expect("header dto generation failed");
 
   let mut artifacts = Vec::new();
 
   let basepath_paths = "paths";
   let basepath_headernames = "headers/names";
   let basepath_headervalues = "headers/values";
+  let basepath_dtofiles = "dtos";
   artifacts.extend(self::build_indexes(&headernamefiles, &headervaluesfiles, &pathfiles));
   artifacts.extend(
     pathfiles.into_iter().map(|m| Artifact {
@@ -69,6 +73,12 @@ fn main() {
   artifacts.extend(
     headervaluesfiles.into_iter().map(|m| Artifact {
       path: format!("{}/{}", basepath_headervalues, m.path),
+      ..m
+    })
+  );
+  artifacts.extend(
+    dtofiles.into_iter().map(|m| Artifact {
+      path: format!("{}/{}", basepath_dtofiles, m.path),
       ..m
     })
   );
