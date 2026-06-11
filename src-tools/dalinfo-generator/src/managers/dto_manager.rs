@@ -455,7 +455,7 @@ fn emit_operation(operation: &OperationAst) -> String {
         let req_ts = Self::emit_node(req);
         out.push_str(&format!(
             "export interface {}Request {}\n\n",
-            operation.name,
+            Self::str_capitalize_first(&operation.name),
             req_ts
         ));
     // } else {
@@ -469,7 +469,7 @@ fn emit_operation(operation: &OperationAst) -> String {
         let res_ts = Self::emit_node(res);
         out.push_str(&format!(
             "export interface {}Response {}\n",
-            operation.name,
+            Self::str_capitalize_first(&operation.name),
             res_ts
         ));
     // } else {
@@ -481,6 +481,12 @@ fn emit_operation(operation: &OperationAst) -> String {
 
     out
 }
+
+fn str_capitalize_first(s: &str) -> String {
+  format!("{}{}", s.chars().next().unwrap().to_uppercase(), 
+  s.chars().skip(1).collect::<String>())
+}
+
 fn emit_node(node: &Node) -> String {
     match node {
         Node::String => "string".to_string(),
