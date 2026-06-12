@@ -458,11 +458,6 @@ fn emit_operation(operation: &OperationAst) -> String {
             Self::str_capitalize_first(&operation.name),
             req_ts
         ));
-    // } else {
-    //     out.push_str(&format!(
-    //         "export interface {}Request {{}}\n\n",
-    //         operation.name
-    //     ));
     }
 
     if let Some(res) = &operation.response_node {
@@ -472,11 +467,6 @@ fn emit_operation(operation: &OperationAst) -> String {
             Self::str_capitalize_first(&operation.name),
             res_ts
         ));
-    // } else {
-    //     out.push_str(&format!(
-    //         "export interface {}Response {{}}\n",
-    //         operation.name
-    //     ));
     }
 
     out
