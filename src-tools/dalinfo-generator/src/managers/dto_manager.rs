@@ -416,10 +416,11 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
 
     for op in operations {
       let file_name = Self::build_file_name(&op.name);
-      let content = Self::emit_operation(&op);
+      let req_content = Self::emit_operation_request(&op);
+      let res_content = Self::emit_operation_response(&op);
       out.push(Artifact {
         path: file_name,
-        content,
+        content: format!("{}\n{}", req_content, res_content),
       });
     }
     Ok(out)
@@ -448,26 +449,34 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
     out
   }
 
-fn emit_operation(operation: &OperationAst) -> String {
+fn emit_operation_request(operation: &OperationAst) -> String {
+  if let Some(req) = &operation.request_node {
+    return Self::emit_operation(&req, "Request", &operation.name);
+  }
+  String::new()
+}
+
+fn emit_operation_response(operation: &OperationAst) -> String {
+  if let Some(res) = &operation.response_node {
+    return Self::emit_operation(&res, "Response", &operation.name);
+  }
+  String::new()
+}
+
+fn emit_operation(
+  operation_node: &Node,
+  dto_type: &str,
+  operation_name: &str
+) -> String {
     let mut out = String::new();
 
-    if let Some(req) = &operation.request_node {
-        let req_ts = Self::emit_node(req);
-        out.push_str(&format!(
-            "export interface {}Request {}\n\n",
-            Self::str_capitalize_first(&operation.name),
-            req_ts
-        ));
-    }
-
-    if let Some(res) = &operation.response_node {
-        let res_ts = Self::emit_node(res);
-        out.push_str(&format!(
-            "export interface {}Response {}\n",
-            Self::str_capitalize_first(&operation.name),
-            res_ts
-        ));
-    }
+    let req_ts = Self::emit_node(operation_node);
+    out.push_str(&format!(
+      "export interface {}{} {}\n\n",
+      Self::str_capitalize_first(&operation_name),
+      dto_type,
+      req_ts
+    ));
 
     out
 }
