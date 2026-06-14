@@ -419,8 +419,12 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
       let req_content = Self::emit_operation_request(&op);
       let res_content = Self::emit_operation_response(&op);
       out.push(Artifact {
-        path: file_name,
-        content: format!("{}\n{}", req_content, res_content),
+        path: format!("request/{}", file_name),
+        content: format!("{}", req_content),
+      });
+      out.push(Artifact {
+        path: format!("response/{}", file_name),
+        content: format!("{}", res_content),
       });
     }
     Ok(out)
@@ -472,7 +476,7 @@ fn emit_operation(
 
     let req_ts = Self::emit_node(operation_node);
     out.push_str(&format!(
-      "export interface {}{} {}\n\n",
+      "export interface {}{} {}",
       Self::str_capitalize_first(&operation_name),
       dto_type,
       req_ts
