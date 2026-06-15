@@ -418,14 +418,18 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
       let file_name = Self::build_file_name(&op.name);
       let req_content = Self::emit_operation_request(&op);
       let res_content = Self::emit_operation_response(&op);
-      out.push(Artifact {
-        path: format!("request/{}", file_name),
-        content: format!("{}", req_content),
-      });
-      out.push(Artifact {
-        path: format!("response/{}", file_name),
-        content: format!("{}", res_content),
-      });
+      if !req_content.is_empty() {
+        out.push(Artifact {
+          path: format!("request/{}", file_name),
+          content: format!("{}", req_content),
+        });
+      }
+      if !res_content.is_empty() {
+        out.push(Artifact {
+          path: format!("response/{}", file_name),
+          content: format!("{}", res_content),
+        });
+      }
     }
     Ok(out)
   }
