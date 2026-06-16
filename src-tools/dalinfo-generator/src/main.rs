@@ -27,6 +27,7 @@ use managers::{
 };
 
 use std::env;
+use std::path::Path;
 use crate::models::artifact::Artifact;
 
 fn main() {
@@ -57,7 +58,7 @@ fn main() {
   let basepath_headernames = "headers/names";
   let basepath_headervalues = "headers/values";
   let basepath_dtofiles = "dtos";
-  artifacts.extend(self::build_indexes(&headernamefiles, &headervaluesfiles, &pathfiles));
+  artifacts.extend(self::build_indexes(&headernamefiles, &headervaluesfiles, &pathfiles, &dtofiles));
   artifacts.extend(
     pathfiles.into_iter().map(|m| Artifact {
       path: format!("{}/{}", basepath_paths, m.path),
@@ -92,11 +93,12 @@ fn build_indexes(
   header_name_files: &[Artifact],
   header_value_files: &[Artifact],
   header_path_files: &[Artifact],
+  dto_files: &[Artifact],
 ) -> Vec<Artifact> {
   let names_exports = header_name_files
     .iter()
     .filter_map(|a| {
-      std::path::Path::new(&a.path)
+      Path::new(&a.path)
         .file_stem()
         .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
       })
@@ -106,7 +108,7 @@ fn build_indexes(
   let values_exports = header_value_files
     .iter()
     .filter_map(|a| {
-      std::path::Path::new(&a.path)
+      Path::new(&a.path)
         .file_stem()
         .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
       })
@@ -116,12 +118,15 @@ fn build_indexes(
   let paths_exports = header_path_files
     .iter()
     .filter_map(|a| {
-      std::path::Path::new(&a.path)
+      Path::new(&a.path)
         .file_stem()
         .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
       })
     .collect::<Vec<_>>()
     .join("\n");
+
+  let dto_request_exports = build_nested_exports(dto_files, "request");
+  let dto_response_exports = build_nested_exports(dto_files, "response");
 
   vec![
     Artifact {
@@ -142,7 +147,37 @@ fn build_indexes(
     },
     Artifact {
       path: "index.ts".into(),
-      content: "export * from \"./headers\";\nexport * from \"./paths\";".into(),
+      content: "export * from \"./headers\";\nexport * from \"./paths\";\nexport * from \"./dtos\";".into(),
+    },
+    Artifact {
+      path: "dtos/index.ts".into(),
+      content: "export * from \"./request\";\nexport * from \"./response\";".into(),
+    },
+    Artifact {
+      path: "dtos/request/index.ts".into(),
+      content: dto_request_exports,
+    },
+    Artifact {
+      path: "dtos/response/index.ts".into(),
+      content: dto_response_exports,
     },
   ]
+}
+
+fn build_nested_exports(files: &[Artifact], folder: &str) -> String {
+  files
+    .iter()
+    .filter_map(|artifact| {
+      let path = Path::new(&artifact.path);
+      let parent = path.parent()?.to_string_lossy();
+
+      if parent != folder {
+        return None;
+      }
+
+      path.file_stem()
+        .map(|stem| format!("export * from \"./{}\";", stem.to_string_lossy()))
+    })
+    .collect::<Vec<_>>()
+    .join("\n")
 }
