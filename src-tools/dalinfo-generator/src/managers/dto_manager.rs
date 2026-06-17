@@ -495,6 +495,10 @@ fn str_capitalize_first(s: &str) -> String {
 }
 
 fn emit_node(node: &Node) -> String {
+  Self::emit_node_with_indent(node, 0)
+}
+
+fn emit_node_with_indent(node: &Node, depth: usize) -> String {
     match node {
         Node::String => "string".to_string(),
         Node::Number => "number".to_string(),
@@ -507,12 +511,12 @@ fn emit_node(node: &Node) -> String {
                 .join(" | ")
         }
         Node::Array(inner) => {
-            format!("{}[]", Self::emit_node(inner))
+          format!("{}[]", Self::emit_node_with_indent(inner, depth))
         }
         Node::Union(variants) => {
             variants
                 .iter()
-                .map(|v| Self::emit_node(v))
+            .map(|v| Self::emit_node_with_indent(v, depth))
                 .collect::<Vec<_>>()
                 .join(" | ")
         }
@@ -520,23 +524,33 @@ fn emit_node(node: &Node) -> String {
             let mut props = properties.clone();
             props.sort_by(|a, b| a.name.cmp(&b.name));
 
-            let mut out = String::from("{ ");
+          if props.is_empty() {
+            return "{}".to_string();
+          }
+
+          let mut out = String::from("{\n");
 
             for prop in props {
-                let ts_type = Self::emit_node(&prop.node);
+            let ts_type = Self::emit_node_with_indent(&prop.node, depth + 1);
+            out.push_str(&Self::indent(depth + 1));
 
                 if prop.required {
-                    out.push_str(&format!("{}: {}; ", prop.name, ts_type));
+              out.push_str(&format!("{}: {};\n", prop.name, ts_type));
                 } else {
-                    out.push_str(&format!("{}?: {}; ", prop.name, ts_type));
+              out.push_str(&format!("{}?: {};\n", prop.name, ts_type));
                 }
             }
 
-            out.push_str("}");
+          out.push_str(&Self::indent(depth));
+          out.push_str("}");
             out
         }
     }
 }
+
+    fn indent(depth: usize) -> String {
+      " ".repeat(depth * 2)
+    }
 
   // fn emit_object(
   //   props: &[Property]
