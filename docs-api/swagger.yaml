@@ -163,6 +163,7 @@ components:
       type: object
       required:
         - action
+        - payload
       properties:
         action:
           type: string
@@ -185,6 +186,8 @@ components:
           properties:
             payload:
               type: object
+              required:
+                - username
               properties:
                 username:
                   type: string
@@ -197,11 +200,25 @@ components:
           properties:
             payload:
               type: object
+              required:
+                - items
               properties:
                 items:
                   type: array
                   items:
                     type: object
+                    required:
+                      - name
+                      - level
+                      - sessionStartAtUtc
+                      - sessionEndAtUtc
+                      - sessionLengthInMs
+                      - experiencePoints
+                      - experienceFromKillsPercentage
+                      - gameVersion
+                      - numberOfMoves
+                      - numberOfActions
+                      - gameMode
                     properties:
                       name:
                         type: string
@@ -255,6 +272,11 @@ components:
                   example: 9
                 stats:
                   type: object
+                  required:
+                    - str
+                    - int
+                    - dex
+                    - con
                   properties:
                     str:
                       type: number
@@ -276,6 +298,22 @@ components:
           properties:
             payload:
               type: object
+              required:
+                - gameState
+                - mapSize
+                - character
+                - playerName
+                - hits
+                - maxHits
+                - activeSpells
+                - equipment
+                - statistics
+                - availableSpells
+                - events
+                - possibleActions
+                - mapState
+                - minimapState
+                - endgameItems
               properties:
                 gameState:
                   type: string
@@ -283,6 +321,9 @@ components:
                   example: false
                 mapSize:
                   type: object
+                  required:
+                    - width
+                    - height
                   properties:
                     width:
                       type: number
@@ -292,6 +333,11 @@ components:
                       example: 51
                 character:
                   type: object
+                  required:
+                    - dexterity
+                    - intelligence
+                    - strength
+                    - constitution
                   properties:
                     dexterity:
                       type: number
@@ -318,6 +364,10 @@ components:
                   type: array
                   items:
                     type: object
+                    required:
+                      - key
+                      - label
+                      - remaining
                     properties:
                       key:
                         type: string
@@ -333,6 +383,12 @@ components:
                             enum: ["∞"]
                 equipment:
                   type: object
+                  required:
+                    - sword
+                    - shield
+                    - armor
+                    - arrows
+                    - bow
                   properties:
                     sword:
                       type: string
@@ -355,6 +411,14 @@ components:
                       example: "NORMAL"
                 statistics:
                   type: object
+                  required:
+                    - experience
+                    - money
+                    - nextLevelInXp
+                    - weight
+                    - playerLevel
+                    - spellUnits
+                    - xpPercentageFromKills
                   properties:
                     experience:
                       type: number
@@ -373,6 +437,9 @@ components:
                       example: 1
                     spellUnits:
                       type: object
+                      required:
+                        - current
+                        - maximmum
                       properties:
                         current:
                           type: number
@@ -385,15 +452,26 @@ components:
                       example: 0
                 availableSpells:
                   type: object
+                  required:
+                    - level_1
+                    - level_2
+                    - level_3
+                    - level_4
                   properties:
                     level_1:
                       type: object
+                      required:
+                        - displayName
+                        - action
                       properties:
                         displayName:
                           type: string
                           example: "Teleportation"
                         action:
                           type: object
+                          required:
+                            - key
+                            - payload
                           properties:
                             key:
                               type: string
@@ -404,12 +482,18 @@ components:
                               format: uuid
                     level_2:
                       type: object
+                      required:
+                        - displayName
+                        - action
                       properties:
                         displayName:
                           type: string
                           example: "Teleportation"
                         action:
                           type: object
+                          required:
+                            - key
+                            - payload
                           properties:
                             key:
                               type: string
@@ -420,12 +504,18 @@ components:
                               format: uuid
                     level_3:
                       type: object
+                      required:
+                        - displayName
+                        - action
                       properties:
                         displayName:
                           type: string
                           example: "Teleportation"
                         action:
                           type: object
+                          required:
+                            - key
+                            - payload
                           properties:
                             key:
                               type: string
@@ -436,12 +526,18 @@ components:
                               format: uuid
                     level_4:
                       type: object
+                      required:
+                        - displayName
+                        - action
                       properties:
                         displayName:
                           type: string
                           example: "Teleportation"
                         action:
                           type: object
+                          required:
+                            - key
+                            - payload
                           properties:
                             key:
                               type: string
@@ -454,6 +550,9 @@ components:
                   type: array
                   items:
                     type: object
+                    required:
+                      - key
+                      - label
                     properties:
                       key:
                         type: string
@@ -469,6 +568,7 @@ components:
                     required:
                       - label
                       - key
+                      - payload
                     properties:
                       label:
                         type: string
@@ -511,6 +611,8 @@ components:
                         example: "TILE_WALL"
                       occupiedBy:
                         type: object
+                        required:
+                          - key
                         properties:
                           key:
                             type: string
@@ -520,6 +622,9 @@ components:
                         type: array
                         items:
                           type: object
+                          required:
+                            - id
+                            - iconName
                           properties:
                             id:
                               type: string
@@ -544,6 +649,9 @@ components:
                   type: array
                   items:
                     type: object
+                    required:
+                      - key
+                      - iconName
                     properties:
                       key:
                         type: string
@@ -581,11 +689,19 @@ components:
           properties:
             payload:
               type: object
+              required:
+                - messages
+                - members
               properties:
                 messages:
                   type: array
                   items:
                     type: object
+                    required:
+                      - sender
+                      - message
+                      - id
+                      - timestamp
                     properties:
                       sender:
                         type: string
@@ -625,10 +741,15 @@ components:
                     example: "en"
                 featureStates:
                   type: object
+                  required:
+                    - featureName
                   properties:
                     featureName:
                       oneOf: 
                         - type: object
+                          required:
+                            - type
+                            - value
                           properties:
                             type:
                               type: string
@@ -637,6 +758,9 @@ components:
                               type: string
                               example: "ENABLED"
                         - type: object
+                          required:
+                            - type
+                            - value
                           properties:
                             type:
                               type: string
@@ -647,6 +771,7 @@ components:
               required:
                   - availableLocales
                   - featureStates
+                  - version
 
 tags:
   - name: session
