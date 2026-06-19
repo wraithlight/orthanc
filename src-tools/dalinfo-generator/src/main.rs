@@ -15,6 +15,7 @@ mod managers {
   pub mod header_manager;
   pub mod yaml_to_json_manager;
   pub mod dto_manager;
+  pub mod operation_id_manager;
 }
 
 use managers::{
@@ -24,6 +25,7 @@ use managers::{
   header_manager::HeaderManager,
   yaml_to_json_manager::YamlToJsonManager,
   dto_manager::DTOManager,
+  operation_id_manager::OperationIdManager,
 };
 
 use std::env;
@@ -46,7 +48,9 @@ fn main() {
   let text = IOManager::read_file_sync(inputfile).expect("Reading input file failed!");
   let yaml = YamlManager::parse_yaml_sync(&text).expect("yaml parse failed");
   let json = YamlToJsonManager::yaml_to_json_sync(yaml).expect("yaml->json failed");
+  OperationIdManager::validate_operation_ids_sync(&json).expect("operationId validation failed");
 
+  
   let pathfiles = PathManager::generate_paths_sync(&json).expect("path generation failed");
   let headernamefiles = HeaderManager::generate_headers_names_sync(&json).expect("header name generation failed");
   let headervaluesfiles = HeaderManager::generate_header_values_sync(&json).expect("header value generation failed");
