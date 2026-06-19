@@ -830,7 +830,7 @@ paths:
   /api/v1/login/guest:
     post:
       summary: Login as GUEST
-      operationId: loginGuestPost
+      operationId: postLoginGuest
       tags:
         - session
       parameters:
@@ -862,7 +862,7 @@ paths:
   /api/v1/character-creation/generate:
     post:
       summary: Generate character
-      operationId: generateCharacter
+      operationId: postGenerateCharacter
       tags:
         - game
       parameters:
@@ -910,7 +910,7 @@ paths:
   /api/v1/game/start:
     post:
       summary: Start game
-      operationId: startGame
+      operationId: postStartGame
       tags:
         - game
       parameters:
@@ -952,7 +952,7 @@ paths:
   /api/v1/chat/send:
     post:
       summary: Send chat message
-      operationId: sendChat
+      operationId: postSendChat
       tags:
         - chat
       parameters:
@@ -1000,7 +1000,7 @@ paths:
   /api/v1/chat/poll:
     get:
       summary: Poll chat messages
-      operationId: pollChat
+      operationId: getPollChat
       tags:
         - chat
       parameters:
@@ -1042,7 +1042,7 @@ paths:
   /api/v1/game/action:
     post:
       summary: Perform game action
-      operationId: gameActionPost
+      operationId: postGameAction
       tags:
         - game
       parameters:
