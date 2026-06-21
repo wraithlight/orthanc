@@ -20,6 +20,18 @@ pub struct OperationAst {
   pub response_node: Option<Node>,
 }
 
+struct EmitContext {
+  base_name: String,
+  literal_types: Vec<LiteralType>,
+  literal_signature_to_name: HashMap<String, String>,
+  next_literal_index: usize,
+}
+
+struct LiteralType {
+  name: String,
+  values: Vec<String>,
+}
+
 #[derive(Clone)]
 pub enum Node {
   String,
@@ -476,9 +488,28 @@ fn emit_operation(
   dto_type: &str,
   operation_name: &str
 ) -> String {
+    let type_base_name = format!(
+      "{}{}",
+      Self::str_capitalize_first(operation_name),
+      dto_type,
+    );
+    let mut context = EmitContext::new(type_base_name);
     let mut out = String::new();
 
-    let req_ts = Self::emit_node(operation_node);
+    let req_ts = Self::emit_node(operation_node, &mut context);
+
+    for literal in &context.literal_types {
+      out.push_str(&format!(
+        "export type {} = {};\n",
+        literal.name,
+        Self::emit_literal_union(&literal.values),
+      ));
+    }
+
+    if !context.literal_types.is_empty() {
+      out.push('\n');
+    }
+
     out.push_str(&format!(
       "export interface {}{} {}",
       Self::str_capitalize_first(&operation_name),
@@ -490,33 +521,31 @@ fn emit_operation(
 }
 
 fn str_capitalize_first(s: &str) -> String {
-  format!("{}{}", s.chars().next().unwrap().to_uppercase(), 
+  format!("{}{}", s.chars().next().unwrap().to_uppercase(),
   s.chars().skip(1).collect::<String>())
 }
 
-fn emit_node(node: &Node) -> String {
-  Self::emit_node_with_indent(node, 0)
+fn emit_node(node: &Node, context: &mut EmitContext) -> String {
+  Self::emit_node_with_indent(node, 0, context)
 }
 
-fn emit_node_with_indent(node: &Node, depth: usize) -> String {
+fn emit_node_with_indent(
+  node: &Node,
+  depth: usize,
+  context: &mut EmitContext,
+) -> String {
     match node {
         Node::String => "string".to_string(),
         Node::Number => "number".to_string(),
         Node::Boolean => "boolean".to_string(),
-        Node::StringLiteralUnion(values) => {
-            values
-                .iter()
-                .map(|v| format!("\"{}\"", v))
-                .collect::<Vec<_>>()
-                .join(" | ")
-        }
+        Node::StringLiteralUnion(values) => context.register_string_literal_union(values),
         Node::Array(inner) => {
-          format!("{}[]", Self::emit_node_with_indent(inner, depth))
+          format!("{}[]", Self::emit_node_with_indent(inner, depth, context))
         }
         Node::Union(variants) => {
             variants
                 .iter()
-            .map(|v| Self::emit_node_with_indent(v, depth))
+            .map(|v| Self::emit_node_with_indent(v, depth, context))
                 .collect::<Vec<_>>()
                 .join(" | ")
         }
@@ -531,7 +560,7 @@ fn emit_node_with_indent(node: &Node, depth: usize) -> String {
           let mut out = String::from("{\n");
 
             for prop in props {
-            let ts_type = Self::emit_node_with_indent(&prop.node, depth + 1);
+            let ts_type = Self::emit_node_with_indent(&prop.node, depth + 1, context);
             out.push_str(&Self::indent(depth + 1));
 
                 if prop.required {
@@ -546,6 +575,18 @@ fn emit_node_with_indent(node: &Node, depth: usize) -> String {
             out
         }
     }
+}
+
+fn emit_literal_union(values: &[String]) -> String {
+  values
+    .iter()
+    .map(|v| format!("\"{}\"", Self::escape_typescript_string(v)))
+    .collect::<Vec<_>>()
+    .join(" | ")
+}
+
+fn escape_typescript_string(value: &str) -> String {
+  value.replace('\\', "\\\\").replace('"', "\\\"")
 }
 
     fn indent(depth: usize) -> String {
@@ -571,6 +612,61 @@ fn emit_node_with_indent(node: &Node, depth: usize) -> String {
   //   out
   // }
 
+}
+
+impl EmitContext {
+  fn new(base_name: String) -> Self {
+    Self {
+      base_name,
+      literal_types: vec![],
+      literal_signature_to_name: HashMap::new(),
+      next_literal_index: 1,
+    }
+  }
+
+  fn register_string_literal_union(&mut self, values: &[String]) -> String {
+    let signature = values.join("\u{1f}");
+
+    if let Some(existing) = self.literal_signature_to_name.get(&signature) {
+      return existing.clone();
+    }
+
+    let name = format!(
+      "{}Literal{}",
+      Self::sanitize_identifier(&self.base_name),
+      self.next_literal_index,
+    );
+    self.next_literal_index += 1;
+
+    self.literal_signature_to_name
+      .insert(signature, name.clone());
+    self.literal_types.push(LiteralType {
+      name: name.clone(),
+      values: values.to_vec(),
+    });
+
+    name
+  }
+
+  fn sanitize_identifier(input: &str) -> String {
+    let mut out = String::new();
+
+    for c in input.chars() {
+      if c.is_ascii_alphanumeric() {
+        out.push(c);
+      }
+    }
+
+    if out.is_empty() {
+      return "GeneratedType".to_string();
+    }
+
+    if out.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
+      out = format!("Type{}", out);
+    }
+
+    out
+  }
 }
 
 impl SchemaRegistry {
