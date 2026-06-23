@@ -22,6 +22,9 @@ jobs:
           yarn install --frozen-lockfile
         working-directory: ./src-frontend-app-web
 
+      - name: Generate DALInfo
+        run: ./generate-dalinfo-ts.sh
+
       - name: Run build
         run: yarn gha:build:prod
         working-directory: ./src-frontend-app-web
