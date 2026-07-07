@@ -23,7 +23,7 @@ jobs:
         working-directory: ./src-frontend-app-web
 
       - name: Generate DALInfo
-        run: ./generate-dalinfo-ts.sh
+        run: bash ./generate-dalinfo-ts.sh
 
       - name: Run build
         run: yarn gha:build:prod
