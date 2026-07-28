@@ -40,6 +40,7 @@ pub enum Node {
   Array(Box<Node>),
   Union(Vec<Node>),
   StringLiteralUnion(Vec<String>),
+  TypeRef(String),
   Object {
     properties: Vec<Property>,
   },
@@ -493,10 +494,17 @@ fn emit_operation(
       Self::str_capitalize_first(operation_name),
       dto_type,
     );
-    let mut context = EmitContext::new(type_base_name);
+    let mut context = EmitContext::new(type_base_name.clone());
     let mut out = String::new();
 
-    let req_ts = Self::emit_node(operation_node, &mut context);
+    let payload_type_name = format!("{}Payload", type_base_name);
+    let (main_node, payload_node) = Self::extract_payload_node(operation_node, &payload_type_name);
+
+    let payload_ts = payload_node
+      .as_ref()
+      .map(|node| Self::emit_node(node, &mut context));
+
+    let req_ts = Self::emit_node(&main_node, &mut context);
 
     for literal in &context.literal_types {
       out.push_str(&format!(
@@ -510,6 +518,14 @@ fn emit_operation(
       out.push('\n');
     }
 
+    if let Some(payload_ts) = payload_ts {
+      out.push_str(&format!(
+        "export interface {} {}\n\n",
+        payload_type_name,
+        payload_ts,
+      ));
+    }
+
     out.push_str(&format!(
       "export interface {}{} {}",
       Self::str_capitalize_first(&operation_name),
@@ -518,6 +534,38 @@ fn emit_operation(
     ));
 
     out
+}
+
+fn extract_payload_node(
+  operation_node: &Node,
+  payload_type_name: &str,
+) -> (Node, Option<Node>) {
+  if let Node::Object { properties } = operation_node {
+    if let Some(payload_prop) = properties.iter().find(|p| p.name == "payload") {
+      if let Node::Object { .. } = &payload_prop.node {
+        let payload_node = payload_prop.node.clone();
+        let main_properties = properties
+          .iter()
+          .map(|p| {
+            if p.name == "payload" {
+              Property {
+                name: p.name.clone(),
+                required: p.required,
+                node: Node::TypeRef(payload_type_name.to_string()),
+              }
+            } else {
+              p.clone()
+            }
+          })
+          .collect();
+        return (
+          Node::Object { properties: main_properties },
+          Some(payload_node),
+        );
+      }
+    }
+  }
+  (operation_node.clone(), None)
 }
 
 fn str_capitalize_first(s: &str) -> String {
@@ -539,6 +587,7 @@ fn emit_node_with_indent(
         Node::Number => "number".to_string(),
         Node::Boolean => "boolean".to_string(),
         Node::StringLiteralUnion(values) => context.register_string_literal_union(values),
+        Node::TypeRef(name) => name.clone(),
         Node::Array(inner) => {
           format!("{}[]", Self::emit_node_with_indent(inner, depth, context))
         }
