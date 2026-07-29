@@ -23,6 +23,7 @@ impl PathManager {
           .ok_or("Missing operationId")?;
 
         let file_name = Self::to_kebab_case(operation_id);
+        let const_name = Self::to_path_const_name(operation_id);
 
         let mut params: Vec<String> = vec![];
         for cap in param_regex.captures_iter(endpoint_path) {
@@ -51,12 +52,12 @@ impl PathManager {
         let content = if params.is_empty() {
           format!(
             r#"export const {} = () => `{}`;"#,
-            operation_id, endpoint_path
+            const_name, endpoint_path
           )
         } else {
           format!(
             r#"export const {} = ({}) => `{}`;"#,
-            operation_id, args, interpolated_path
+            const_name, args, interpolated_path
           )
         };
 
@@ -79,5 +80,16 @@ impl PathManager {
       result.push(c.to_ascii_lowercase());
     }
     result
+  }
+
+  fn to_path_const_name(operation_id: &str) -> String {
+    let mut screaming_snake = String::new();
+    for (i, c) in operation_id.chars().enumerate() {
+      if c.is_uppercase() && i != 0 {
+        screaming_snake.push('_');
+      }
+      screaming_snake.push(c.to_ascii_uppercase());
+    }
+    format!("API_{}_PATH", screaming_snake)
   }
 }
