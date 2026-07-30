@@ -51,12 +51,12 @@ impl PathManager {
 
         let content = if params.is_empty() {
           format!(
-            r#"export const {} = () => `{}`;"#,
+            r#"export const {} = () => `{}` as const;"#,
             const_name, endpoint_path
           )
         } else {
           format!(
-            r#"export const {} = ({}) => `{}`;"#,
+            r#"export const {} = ({}) => `{}` as const;"#,
             const_name, args, interpolated_path
           )
         };
