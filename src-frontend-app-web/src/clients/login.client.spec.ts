@@ -1,65 +1,71 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
-import { LoginClient } from "./login.client";
-import {
-  GameMode,
-  HeaderNames,
-  HeaderValueAccept,
-} from "../domain";
-import { Environment } from "../environment";
-import { RuntimeContext } from "../runtime-context";
-import { InterceptorCache } from "../http";
-import * as framework from "../framework";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
-vi.mock("../framework", () => ({
-  newGuid: vi.fn(),
+import { GameMode } from "../domain";
+import { Nullable } from "../framework";
+
+const { ctorSpy, postOrthancSpy, MockOrthancClient } = vi.hoisted(() => {
+  const ctorSpy = vi.fn()
+  const postOrthancSpy = vi.fn()
+
+  class MockOrthancClient {
+    constructor(...args: any[]) {
+      ctorSpy(...args)
+    }
+
+    postOrthanc(...args: any[]) {
+      return postOrthancSpy(...args)
+    }
+  }
+
+  return {
+    MockOrthancClient,
+    ctorSpy,
+    postOrthancSpy,
+  }
+});
+
+vi.mock('./internal', () => ({
+  OrthancHttpClient: MockOrthancClient,
 }));
 
+
+import { LoginClient } from "./login.client";
+
+const MOCK_GAME_MODE = GameMode.Retail;
+const MOCK_BASE_URL = "http://base.api";
+
 describe("LoginClientSpecs", () => {
-  const fetchMock = vi.fn();
-  const interceptor = vi.fn();
-
-  beforeEach(() => {
-    vi.clearAllMocks();
-
-    globalThis.fetch = fetchMock;
-    vi.mocked(framework.newGuid).mockReturnValue("guid-123");
-
-    vi.spyOn(InterceptorCache, "getInstance").mockReturnValue({
-      getAfterInterceptors: () => [interceptor],
-    } as unknown as InterceptorCache);
-  });
-
-  it("logs in guest and returns payload", async () => {
-    fetchMock.mockResolvedValue({
-      text: vi.fn().mockResolvedValue(
-        JSON.stringify({
-          payload: { username: "guest123" },
-        })
-      ),
+  let service: LoginClient;
+  describe("given the client is initalized", () => {
+    beforeAll(() => {
+      service = new LoginClient(MOCK_BASE_URL);
     });
 
-    const client = new LoginClient("https://api.test");
-    const result = await client.loginGuest(GameMode.Retail);
+    it("should create the base service with the given baseurl", () => {
+      expect(ctorSpy).toHaveBeenCalled();
+      expect(ctorSpy).toHaveBeenCalledTimes(1);
+      expect(ctorSpy).toHaveBeenCalledWith(MOCK_BASE_URL);
+    });
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      "https://api.test/api/v1/login/guest",
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          gameMode: GameMode.Retail,
-        }),
-        headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: "guid-123",
-          [HeaderNames.Accept]:
-            HeaderValueAccept.ApplicationJson,
-        },
-      }
-    );
+    describe("when i call `getCredentialsMode()`", () => {
+      let mode: Nullable<string>;
+      beforeEach(() => {
+        mode = service['getCredentialsMode']();
+      });
+      it("must be `include`", () => {
+        expect(mode).toBe("include");
+      });
+    });
 
-    expect(interceptor).toHaveBeenCalled();
-    expect(result).toEqual({ username: "guest123" });
+    describe("when i call `loginGuest()`", () => {
+      beforeAll(async () => {
+        await service.loginGuest(MOCK_GAME_MODE);
+      });
+      it("should call the underlying `postOrhtanc()` method", () => {
+        expect(postOrthancSpy).toHaveBeenCalled();
+        expect(postOrthancSpy).toHaveBeenCalledTimes(1);
+      });
+    });
+
   });
 });
