@@ -7,7 +7,8 @@ export class ConfigurationService {
 
   private readonly _client = new ConfigurationClient(Environment.apiBaseUrl);
 
-  public async fetchConfiguration(): Promise<[Nullable<string>, ApplicationConfiguration]> {
+  public async fetchConfiguration(
+  ): Promise<[Nullable<string>, ApplicationConfiguration]> {
     return this._client.getConfiguration();
   }
 
