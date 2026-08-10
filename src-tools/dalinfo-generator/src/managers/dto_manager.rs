@@ -642,25 +642,6 @@ fn escape_typescript_string(value: &str) -> String {
       " ".repeat(depth * 2)
     }
 
-  // fn emit_object(
-  //   props: &[Property]
-  // ) -> String {
-  //   let mut out = String::from("{\n");
-  //   for prop in props {
-  //     let ts_type = Self::emit_node(
-  //       &prop.node,
-  //     );
-  //     let optional = if prop.required { "" } else { "?" };
-  //     out.push_str(&format!(
-  //       "{}{}: {};\n",
-  //       prop.name,
-  //       optional,
-  //       ts_type
-  //     ));
-  //   }
-  //   out
-  // }
-
 }
 
 impl EmitContext {
