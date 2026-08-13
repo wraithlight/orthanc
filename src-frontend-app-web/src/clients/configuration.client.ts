@@ -4,6 +4,8 @@ import { newGuid, Nullable } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
+import { API_GET_CONFIGURATION_PATH } from '../dal-generated';
+
 export class ConfigurationClient {
 
   constructor(
@@ -12,7 +14,7 @@ export class ConfigurationClient {
 
   public async getConfiguration(): Promise<[Nullable<string>, ApplicationConfiguration]> {
     const response = await fetch(
-      `${this._baseUrl}/api/v1/configuration`,
+      `${this._baseUrl}${API_GET_CONFIGURATION_PATH()}`,
       {
         method: "GET",
         headers: {
