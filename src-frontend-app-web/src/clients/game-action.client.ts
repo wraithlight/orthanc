@@ -4,6 +4,8 @@ import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
+import { API_POST_GAME_ACTION_PATH } from '../dal-generated';
+
 export class GameActionClient {
   constructor(
     private readonly _baseUrl: string
@@ -15,7 +17,7 @@ export class GameActionClient {
     payload: string | null
   ): Promise<any> {
     const result = await fetch(
-      `${this._baseUrl}/api/v1/game/action`,
+      `${this._baseUrl}${API_POST_GAME_ACTION_PATH()}`,
       {
         method: "POST",
         credentials: "include",
