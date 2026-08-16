@@ -37,7 +37,7 @@ jobs:
       - name: Install packages
         run: |
           volta install node yarn
-          yarn install --frozen-lockfile
+          yarn install --immutable
         working-directory: ./src-frontend-app-web
 
       - name: Run build
