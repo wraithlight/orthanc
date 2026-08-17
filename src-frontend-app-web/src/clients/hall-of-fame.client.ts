@@ -4,6 +4,8 @@ import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
+import { API_GET_HALL_OF_FAME_PATH } from '../dal-generated';
+
 export class HallOfFameClient {
 
   constructor(
@@ -11,7 +13,7 @@ export class HallOfFameClient {
   ) { }
 
   public async getHallOfFame(gameMode: GameMode): Promise<HallOfFameListModel> {
-    const baseUrl = `${this._baseUrl}/api/v1/main/hall-of-fame`;
+    const baseUrl = `${this._baseUrl}${API_GET_HALL_OF_FAME_PATH()}`;
     const queryParams = `?game-mode=${gameMode}`
     const response = await fetch(
       `${baseUrl}${queryParams}`,
