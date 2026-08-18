@@ -4,6 +4,8 @@ import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
+import { API_GET_LOCALIZATION_LOCALE_PATH } from '../dal-generated';
+
 export class LocalizationClient {
 
   constructor(
@@ -12,7 +14,7 @@ export class LocalizationClient {
 
   public async getLocalization(locale: string): Promise<Record<string, string>> {
     const response = await fetch(
-      `${this._baseUrl}/api/v1/localization/${locale}`,
+      `${this._baseUrl}${API_GET_LOCALIZATION_LOCALE_PATH(locale)}`,
       {
         method: "GET",
         headers: {
