@@ -4,6 +4,8 @@ import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
+import { API_POST_LOGIN_GUEST_PATH } from '../dal-generated';
+
 export class LoginClient {
 
   constructor(
@@ -14,7 +16,7 @@ export class LoginClient {
     gameMode: GameMode
   ): Promise<{ username: string }> {
     const response = await fetch(
-      `${this._baseUrl}/api/v1/login/guest`,
+      `${this._baseUrl}${API_POST_LOGIN_GUEST_PATH()}`,
       {
         method: "POST",
         credentials: "include",
