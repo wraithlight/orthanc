@@ -1,11 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { JsonHttpClient } from "./json-http.client";
-import { OperationResultFactory } from "../../framework";
-import {
-  HeaderNames,
-  HeaderValueAccept,
-  HeaderValuesContentType,
-} from "../../domain";
+import { HeaderNames, AcceptValues, ContentTypeValues } from "../../dal-generated";
 
 const mockGet = vi.fn();
 const mockPost = vi.fn();
@@ -85,9 +80,8 @@ describe("JsonHttpClientSpecs", () => {
     const headers = client.callHeaders();
 
     expect(headers).toEqual({
-      [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
-      [HeaderNames.ContentType]:
-        HeaderValuesContentType.ApplicationJson,
+      [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
+      [HeaderNames.CONTENTYPEJSON]: ContentTypeValues.ApplicationJson,
     });
   });
 
