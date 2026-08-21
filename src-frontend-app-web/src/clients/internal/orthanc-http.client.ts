@@ -1,4 +1,4 @@
-import { HeaderNames } from "../../domain";
+import { HeaderNames } from "../../dal-generated";
 import { Environment } from "../../environment";
 import { newGuid } from "../../framework";
 import { InterceptorCache } from "../../http";
@@ -35,9 +35,9 @@ export abstract class OrthancHttpClient extends JsonHttpClient {
 
   private getOrthancHeaders(): HeadersInit {
     return {
-      [HeaderNames.Device]: RuntimeContext.device,
-      [HeaderNames.Platform]: Environment.platform,
-      [HeaderNames.RequestId]: newGuid(),
+      [HeaderNames.DEVICE]: RuntimeContext.device,
+      [HeaderNames.PLATFORM]: Environment.platform,
+      [HeaderNames.REQUESTID]: newGuid(),
     };
   }
 

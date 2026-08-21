@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 
-import { HeaderNames } from "../../domain";
+import { HeaderNames, AcceptValues, ContentTypeValues } from "../../dal-generated";
 import { newGuid, Nullable } from "../../framework";
 
 import { OrthancHttpClient } from "./orthanc-http.client";
@@ -122,11 +122,11 @@ describe("OrthancHttpClientSpecs", () => {
     ).toHaveBeenCalled();
 
     expect(headers).toEqual({
-      Accept: "application/json",
-      "Content-Type": "application/json",
-      [HeaderNames.Device]: "TEST_DEVICE",
-      [HeaderNames.Platform]: "TEST_PLATFORM",
-      [HeaderNames.RequestId]: "GUID-123",
+      [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
+      [HeaderNames.CONTENTYPEJSON]: ContentTypeValues.ApplicationJson,
+      [HeaderNames.DEVICE]: "TEST_DEVICE",
+      [HeaderNames.PLATFORM]: "TEST_PLATFORM",
+      [HeaderNames.REQUESTID]: "GUID-123",
     });
   });
 
