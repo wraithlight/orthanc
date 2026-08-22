@@ -1,7 +1,9 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { HeaderNames, HeaderValueAccept } from "../domain";
-
+import {
+  HeaderNames,
+  AcceptValues,
+} from '../dal-generated';
 import { CharacterCreationClient } from "./character-creation.client";
 
 vi.mock("../framework", () => ({
@@ -75,10 +77,10 @@ describe("CharacterCreationClientSpecs", () => {
     });
 
     expect(options.headers).toMatchObject({
-      [HeaderNames.Platform]: "test-platform",
-      [HeaderNames.Device]: "test-device",
-      [HeaderNames.RequestId]: "test-guid",
-      [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+      [HeaderNames.PLATFORM]: "test-platform",
+      [HeaderNames.DEVICE]: "test-device",
+      [HeaderNames.REQUESTID]: "test-guid",
+      [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
     });
 
     expect(fetchResponse.text).toHaveBeenCalled();
