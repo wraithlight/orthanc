@@ -1,10 +1,14 @@
-import { ApplicationConfiguration, HeaderNames, HeaderValueAccept } from "../domain";
+import { ApplicationConfiguration } from "../domain";
 import { Environment } from "../environment";
 import { newGuid, Nullable } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
-import { API_GET_CONFIGURATION_PATH } from '../dal-generated';
+import {
+  API_GET_CONFIGURATION_PATH,
+  HeaderNames,
+  AcceptValues,
+} from '../dal-generated';
 
 export class ConfigurationClient {
 
@@ -18,10 +22,10 @@ export class ConfigurationClient {
       {
         method: "GET",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );
@@ -32,7 +36,7 @@ export class ConfigurationClient {
     interceptors.forEach(m => m(response));
 
     return [
-      response.headers.get(HeaderNames.PlatformVersion),
+      response.headers.get(HeaderNames.X_ORTHANC_PLATFORM_VERSION),
       content.payload
     ];
   }

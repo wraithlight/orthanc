@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
 
 import { Environment } from "../environment";
-import { HeaderNames, HeaderValueAccept } from "../domain";
+import { HeaderNames, AcceptValues } from "../dal-generated";
 import { RuntimeContext } from "../runtime-context";
 
 import { ConfigurationClient } from "./configuration.client";
@@ -56,10 +56,10 @@ describe("ConfigurationClientSpecs", () => {
           {
             method: "GET",
             headers: {
-              [HeaderNames.Platform]: Environment.platform,
-              [HeaderNames.Device]: RuntimeContext.device,
-              [HeaderNames.RequestId]: MOCK_GUID,
-              [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+              [HeaderNames.PLATFORM]: Environment.platform,
+              [HeaderNames.DEVICE]: RuntimeContext.device,
+              [HeaderNames.REQUESTID]: MOCK_GUID,
+              [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
             }
           }
         );
