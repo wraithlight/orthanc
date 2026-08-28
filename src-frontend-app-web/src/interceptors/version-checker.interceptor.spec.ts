@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { HeaderNames } from "../domain";
+import { HeaderNames } from "../dal-generated";
 import { createVersionCheckerInterceptor } from "./version-checker.interceptor";
 import { createAfterInterceptor } from "../http";
 import { doVersionCheck } from "../version-check";
@@ -56,7 +56,7 @@ describe("createVersionCheckerInterceptorSpecs", () => {
     } as unknown as Response);
 
     expect(get).toHaveBeenCalledWith(
-      HeaderNames.PlatformVersion.toLowerCase()
+      HeaderNames.X_ORTHANC_PLATFORM_VERSION.toLowerCase()
     );
   });
 });
