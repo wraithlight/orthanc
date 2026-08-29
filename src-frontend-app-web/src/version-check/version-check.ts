@@ -1,6 +1,6 @@
 import { subscribable } from "knockout";
 
-import { HeaderNames } from "../domain";
+import { HeaderNames } from "../dal-generated";
 import { readFromConfigState } from "../state";
 import { DialogQueueService } from "../services";
 import { isNil, Nullable } from "../framework";
@@ -14,7 +14,7 @@ export const doVersionCheck = (requiredVersion: Nullable<string>) => {
 
   if (isNil(platformVersion)) {
     // eslint-disable-next-line no-console
-    console.warn(`The header '${HeaderNames.PlatformVersion}' was not present on the response!`);
+    console.warn(`The header '${HeaderNames.X_ORTHANC_PLATFORM_VERSION}' was not present on the response!`);
     return;
   }
 
