@@ -31,7 +31,7 @@ const COMMON_RULES_ERROR = {
 export default [
   ...tseslint.configs.recommended,
   {
-    ignores: ["dist/**", "node_modules/**"],
+    ignores: ["dist/**", "node_modules/**", "src/dal-generated/**"],
   },
   {
     files: ["**/*.ts"],
