@@ -2,13 +2,13 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { LoginClient } from "./login.client";
 import {
   GameMode,
-  HeaderNames,
-  HeaderValueAccept,
 } from "../domain";
 import { Environment } from "../environment";
 import { RuntimeContext } from "../runtime-context";
 import { InterceptorCache } from "../http";
 import * as framework from "../framework";
+
+import { HeaderNames, AcceptValues } from '../dal-generated';
 
 vi.mock("../framework", () => ({
   newGuid: vi.fn(),
@@ -50,11 +50,11 @@ describe("LoginClientSpecs", () => {
           gameMode: GameMode.Retail,
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: "guid-123",
-          [HeaderNames.Accept]:
-            HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: "guid-123",
+          [HeaderNames.ACCEPTSAPPJSON]:
+            AcceptValues.ApplicationJson,
         },
       }
     );
