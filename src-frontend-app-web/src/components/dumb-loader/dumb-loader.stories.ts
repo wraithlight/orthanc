@@ -1,11 +1,11 @@
-import type { Meta, StoryObj } from 'storybook/html';
-import ko from 'knockout';
+import type { Meta, StoryObj } from "storybook/html";
+import ko from "knockout";
 
 import "./index";
-import { SELECTOR } from './dumb-loader.selector';
+import { SELECTOR } from "./dumb-loader.selector";
 
 const meta = {
-  title: 'Components/Core/OrthancLoader',
+  title: "Components/Core/OrthancLoader",
 } satisfies Meta;
 
 export default meta;
@@ -14,7 +14,7 @@ type Story = StoryObj;
 
 export const Loader: Story = {
   render: () => {
-    const container = document.createElement('div');
+    const container = document.createElement("div");
 
     container.innerHTML = createElement(SELECTOR);
 
