@@ -91,9 +91,6 @@ export class Application {
     const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
     const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
 
-    console.log(retailResults);
-    console.log(vanillaResults);
-
     const retailRowHtml = retailResults.items.map(m => `<tr><td>${m.name}</td><td>${m.characterLevel.toString()}</td><td>${m.started}</td><td>${m.finished}</td><td>${m.duration}</td><td>${m.sumXp}</td><td>${m.xpFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
     const vanillaRowHtml = vanillaResults.items.map(m => `<tr><td>${m.name}</td><td>${m.characterLevel.toString()}</td><td>${m.started}</td><td>${m.finished}</td><td>${m.duration}</td><td>${m.sumXp}</td><td>${m.xpFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
 
