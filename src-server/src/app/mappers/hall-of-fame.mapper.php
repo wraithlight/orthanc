@@ -5,7 +5,7 @@
 class HallOfFameItemMapper extends BaseMapper {
 
   public function mapDtoToModel($item): object {
-    throw new ErrorException("Not impltemented!");
+    throw new ErrorException("Not implemented!");
   }
 
   public function mapModelToDto($item): object {
