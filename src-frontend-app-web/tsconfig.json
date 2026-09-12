@@ -6,6 +6,7 @@
     "strict": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
+    "rootDir": ".",
     "outDir": "dist",
     "types": [
       "vite/client"
