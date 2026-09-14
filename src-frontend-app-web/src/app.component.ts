@@ -15,7 +15,7 @@ import { createVersionCheckerInterceptor } from "./interceptors";
 import { doVersionCheck } from "./version-check";
 import { LocalizationRepository } from "./repository";
 
-import { HeaderNames, AcceptValues } from "./dal-generated";
+import { HeaderNames, AcceptValues, API_POST_START_GAME_PATH } from "./dal-generated";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -123,7 +123,7 @@ export class Application {
 
   public async onNextFromCharacterCreationHandler(): Promise<void> {
     await fetch(
-      `${Environment.apiBaseUrl}/api/v1/game/start`,
+      `${Environment.apiBaseUrl}${API_POST_START_GAME_PATH()}`,
       {
         method: "POST",
         credentials: "include",
