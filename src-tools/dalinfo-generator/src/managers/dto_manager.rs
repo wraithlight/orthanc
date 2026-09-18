@@ -23,8 +23,7 @@ pub struct OperationAst {
 struct EmitContext {
   base_name: String,
   literal_types: Vec<LiteralType>,
-  literal_signature_to_name: HashMap<String, String>,
-  next_literal_index: usize,
+  literal_name_counts: HashMap<String, usize>,
 }
 
 struct LiteralType {
@@ -574,27 +573,28 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
   }
 
   fn emit_node(node: &Node, context: &mut EmitContext) -> String {
-    Self::emit_node_with_indent(node, 0, context)
+    Self::emit_node_with_indent(node, 0, context, "")
   }
 
   fn emit_node_with_indent(
     node: &Node,
     depth: usize,
     context: &mut EmitContext,
+    property_path: &str,
   ) -> String {
     match node {
         Node::String => "string".to_string(),
         Node::Number => "number".to_string(),
         Node::Boolean => "boolean".to_string(),
-        Node::StringLiteralUnion(values) => context.register_string_literal_union(values),
+        Node::StringLiteralUnion(values) => context.register_string_literal_union(values, property_path),
         Node::TypeRef(name) => name.clone(),
         Node::Array(inner) => {
-          format!("{}[]", Self::emit_node_with_indent(inner, depth, context))
+          format!("{}[]", Self::emit_node_with_indent(inner, depth, context, property_path))
         }
         Node::Union(variants) => {
             variants
                 .iter()
-            .map(|v| Self::emit_node_with_indent(v, depth, context))
+            .map(|v| Self::emit_node_with_indent(v, depth, context, property_path))
                 .collect::<Vec<_>>()
                 .join(" | ")
         }
@@ -609,7 +609,17 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
           let mut out = String::from("{\n");
 
             for prop in props {
-            let ts_type = Self::emit_node_with_indent(&prop.node, depth + 1, context);
+            let child_path = format!(
+              "{}{}",
+              property_path,
+              Self::str_capitalize_first(&prop.name),
+            );
+            let ts_type = Self::emit_node_with_indent(
+              &prop.node,
+              depth + 1,
+              context,
+              &child_path,
+            );
             out.push_str(&Self::indent(depth + 1));
 
                 if prop.required {
@@ -648,27 +658,24 @@ impl EmitContext {
     Self {
       base_name,
       literal_types: vec![],
-      literal_signature_to_name: HashMap::new(),
-      next_literal_index: 1,
+      literal_name_counts: HashMap::new(),
     }
   }
 
-  fn register_string_literal_union(&mut self, values: &[String]) -> String {
-    let signature = values.join("\u{1f}");
-
-    if let Some(existing) = self.literal_signature_to_name.get(&signature) {
-      return existing.clone();
-    }
-
-    let name = format!(
-      "{}Literal{}",
+  fn register_string_literal_union(&mut self, values: &[String], property_path: &str) -> String {
+    let base_name = format!(
+      "{}{}",
       Self::sanitize_identifier(&self.base_name),
-      self.next_literal_index,
+      Self::sanitize_identifier(property_path),
     );
-    self.next_literal_index += 1;
+    let count = self.literal_name_counts.entry(base_name.clone()).or_insert(0);
+    *count += 1;
+    let name = if *count == 1 {
+      base_name
+    } else {
+      format!("{}{}", base_name, count)
+    };
 
-    self.literal_signature_to_name
-      .insert(signature, name.clone());
     self.literal_types.push(LiteralType {
       name: name.clone(),
       values: values.to_vec(),
