@@ -469,25 +469,25 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
     out
   }
 
-fn emit_operation_request(operation: &OperationAst) -> String {
-  if let Some(req) = &operation.request_node {
-    return Self::emit_operation(&req, "Request", &operation.name);
+  fn emit_operation_request(operation: &OperationAst) -> String {
+    if let Some(req) = &operation.request_node {
+      return Self::emit_operation(&req, "Request", &operation.name);
+    }
+    String::new()
   }
-  String::new()
-}
 
-fn emit_operation_response(operation: &OperationAst) -> String {
-  if let Some(res) = &operation.response_node {
-    return Self::emit_operation(&res, "Response", &operation.name);
+  fn emit_operation_response(operation: &OperationAst) -> String {
+    if let Some(res) = &operation.response_node {
+      return Self::emit_operation(&res, "Response", &operation.name);
+    }
+    String::new()
   }
-  String::new()
-}
 
-fn emit_operation(
-  operation_node: &Node,
-  dto_type: &str,
-  operation_name: &str
-) -> String {
+  fn emit_operation(
+    operation_node: &Node,
+    dto_type: &str,
+    operation_name: &str
+  ) -> String {
     let type_base_name = format!(
       "{}{}",
       Self::str_capitalize_first(operation_name),
@@ -533,56 +533,45 @@ fn emit_operation(
     ));
 
     out
-}
+  }
 
-fn extract_payload_node(
-  operation_node: &Node,
-  payload_type_name: &str,
-) -> (Node, Option<Node>) {
-  if let Node::Object { properties } = operation_node {
-    if let Some(payload_prop) = properties.iter().find(|p| p.name == "payload") {
-      if let Node::Object { .. } = &payload_prop.node {
-        let payload_node = payload_prop.node.clone();
-        let main_properties = properties
-          .iter()
-          .map(|p| {
-            if p.name == "payload" {
-              Property {
-                name: p.name.clone(),
-                required: p.required,
-                node: Node::TypeRef(payload_type_name.to_string()),
+  fn extract_payload_node(
+    operation_node: &Node,
+    payload_type_name: &str,
+  ) -> (Node, Option<Node>) {
+    if let Node::Object { properties } = operation_node {
+      if let Some(payload_prop) = properties.iter().find(|p| p.name == "payload") {
+        if let Node::Object { .. } = &payload_prop.node {
+          let payload_node = payload_prop.node.clone();
+          let main_properties = properties
+            .iter()
+            .map(|p| {
+              if p.name == "payload" {
+                Property {
+                  name: p.name.clone(),
+                  required: p.required,
+                  node: Node::TypeRef(payload_type_name.to_string()),
+                }
+              } else {
+                p.clone()
               }
-            } else {
-              p.clone()
-            }
-          })
-          .collect();
-        return (
-          Node::Object { properties: main_properties },
-          Some(payload_node),
-        );
+            })
+            .collect();
+          return (
+            Node::Object { properties: main_properties },
+            Some(payload_node),
+          );
+        }
       }
     }
+    (operation_node.clone(), None)
   }
-  (operation_node.clone(), None)
-}
 
-fn str_capitalize_first(s: &str) -> String {
-  format!("{}{}", s.chars().next().unwrap().to_uppercase(),
-  s.chars().skip(1).collect::<String>())
-}
+  fn str_capitalize_first(s: &str) -> String {
+    format!("{}{}", s.chars().next().unwrap().to_uppercase(),
+    s.chars().skip(1).collect::<String>())
+  }
 
-<<<<<<< Updated upstream
-fn emit_node(node: &Node, context: &mut EmitContext) -> String {
-  Self::emit_node_with_indent(node, 0, context)
-}
-
-fn emit_node_with_indent(
-  node: &Node,
-  depth: usize,
-  context: &mut EmitContext,
-) -> String {
-=======
   fn emit_node(node: &Node, context: &mut EmitContext) -> String {
     Self::emit_node_with_indent(node, 0, context, "")
   }
@@ -593,7 +582,6 @@ fn emit_node_with_indent(
     context: &mut EmitContext,
     property_path: &str,
   ) -> String {
->>>>>>> Stashed changes
     match node {
         Node::String => "string".to_string(),
         Node::Number => "number".to_string(),
@@ -646,24 +634,23 @@ fn emit_node_with_indent(
             out
         }
     }
-}
+  }
 
-fn emit_literal_union(values: &[String]) -> String {
-  values
-    .iter()
-    .map(|v| format!("\"{}\"", Self::escape_typescript_string(v)))
-    .collect::<Vec<_>>()
-    .join(" | ")
-}
+  fn emit_literal_union(values: &[String]) -> String {
+    values
+      .iter()
+      .map(|v| format!("\"{}\"", Self::escape_typescript_string(v)))
+      .collect::<Vec<_>>()
+      .join(" | ")
+  }
 
-fn escape_typescript_string(value: &str) -> String {
-  value.replace('\\', "\\\\").replace('"', "\\\"")
-}
+  fn escape_typescript_string(value: &str) -> String {
+    value.replace('\\', "\\\\").replace('"', "\\\"")
+  }
 
-    fn indent(depth: usize) -> String {
-      " ".repeat(depth * 2)
-    }
-
+  fn indent(depth: usize) -> String {
+    " ".repeat(depth * 2)
+  }
 }
 
 impl EmitContext {
