@@ -40,6 +40,9 @@ jobs:
           yarn install --immutable
         working-directory: ./src-frontend-app-web
 
+      - name: Generate DALInfo
+        run: bash ./generate-dalinfo-ts.sh
+
       - name: Run build
         run: |
           if [ "${DEPLOY_ENV}" = "PROD" ]; then
