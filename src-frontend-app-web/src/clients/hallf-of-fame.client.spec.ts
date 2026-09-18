@@ -1,10 +1,12 @@
 import { describe, it, expect, vi, beforeAll } from "vitest";
 
 import { Environment } from "../environment";
-import { GameMode, HeaderNames, HeaderValueAccept } from "../domain";
+import { GameMode } from "../domain";
 import { RuntimeContext } from "../runtime-context";
 
 import { HallOfFameClient } from "./hall-of-fame.client";
+
+import { HeaderNames, AcceptValues } from '../dal-generated';
 
 const MOCK_TEXT = { prop: "value" };
 
@@ -54,10 +56,10 @@ describe("HallOfFameClientSpecs", () => {
           {
             method: "GET",
             headers: {
-              [HeaderNames.Platform]: Environment.platform,
-              [HeaderNames.Device]: RuntimeContext.device,
-              [HeaderNames.RequestId]: MOCK_GUID,
-              [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+              [HeaderNames.PLATFORM]: Environment.platform,
+              [HeaderNames.DEVICE]: RuntimeContext.device,
+              [HeaderNames.REQUESTID]: MOCK_GUID,
+              [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
             }
           }
         );

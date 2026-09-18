@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
 import { GameActionClient } from "./game-action.client";
 
-import { HeaderNames, HeaderValueAccept } from "../domain";
+import { HeaderNames, AcceptValues } from "../dal-generated";
 
 vi.mock("../framework", () => ({
   newGuid: vi.fn(() => "test-guid"),
@@ -74,10 +74,10 @@ describe("GameActionClientSpecs", () => {
     });
 
     expect(options.headers).toMatchObject({
-      [HeaderNames.Platform]: "test-platform",
-      [HeaderNames.Device]: "test-device",
-      [HeaderNames.RequestId]: "test-guid",
-      [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+      [HeaderNames.PLATFORM]: "test-platform",
+      [HeaderNames.DEVICE]: "test-device",
+      [HeaderNames.REQUESTID]: "test-guid",
+      [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
     });
 
     expect(fetchResponse.text).toHaveBeenCalled();

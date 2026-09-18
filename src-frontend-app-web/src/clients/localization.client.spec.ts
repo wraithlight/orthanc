@@ -1,6 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { HeaderNames, HeaderValueAccept } from "../domain";
 import { newGuid } from "../framework";
+
+import { HeaderNames, AcceptValues } from '../dal-generated';
 
 import { LocalizationClient } from "./localization.client";
 
@@ -54,10 +55,10 @@ describe("LocalizationClientSpecs", () => {
       {
         method: "GET",
         headers: {
-          [HeaderNames.Platform]: "test-platform",
-          [HeaderNames.Device]: "test-device",
-          [HeaderNames.RequestId]: "test-guid",
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson
+          [HeaderNames.PLATFORM]: "test-platform",
+          [HeaderNames.DEVICE]: "test-device",
+          [HeaderNames.REQUESTID]: "test-guid",
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson
         }
       }
     );

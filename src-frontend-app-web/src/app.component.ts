@@ -6,7 +6,7 @@ import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
 import { Environment } from "./environment";
-import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
+import { GameMode } from "./domain";
 import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService, LocaleService, LocalizationService } from "./services";
 import { State, createConfigState } from "./state"
@@ -14,6 +14,8 @@ import { RuntimeContext } from "./runtime-context";
 import { createVersionCheckerInterceptor } from "./interceptors";
 import { doVersionCheck } from "./version-check";
 import { LocalizationRepository } from "./repository";
+
+import { HeaderNames, AcceptValues } from "./dal-generated";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -126,10 +128,10 @@ export class Application {
         method: "POST",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );

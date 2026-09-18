@@ -1,4 +1,3 @@
-import { HeaderNames, HeaderValueAccept } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
@@ -6,7 +5,9 @@ import { RuntimeContext } from "../runtime-context";
 
 import {
   API_POST_SEND_CHAT_PATH,
-  API_GET_POLL_CHAT_PATH
+  API_GET_POLL_CHAT_PATH,
+  HeaderNames,
+  AcceptValues,
 } from '../dal-generated';
 
 export class GameChatClient {
@@ -25,10 +26,10 @@ export class GameChatClient {
           message: message
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );
@@ -45,10 +46,10 @@ export class GameChatClient {
         method: "GET",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );

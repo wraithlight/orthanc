@@ -1,10 +1,14 @@
-import { HeaderNames, HeaderValueAccept } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
 
-import { API_POST_GENERATE_CHARACTER_PATH, PostGenerateCharacterResponsePayload } from "../dal-generated";
+import {
+  API_POST_GENERATE_CHARACTER_PATH,
+  PostGenerateCharacterResponsePayload,
+  HeaderNames,
+  AcceptValues,
+} from "../dal-generated";
 
 export class CharacterCreationClient {
 
@@ -19,10 +23,10 @@ export class CharacterCreationClient {
         method: "POST",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
 
         }
       }

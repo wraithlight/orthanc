@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach, beforeAll, afterEach, afterAll } from "vitest";
 import { doVersionCheck } from "./version-check";
-import { HeaderNames } from "../domain";
+import { HeaderNames } from "../dal-generated";
 
 const openDialogSpy = vi.fn();
 const locationReloadSpy = vi.fn();
@@ -48,7 +48,7 @@ describe("doVersionCheckSpecs", () => {
       });
       it("should show a warning", () => {
         expect(consoleWarnSpy).toHaveBeenCalled();
-        expect(consoleWarnSpy).toHaveBeenCalledWith(`The header '${HeaderNames.PlatformVersion}' was not present on the response!`);
+        expect(consoleWarnSpy).toHaveBeenCalledWith(`The header '${HeaderNames.X_ORTHANC_PLATFORM_VERSION}' was not present on the response!`);
       });
       it("should not read the config", () => {
         expect(readFromConfigStateSpy).not.toHaveBeenCalled();

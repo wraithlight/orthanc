@@ -1,6 +1,7 @@
-import { HeaderNames, HeaderValueAccept, HeaderValuesContentType } from "../../domain";
 import { OperationResult, OperationResultFactory } from "../../framework";
 import { BaseHttpClient } from "./base-http.client";
+
+import { HeaderNames, AcceptValues, ContentTypeValues } from "../../dal-generated";
 
 export abstract class JsonHttpClient extends BaseHttpClient {
 
@@ -54,8 +55,8 @@ export abstract class JsonHttpClient extends BaseHttpClient {
 
   protected getJsonHeaders(): HeadersInit {
     return {
-      [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
-      [HeaderNames.ContentType]: HeaderValuesContentType.ApplicationJson,
+      [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
+      [HeaderNames.CONTENTYPEJSON]: ContentTypeValues.ApplicationJson,
     };
   }
 
