@@ -1,4 +1,3 @@
-import { ApplicationConfiguration } from "../domain";
 import { Environment } from "../environment";
 import { newGuid, Nullable } from "../framework";
 import { InterceptorCache } from "../http";
@@ -6,6 +5,7 @@ import { RuntimeContext } from "../runtime-context";
 
 import {
   API_GET_CONFIGURATION_PATH,
+  GetConfigurationResponsePayload,
   HeaderNames,
   AcceptValues,
 } from '../dal-generated';
@@ -16,7 +16,7 @@ export class ConfigurationClient {
     private readonly _baseUrl: string
   ) { }
 
-  public async getConfiguration(): Promise<[Nullable<string>, ApplicationConfiguration]> {
+  public async getConfiguration(): Promise<[Nullable<string>, GetConfigurationResponsePayload]> {
     const response = await fetch(
       `${this._baseUrl}${API_GET_CONFIGURATION_PATH()}`,
       {
