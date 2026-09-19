@@ -4,11 +4,10 @@ import { observable, observableArray, subscribable } from "knockout";
 import { INITIAL_GAME_CHARACTER, INITIAL_GAME_EQUIPMENT, INITIAL_GAME_STATISTICS } from "../../constant";
 import { DialogQueueService, KeyboardEventService } from "../../services";
 import { SELECTOR } from "../character-creation/character-creation.selector";
-
-import { GameChatClient } from "./game-chat.client";
-import { GameActionClient } from "./game-action.client";
+import { GameActionClient, GameChatClient } from "../../clients";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 import { Environment } from "../../environment";
+import { isNotNil } from "../../framework";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
@@ -35,7 +34,7 @@ export class GameContainer {
   public readonly equipment = observable<GameEquipment>(INITIAL_GAME_EQUIPMENT);
   public readonly stats = observable<CharacterGameStats>(INITIAL_GAME_STATISTICS);
 
-  public readonly actions = observableArray([]);
+  public readonly actions = observableArray<{ key: string, payload: string }>([]);
   public readonly activeSpells = observableArray([]);
 
   private readonly _dialogCloseSubscription = new subscribable();
@@ -64,6 +63,8 @@ export class GameContainer {
     this._keyboardEventService.subscribe("KeyJ", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
     this._keyboardEventService.subscribe("KeyK", () => this.onActionItemClick("MOVE", "DIRECTION_NORTH"));
     this._keyboardEventService.subscribe("KeyL", () => this.onActionItemClick("MOVE", "DIRECTION_EAST"));
+
+    this._keyboardEventService.subscribe("Space", () => this.tryPickup());
   }
 
   public onActionItemClick(
@@ -77,6 +78,7 @@ export class GameContainer {
     action: string,
     payload: string | null
   ): void {
+
     if (this.shouldOpenRetireDialog() || this.shouldOpenEndDialog()) {
       return;
     }
@@ -172,7 +174,6 @@ export class GameContainer {
           this._dialogCloseSubscription
         )
       }
-
     });
   }
 
@@ -211,4 +212,10 @@ export class GameContainer {
     await this._gameChatClient.sendMessage(message);
   }
 
+  private tryPickup(): void {
+    const pickupAction = this.actions().find(m => m.key === "PICKUP");
+    if (isNotNil(pickupAction)) {
+      this.actionHandler(pickupAction.key, pickupAction.payload);
+    }
+  }
 }

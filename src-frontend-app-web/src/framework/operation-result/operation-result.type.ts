@@ -5,5 +5,5 @@ import { OperationResultWarning } from "./operation-result-warning";
 export type OperationResult<T> =
   OperationResultSuccess<T>
   | OperationResultError
-  | OperationResultWarning
+  | OperationResultWarning<T>
 ;

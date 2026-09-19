@@ -12,7 +12,7 @@ WORKDIR /temp
 COPY src-frontend-app-web /temp
 
 RUN volta install node yarn
-RUN yarn --frozen-lockfile
+RUN yarn --immutable
 RUN yarn build:local
 
 FROM php:8.1.0-apache AS runner

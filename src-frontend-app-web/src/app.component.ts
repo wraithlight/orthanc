@@ -6,7 +6,7 @@ import { SELECTOR as GAME_SELECTOR } from './containers/game/game.selector';
 import { SELECTOR as LOGIN_SELECTOR } from './containers/login/login.selector';
 
 import { Environment } from "./environment";
-import { GameMode, HeaderNames, HeaderValueAccept } from "./domain";
+import { GameMode } from "./domain";
 import { newGuid } from "./framework";
 import { ConfigurationService, DialogQueueService, HallOfFameService, LocaleService, LocalizationService } from "./services";
 import { State, createConfigState } from "./state"
@@ -14,6 +14,8 @@ import { RuntimeContext } from "./runtime-context";
 import { createVersionCheckerInterceptor } from "./interceptors";
 import { doVersionCheck } from "./version-check";
 import { LocalizationRepository } from "./repository";
+
+import { HeaderNames, AcceptValues, API_POST_START_GAME_PATH } from "./dal-generated";
 
 export class Application {
   public readonly isLoading = observable(true);
@@ -89,8 +91,8 @@ export class Application {
     const retailResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Retail);
     const vanillaResults = await this._hallOfFameService.fetchHallOfFame(GameMode.Vanilla);
 
-    const retailRowHtml = retailResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level.toString()}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
-    const vanillaRowHtml = vanillaResults.items.map(m => `<tr><td>${m.name}</td><td>${m.level}</td><td>${m.sessionStartAtUtc}</td><td>${m.sessionEndAtUtc}</td><td>${m.sessionLengthInMs}</td><td>${m.experiencePoints}</td><td>${m.experienceFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
+    const retailRowHtml = retailResults.items.map(m => `<tr><td>${m.name}</td><td>${m.characterLevel.toString()}</td><td>${m.started}</td><td>${m.finished}</td><td>${m.duration}</td><td>${m.sumXp}</td><td>${m.xpFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
+    const vanillaRowHtml = vanillaResults.items.map(m => `<tr><td>${m.name}</td><td>${m.characterLevel.toString()}</td><td>${m.started}</td><td>${m.finished}</td><td>${m.duration}</td><td>${m.sumXp}</td><td>${m.xpFromKillsPercentage}</td><td>${m.gameVersion}</td><td>${m.numberOfMoves}</td><td>${m.numberOfActions}</td></tr>`);
 
     const commonHead = "<tr><td>Name</td><td>Level</td><td>Session start</td><td>Session end</td><td>Session length</td><td>Experience</td><td>Experience from kills</td><td>Game version</td><td>Number of moves</td><td>Number of actions</td></tr>";
     const retailHtml = `<table>${commonHead}${retailRowHtml}</table>`;
@@ -121,15 +123,15 @@ export class Application {
 
   public async onNextFromCharacterCreationHandler(): Promise<void> {
     await fetch(
-      `${Environment.apiBaseUrl}/api/v1/game/start`,
+      `${Environment.apiBaseUrl}${API_POST_START_GAME_PATH()}`,
       {
         method: "POST",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );

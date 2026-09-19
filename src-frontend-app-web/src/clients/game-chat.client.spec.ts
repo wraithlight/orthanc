@@ -2,14 +2,14 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { GameChatClient } from "./game-chat.client";
 import {
   HeaderNames,
-  HeaderValueAccept,
-} from "../../domain";
-import { Environment } from "../../environment";
-import { RuntimeContext } from "../../runtime-context";
-import { InterceptorCache } from "../../http";
-import * as framework from "../../framework";
+  AcceptValues,
+} from "../dal-generated";
+import { Environment } from "../environment";
+import { RuntimeContext } from "../runtime-context";
+import { InterceptorCache } from "../http";
+import * as framework from "../framework";
 
-vi.mock("../../framework", () => ({
+vi.mock("../framework", () => ({
   newGuid: vi.fn(),
 }));
 
@@ -41,11 +41,11 @@ describe("GameChatClientSpecs", () => {
         credentials: "include",
         body: JSON.stringify({ message: "hello" }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: "guid-123",
-          [HeaderNames.Accept]:
-            HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: "guid-123",
+          [HeaderNames.ACCEPTSAPPJSON]:
+            AcceptValues.ApplicationJson,
         },
       }
     );
@@ -71,11 +71,11 @@ describe("GameChatClientSpecs", () => {
         method: "GET",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: "guid-123",
-          [HeaderNames.Accept]:
-            HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: "guid-123",
+          [HeaderNames.ACCEPTSAPPJSON]:
+            AcceptValues.ApplicationJson,
         },
       }
     );

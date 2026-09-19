@@ -1,8 +1,14 @@
-import { HeaderNames, HeaderValueAccept } from "../../domain";
-import { Environment } from "../../environment";
-import { newGuid } from "../../framework";
-import { InterceptorCache } from "../../http";
-import { RuntimeContext } from "../../runtime-context";
+import { Environment } from "../environment";
+import { newGuid } from "../framework";
+import { InterceptorCache } from "../http";
+import { RuntimeContext } from "../runtime-context";
+
+import {
+  API_POST_SEND_CHAT_PATH,
+  API_GET_POLL_CHAT_PATH,
+  HeaderNames,
+  AcceptValues,
+} from '../dal-generated';
 
 export class GameChatClient {
   constructor(
@@ -12,7 +18,7 @@ export class GameChatClient {
 
   public async sendMessage(message: string): Promise<void> {
     const result = await fetch(
-      `${this._baseUrl}/api/v1/chat/send`,
+      `${this._baseUrl}${API_POST_SEND_CHAT_PATH()}`,
       {
         method: "POST",
         credentials: "include",
@@ -20,10 +26,10 @@ export class GameChatClient {
           message: message
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );
@@ -35,15 +41,15 @@ export class GameChatClient {
 
   public async poll(): Promise<any> {
     const response = await fetch(
-      `${this._baseUrl}/api/v1/chat/poll`,
+      `${this._baseUrl}${API_GET_POLL_CHAT_PATH()}`,
       {
         method: "GET",
         credentials: "include",
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );

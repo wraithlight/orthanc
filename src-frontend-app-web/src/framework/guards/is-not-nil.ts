@@ -1,5 +1,5 @@
 import { isNilCore } from "./internal";
 
-export function isNotNil(valueLike: unknown): valueLike is undefined | null {
+export function isNotNil<T>(valueLike: T | null | undefined): valueLike is NonNullable<T> {
   return !isNilCore(valueLike);
 }

@@ -17,4 +17,5 @@ export type KeyboardEventType =
   | "KeyS"
   | "KeyW"
   | "KeyY"
+  | "Space"
   ;

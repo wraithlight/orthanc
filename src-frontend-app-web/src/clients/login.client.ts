@@ -1,8 +1,14 @@
-import { GameMode, HeaderNames, HeaderValueAccept } from "../domain";
+import { GameMode } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
 import { RuntimeContext } from "../runtime-context";
+
+import {
+  API_POST_LOGIN_GUEST_PATH,
+  HeaderNames,
+  AcceptValues,
+} from '../dal-generated';
 
 export class LoginClient {
 
@@ -14,7 +20,7 @@ export class LoginClient {
     gameMode: GameMode
   ): Promise<{ username: string }> {
     const response = await fetch(
-      `${this._baseUrl}/api/v1/login/guest`,
+      `${this._baseUrl}${API_POST_LOGIN_GUEST_PATH()}`,
       {
         method: "POST",
         credentials: "include",
@@ -22,10 +28,10 @@ export class LoginClient {
           gameMode: gameMode
         }),
         headers: {
-          [HeaderNames.Platform]: Environment.platform,
-          [HeaderNames.Device]: RuntimeContext.device,
-          [HeaderNames.RequestId]: newGuid(),
-          [HeaderNames.Accept]: HeaderValueAccept.ApplicationJson,
+          [HeaderNames.PLATFORM]: Environment.platform,
+          [HeaderNames.DEVICE]: RuntimeContext.device,
+          [HeaderNames.REQUESTID]: newGuid(),
+          [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
         }
       }
     );

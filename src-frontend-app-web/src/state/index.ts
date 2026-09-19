@@ -1,5 +1,5 @@
-import { ApplicationConfiguration } from "../domain";
 import { Predicate } from "../framework";
+import { GetConfigurationResponsePayload } from "../dal-generated";
 
 import { ApplicationConfigurationState } from "./application-configuration";
 import {
@@ -29,11 +29,11 @@ export const State = {
 };
 
 let _config: ApplicationConfigurationState;
-export const createConfigState = (config: ApplicationConfiguration) => {
+export const createConfigState = (config: GetConfigurationResponsePayload) => {
   _config = new ApplicationConfigurationState(config);
 };
 export const readFromConfigState = <T, U extends T>(
-  predicate: Predicate<ApplicationConfiguration, T>,
+  predicate: Predicate<GetConfigurationResponsePayload, T>,
   defaultValue: U
 ) => _config
   ? _config.getOrDefault<T, U>(predicate, defaultValue)
