@@ -721,6 +721,32 @@ components:
                     type: string
                     example: "guest_123"
 
+    ConfigurationSuccessResponseFlagFeature:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          enum: ["FLAG"]
+        value:
+          type: string
+          example: "ENABLED"
+
+    ConfigurationSuccessResponseValueFeature:
+      type: object
+      required:
+        - type
+        - value
+      properties:
+        type:
+          type: string
+          enum: ["VALUE"]
+        value:
+          type: string
+          example: "en"
+
     ConfigurationSuccessResponse:
       allOf:
         - $ref: '#/components/schemas/BaseSuccessResponse'
@@ -742,32 +768,29 @@ components:
                 featureStates:
                   type: object
                   required:
-                    - featureName
+                    - applicationDefaultLanguageDefault
+                    - loginScreenLanguageSwitchDefault
+                    - loginScreenModeScreenDefault
+                    - loginScreenModeScreenEnabled
+                    - loginScreenLanguageSwitchEnabled
                   properties:
-                    featureName:
-                      oneOf: 
+                    applicationDefaultLanguageDefault:
+                      allOf:
+                        - $ref: '#/components/schemas/ConfigurationSuccessResponseValueFeature'
                         - type: object
-                          required:
-                            - type
-                            - value
-                          properties:
-                            type:
-                              type: string
-                              enum: ["FLAG"]
+                          properties: 
                             value:
                               type: string
-                              example: "ENABLED"
-                        - type: object
-                          required:
-                            - type
-                            - value
-                          properties:
-                            type:
-                              type: string
-                              enum: ["VALUE"]
-                            value:
-                              type: string
+                              enum: ["en", "hu", "hr", "de"]
                               example: "en"
+                    loginScreenLanguageSwitchDefault:
+                      $ref: '#/components/schemas/ConfigurationSuccessResponseValueFeature'
+                    loginScreenModeScreenDefault:
+                      $ref: '#/components/schemas/ConfigurationSuccessResponseValueFeature'
+                    loginScreenModeScreenEnabled:
+                      $ref: '#/components/schemas/ConfigurationSuccessResponseFlagFeature'
+                    loginScreenLanguageSwitchEnabled:
+                      $ref: '#/components/schemas/ConfigurationSuccessResponseFlagFeature'
               required:
                   - availableLocales
                   - featureStates
