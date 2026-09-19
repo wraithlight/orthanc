@@ -49,8 +49,8 @@ class HallOfFameService extends BaseIOService
     GameMode $gameMode
   ): array {
     $data = $this->read();
-    $records = array_slice($data, 0, $limit);
-    return array_filter($records, fn($item) => $item['gameMode'] === $gameMode->value);
+    $records = array_filter($data, fn($item) => $item['gameMode'] === $gameMode->value);
+    return array_slice($records, 0, $limit);
   }
 
 }
