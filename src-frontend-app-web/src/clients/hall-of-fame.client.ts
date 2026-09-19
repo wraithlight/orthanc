@@ -17,10 +17,9 @@ export class HallOfFameClient {
   ) { }
 
   public async getHallOfFame(gameMode: GameMode): Promise<HallOfFameListModel> {
-    const baseUrl = `${this._baseUrl}${API_GET_HALL_OF_FAME_PATH()}`;
-    const queryParams = `?game-mode=${gameMode}`
+    const url = `${this._baseUrl}${API_GET_HALL_OF_FAME_PATH(gameMode)}`;
     const response = await fetch(
-      `${baseUrl}${queryParams}`,
+      url,
       {
         method: "GET",
         headers: {
