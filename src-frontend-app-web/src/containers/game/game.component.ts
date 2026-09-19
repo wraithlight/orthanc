@@ -8,6 +8,7 @@ import { GameActionClient, GameChatClient } from "../../clients";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 import { Environment } from "../../environment";
 import { isNotNil } from "../../framework";
+import { PostGameActionResponsePayload } from "../../dal-generated";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
@@ -27,15 +28,15 @@ export class GameContainer {
   public readonly gameState = observable("GAME_RUNNING");
   public readonly maxHits = observable(0);
   public readonly curHits = observable(0);
-  public readonly events = observableArray([]);
-  public readonly endgameItemIcons = observableArray([]);
+  public readonly events = observableArray<PostGameActionResponsePayload["events"][number]>([]);
+  public readonly endgameItemIcons = observableArray<PostGameActionResponsePayload["endgameItems"][number]["iconName"]>([]);
 
   public readonly character = observable<GameCharacter>(INITIAL_GAME_CHARACTER);
   public readonly equipment = observable<GameEquipment>(INITIAL_GAME_EQUIPMENT);
   public readonly stats = observable<CharacterGameStats>(INITIAL_GAME_STATISTICS);
 
-  public readonly actions = observableArray<{ key: string, payload: string }>([]);
-  public readonly activeSpells = observableArray([]);
+  public readonly actions = observableArray<PostGameActionResponsePayload["possibleActions"][number]>([]);
+  public readonly activeSpells = observableArray<PostGameActionResponsePayload["activeSpells"][number]>([]);
 
   private readonly _dialogCloseSubscription = new subscribable();
   private readonly _dialogQueueService = DialogQueueService.getInstance();
@@ -122,7 +123,7 @@ export class GameContainer {
       this.activeSpells(m.activeSpells);
       this.gameState(m.gameState);
       this.events(m.events);
-      this.endgameItemIcons(m.endgameItems.map((o: any) => o.iconName));
+      this.endgameItemIcons(m.endgameItems.map((o: PostGameActionResponsePayload["endgameItems"][number]) => o.iconName));
       this.minimapState(m.minimapState);
 
       if (this.gameState() !== "GAME_RUNNING") {
