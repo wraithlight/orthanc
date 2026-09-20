@@ -61,7 +61,7 @@ describe("CharacterCreationClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.generateStats();
+    const result = await client.generateStats({});
 
     expect(fetch).toHaveBeenCalledTimes(1);
 
@@ -74,6 +74,7 @@ describe("CharacterCreationClientSpecs", () => {
     expect(options).toMatchObject({
       method: "POST",
       credentials: "include",
+      body: JSON.stringify({}),
     });
 
     expect(options.headers).toMatchObject({
@@ -100,7 +101,7 @@ describe("CharacterCreationClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.generateStats();
+    const result = await client.generateStats({});
 
     expect(result).toBeNull();
   });
@@ -122,7 +123,7 @@ describe("CharacterCreationClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.generateStats();
+    const result = await client.generateStats({});
 
     expect(result).toEqual(payload);
   });

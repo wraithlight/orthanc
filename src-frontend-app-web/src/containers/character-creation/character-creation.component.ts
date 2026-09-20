@@ -33,7 +33,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   constructor() {
     this.onGenerate = new subscribable();
     this.onGenerate.subscribe(() => this.onGenerateHandler());
-    this._characterCreationClient.generateStats().then(m => {
+    this._characterCreationClient.generateStats({}).then(m => {
       this.stats({
         int: m.stats.int,
         dex: m.stats.dex,
@@ -50,7 +50,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   }
 
   public async onGenerateHandler(): Promise<void> {
-    await this._characterCreationClient.generateStats().then(m => {
+    await this._characterCreationClient.generateStats({}).then(m => {
       this.stats({
         int: m.stats.int,
         dex: m.stats.dex,
