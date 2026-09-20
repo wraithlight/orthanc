@@ -40,6 +40,7 @@ pub enum Node {
   Union(Vec<Node>),
   StringLiteralUnion(Vec<String>),
   TypeRef(String),
+  Dictionary(Box<Node>),
   Object {
     properties: Vec<Property>,
   },
@@ -248,6 +249,13 @@ impl DTOManager {
       result.insert("required".to_string(), required.clone());
     }
 
+    if let Some(value_schema) = schema.get("additionalProperties") {
+      result.insert(
+        "additionalProperties".to_string(),
+        Self::resolve_schema(value_schema, registry)?,
+      );
+    }
+
     result.insert(
       "type".to_string(),
       Value::String("object".to_string()),
@@ -343,6 +351,9 @@ impl DTOManager {
     }
     if schema.get("enum").is_some() {
       return Self::build_string_enum_node(&schema);
+    }
+    if let Some(value_schema) = schema.get("additionalProperties") {
+      return Ok(Node::Dictionary(Box::new(Self::build_node(value_schema, registry)?)));
     }
 
     match schema.get("type").and_then(|v| v.as_str()) {
@@ -518,11 +529,15 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
     }
 
     if let Some(payload_ts) = payload_ts {
-      out.push_str(&format!(
-        "export interface {} {}\n\n",
-        payload_type_name,
-        payload_ts,
-      ));
+      if matches!(payload_node, Some(Node::Dictionary(_))) {
+        out.push_str(&format!("export type {} = {};\n\n", payload_type_name, payload_ts));
+      } else {
+        out.push_str(&format!(
+          "export interface {} {}\n\n",
+          payload_type_name,
+          payload_ts,
+        ));
+      }
     }
 
     out.push_str(&format!(
@@ -541,7 +556,7 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
   ) -> (Node, Option<Node>) {
     if let Node::Object { properties } = operation_node {
       if let Some(payload_prop) = properties.iter().find(|p| p.name == "payload") {
-        if let Node::Object { .. } = &payload_prop.node {
+        if matches!(&payload_prop.node, Node::Object { .. } | Node::Dictionary(_)) {
           let payload_node = payload_prop.node.clone();
           let main_properties = properties
             .iter()
@@ -588,6 +603,10 @@ fn build_string_enum_node(schema: &Value) -> anyhow::Result<Node> {
         Node::Boolean => "boolean".to_string(),
         Node::StringLiteralUnion(values) => context.register_string_literal_union(values, property_path),
         Node::TypeRef(name) => name.clone(),
+        Node::Dictionary(value) => format!(
+          "Record<string, {}>",
+          Self::emit_node_with_indent(value, depth, context, property_path),
+        ),
         Node::Array(inner) => {
           format!("{}[]", Self::emit_node_with_indent(inner, depth, context, property_path))
         }
