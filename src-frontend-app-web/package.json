@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@profiscience/knockout-contrib-router": "2.1.5",
-    "deepmerge-ts": "7.1.5",
+    "deepmerge-ts": "8.0.0",
     "knockout": "3.5.1"
   },
   "devDependencies": {

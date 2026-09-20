@@ -4,6 +4,7 @@ import { CharacterCreationClient, GameChatClient } from "../../clients";
 import { State } from "../../state";
 
 import { Environment } from "../../environment";
+import { GetPollChatResponsePayload } from "../../dal-generated";
 
 interface CharacterCreationContainerParams { }
 
@@ -23,8 +24,8 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   public readonly onSendChatMessage = new subscribable<string>();
 
   public readonly playerName = State.name;
-  public readonly chatMembers = observableArray([]);
-  public readonly chatMessages = observableArray([]);
+  public readonly chatMembers = observableArray<GetPollChatResponsePayload["members"][number]>([]);
+  public readonly chatMessages = observableArray<GetPollChatResponsePayload["messages"][number]>([]);
 
   private readonly _gameChatClient = new GameChatClient(Environment.apiBaseUrl);
   private readonly _characterCreationClient = new CharacterCreationClient(Environment.apiBaseUrl);
@@ -32,7 +33,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   constructor() {
     this.onGenerate = new subscribable();
     this.onGenerate.subscribe(() => this.onGenerateHandler());
-    this._characterCreationClient.generateStats().then(m => {
+    this._characterCreationClient.generateStats({}).then(m => {
       this.stats({
         int: m.stats.int,
         dex: m.stats.dex,
@@ -49,7 +50,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   }
 
   public async onGenerateHandler(): Promise<void> {
-    await this._characterCreationClient.generateStats().then(m => {
+    await this._characterCreationClient.generateStats({}).then(m => {
       this.stats({
         int: m.stats.int,
         dex: m.stats.dex,
@@ -69,7 +70,7 @@ export class CharacterCreationContainer implements CharacterCreationContainerPar
   private async sendChatMessage(
     message: string
   ): Promise<void> {
-    await this._gameChatClient.sendMessage(message);
+    await this._gameChatClient.sendMessage({ message: message });
   }
 
 }

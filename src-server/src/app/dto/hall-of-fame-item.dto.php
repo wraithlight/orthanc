@@ -2,11 +2,11 @@
 class HallOfFameItemDto {
   public string $name;
   public string $id;
-  public string $started;
-  public string $finished;
-  public int $duration;
-  public int $sumXp;
-  public int $xpFromKillsPercentage;
+  public string $sessionStartAtUtc;
+  public string $sessionEndAtUtc;
+  public int $sessionLengthInMs;
+  public int $experiencePoints;
+  public int $experienceFromKillsPercentage;
   public int $numberOfMoves;
   public int $numberOfActions;
   public int $characterLevel;
