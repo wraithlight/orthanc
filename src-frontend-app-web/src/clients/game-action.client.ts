@@ -8,6 +8,7 @@ import {
   HeaderNames,
   AcceptValues,
   PostGameActionResponsePayload,
+  PostGameActionRequest,
 } from '../dal-generated';
 
 export class GameActionClient {
@@ -17,18 +18,14 @@ export class GameActionClient {
   }
 
   public async onAction(
-    action: string,
-    payload: string | null
+    requestBody: PostGameActionRequest
   ): Promise<PostGameActionResponsePayload> {
     const result = await fetch(
       `${this._baseUrl}${API_POST_GAME_ACTION_PATH()}`,
       {
         method: "POST",
         credentials: "include",
-        body: JSON.stringify({
-          action: action,
-          payload: payload
-        }),
+        body: JSON.stringify(requestBody),
         headers: {
           [HeaderNames.PLATFORM]: Environment.platform,
           [HeaderNames.DEVICE]: RuntimeContext.device,
