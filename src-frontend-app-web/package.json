@@ -11,6 +11,7 @@
     "gha:htmlhint": "echo 0",
     "gha:test:unit": "vitest run --coverage",
     "gha:sherif": "echo 0",
+    "gha:typecheck": "tsc --noEmit",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
     "dev:storbook": "storybook dev",
