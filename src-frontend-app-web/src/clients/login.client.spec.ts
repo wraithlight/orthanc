@@ -39,7 +39,7 @@ describe("LoginClientSpecs", () => {
     });
 
     const client = new LoginClient("https://api.test");
-    const result = await client.loginGuest(GameMode.Retail);
+    const result = await client.loginGuest({ gameMode: GameMode.Retail });
 
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.test/api/v1/login/guest",
