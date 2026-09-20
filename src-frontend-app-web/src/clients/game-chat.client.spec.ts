@@ -29,7 +29,14 @@ describe("GameChatClientSpecs", () => {
   });
 
   it("sendMessage calls fetch and runs interceptors", async () => {
-    fetchMock.mockResolvedValue({});
+    const text = () => JSON.stringify({
+      correlationId: "guid-123",
+      requestId: "guid-123",
+      payload: {},
+    });
+    fetchMock.mockResolvedValue({
+      text
+    });
 
     const client = new GameChatClient("https://api.test");
     await client.sendMessage("hello");
