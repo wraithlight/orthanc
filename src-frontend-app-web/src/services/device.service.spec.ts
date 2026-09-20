@@ -31,7 +31,7 @@ describe("DeviceService", () => {
   it("initializes as mobile when media query matches", async () => {
     setupMatchMedia(true);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const service = DeviceService.getInstance();
 
@@ -42,7 +42,7 @@ describe("DeviceService", () => {
   it("initializes as desktop when media query does not match", async () => {
     setupMatchMedia(false);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const service = DeviceService.getInstance();
 
@@ -53,7 +53,7 @@ describe("DeviceService", () => {
   it("updates when media query change event fires", async () => {
     setupMatchMedia(false);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const service = DeviceService.getInstance();
 
@@ -67,7 +67,7 @@ describe("DeviceService", () => {
   it("returns observable via isMobile$", async () => {
     setupMatchMedia(true);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const service = DeviceService.getInstance();
 
@@ -79,7 +79,7 @@ describe("DeviceService", () => {
   it("returns computed observable via isDesktop$", async () => {
     setupMatchMedia(true);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const service = DeviceService.getInstance();
 
@@ -91,7 +91,7 @@ describe("DeviceService", () => {
   it("getInstance returns singleton", async () => {
     setupMatchMedia(true);
 
-    const { DeviceService } = await import("./device.service");
+    const { DeviceService } = await vi.importActual<typeof import("./device.service")>("./device.service");
 
     const a = DeviceService.getInstance();
     const b = DeviceService.getInstance();
