@@ -163,17 +163,16 @@ components:
       type: object
       required:
         - action
-        - payload
       properties:
         action:
           type: string
-          enum: ["PICKUP", "MOVE"]
+          enum: ["PICKUP", "MOVE", "RUN", "INITIAL_IN_GAME"]
         payload:
           oneOf:
             - type: string
               format: uuid
             - type: string
-              enum: ["NORTH", "EAST", "SOUTH", "WEST"]
+              enum: ["NORTH", "EAST", "SOUTH", "WEST", "ITEM_ORB", "ITEM_GRAIL", "ITEM_CHEST_SWORD", "ITEM_CHEST_SHIELD", "ITEM_CHEST_ARMOR", "ITEM_CHEST_BOW", "ITEM_GOLD", "ITEM_CHEST_GOLD"]
 
     LoginGuestRequest:
       type: object
@@ -219,7 +218,7 @@ components:
                     type: object
                     required:
                       - name
-                      - level
+                      - characterLevel
                       - sessionStartAtUtc
                       - sessionEndAtUtc
                       - sessionLengthInMs
@@ -233,7 +232,7 @@ components:
                       name:
                         type: string
                         example: "zsozsi"
-                      level:
+                      characterLevel:
                         type: number
                         example: 13
                       sessionStartAtUtc:

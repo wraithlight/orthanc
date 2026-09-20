@@ -10,6 +10,7 @@ import {
   AcceptValues,
   GetPollChatResponsePayload,
   PostSendChatResponsePayload,
+  PostSendChatRequest,
 } from '../dal-generated';
 
 export class GameChatClient {
@@ -18,15 +19,15 @@ export class GameChatClient {
   ) {
   }
 
-  public async sendMessage(message: string): Promise<PostSendChatResponsePayload> {
+  public async sendMessage(
+    requestBody: PostSendChatRequest
+  ): Promise<PostSendChatResponsePayload> {
     const result = await fetch(
       `${this._baseUrl}${API_POST_SEND_CHAT_PATH()}`,
       {
         method: "POST",
         credentials: "include",
-        body: JSON.stringify({
-          message: message
-        }),
+        body: JSON.stringify(requestBody),
         headers: {
           [HeaderNames.PLATFORM]: Environment.platform,
           [HeaderNames.DEVICE]: RuntimeContext.device,

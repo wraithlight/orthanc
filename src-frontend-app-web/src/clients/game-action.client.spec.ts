@@ -55,7 +55,7 @@ describe("GameActionClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.onAction("MOVE", "left");
+    const result = await client.onAction({ action: "MOVE", payload: "left" });
 
     expect(fetch).toHaveBeenCalledTimes(1);
 
@@ -97,13 +97,13 @@ describe("GameActionClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.onAction("STOP", null);
+    const result = await client.onAction({ action: "INITIAL_IN_GAME", payload: undefined });
 
     const [, options] = (fetch as any).mock.calls[0];
 
     expect(JSON.parse(options.body)).toEqual({
-      action: "STOP",
-      payload: null,
+      action: "INITIAL_IN_GAME",
+      payload: undefined,
     });
 
     expect(result).toBeNull();
@@ -118,7 +118,7 @@ describe("GameActionClientSpecs", () => {
 
     (fetch as any).mockResolvedValue(fetchResponse);
 
-    const result = await client.onAction("PING", null);
+    const result = await client.onAction({ action: "INITIAL_IN_GAME", payload: undefined });
 
     expect(afterInterceptorMock).toHaveBeenCalledWith(fetchResponse);
     expect(result).toEqual({});

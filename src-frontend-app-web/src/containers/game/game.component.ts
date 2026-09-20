@@ -8,7 +8,7 @@ import { GameActionClient, GameChatClient } from "../../clients";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 import { Environment } from "../../environment";
 import { isNotNil } from "../../framework";
-import { GetPollChatResponsePayload, PostGameActionResponsePayload } from "../../dal-generated";
+import { GetPollChatResponsePayload, PostGameActionRequestAction, PostGameActionResponsePayload } from "../../dal-generated";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
@@ -48,7 +48,7 @@ export class GameContainer {
     this.onChatPoll.subscribe(() => this.pollChat());
     this.onSendChatMessage.subscribe(m => this.sendChatMessage(m));
     this.onActionItemClickHandler.subscribe(m => this.onActionItemClick(m.key, m.payload));
-    this.actionHandler("INITIAL_IN_GAME", null);
+    this.actionHandler("INITIAL_IN_GAME", undefined);
 
     this._keyboardEventService.subscribe("ArrowLeft", () => this.onActionItemClick("MOVE", "DIRECTION_WEST"));
     this._keyboardEventService.subscribe("ArrowDown", () => this.onActionItemClick("MOVE", "DIRECTION_SOUTH"));
@@ -70,14 +70,14 @@ export class GameContainer {
 
   public onActionItemClick(
     action: string,
-    payload: string | null
+    payload: string | undefined
   ): void {
     this.actionHandler(action, payload);
   }
 
   private actionHandler(
     action: string,
-    payload: string | null
+    payload: string | undefined
   ): void {
 
     if (this.shouldOpenRetireDialog() || this.shouldOpenEndDialog()) {
@@ -111,7 +111,7 @@ export class GameContainer {
       return;
     }
 
-    this._gameActionClient.onAction(action, payload).then(m => {
+    this._gameActionClient.onAction({ action: action as PostGameActionRequestAction, payload: payload }).then(m => {
       this.tiles(m.mapState);
       this.maxHits(m.maxHits);
       this.curHits(m.hits);
@@ -210,7 +210,7 @@ export class GameContainer {
   private async sendChatMessage(
     message: string
   ): Promise<void> {
-    await this._gameChatClient.sendMessage(message);
+    await this._gameChatClient.sendMessage({ message: message });
   }
 
   private tryPickup(): void {
