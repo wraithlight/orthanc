@@ -219,7 +219,7 @@ components:
                     type: object
                     required:
                       - name
-                      - level
+                      - characterLevel
                       - sessionStartAtUtc
                       - sessionEndAtUtc
                       - sessionLengthInMs
@@ -233,7 +233,7 @@ components:
                       name:
                         type: string
                         example: "zsozsi"
-                      level:
+                      characterLevel:
                         type: number
                         example: 13
                       sessionStartAtUtc:
