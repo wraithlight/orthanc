@@ -23,7 +23,7 @@ export class LoginContainer implements LoginContainerParams {
   }
 
   private async loginAsGuestEventHandler(m: LoginAsGuestEvent): Promise<void> {
-    await this._loginClient.loginGuest(m.gameMode);
+    await this._loginClient.loginGuest({ gameMode: m.gameMode });
     State.events.loginSuccess.notifySubscribers();
   }
 

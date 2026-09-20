@@ -1,4 +1,3 @@
-import { GameMode } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
@@ -8,6 +7,8 @@ import {
   API_POST_LOGIN_GUEST_PATH,
   HeaderNames,
   AcceptValues,
+  PostLoginGuestRequest,
+  PostLoginGuestResponsePayload,
 } from '../dal-generated';
 
 export class LoginClient {
@@ -17,16 +18,14 @@ export class LoginClient {
   ) { }
 
   public async loginGuest(
-    gameMode: GameMode
-  ): Promise<{ username: string }> {
+    requestBody: PostLoginGuestRequest
+  ): Promise<PostLoginGuestResponsePayload> {
     const response = await fetch(
       `${this._baseUrl}${API_POST_LOGIN_GUEST_PATH()}`,
       {
         method: "POST",
         credentials: "include",
-        body: JSON.stringify({
-          gameMode: gameMode
-        }),
+        body: JSON.stringify(requestBody),
         headers: {
           [HeaderNames.PLATFORM]: Environment.platform,
           [HeaderNames.DEVICE]: RuntimeContext.device,

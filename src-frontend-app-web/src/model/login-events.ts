@@ -1,4 +1,5 @@
 import { GameMode } from "../domain";
+import { PostLoginGuestRequestGameMode } from "../dal-generated";
 
 export interface LoginAsMemberEvent {
   username: string;
@@ -7,5 +8,5 @@ export interface LoginAsMemberEvent {
 }
 
 export interface LoginAsGuestEvent {
-  gameMode: GameMode;
+  gameMode: PostLoginGuestRequestGameMode;
 }
