@@ -792,7 +792,15 @@ components:
                   - availableLocales
                   - featureStates
                   - version
-
+    GetLocalizationLocaleSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              additionalProperties:
+                type: string
 tags:
   - name: session
     description: Endpoints for user login and session management
@@ -1159,6 +1167,8 @@ paths:
             enum:
               - en
               - hu
+              - hr
+              - de
       responses:
         '200':
           description: Successful get.
@@ -1168,7 +1178,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
+                $ref: '#/components/schemas/GetLocalizationLocaleSuccessResponse'
         '500':
           description: Internal server error
           headers:
