@@ -55,7 +55,7 @@ class ChatManager
 
   public function onPoll(
     string $id
-  ): array
+  ): object
   {
     $lastMessageId = $this->_sessionService->getLastChatMessageId();
 
@@ -66,12 +66,11 @@ class ChatManager
     $members = $this->_chatMembersService->getActiveMembers($this->_sessionService->getGameMode()->value);
     $messages = $this->_chatMessageService->getMessagesSince($lastMessageId, $this->_sessionService->getGameMode()->value);
 
-    return [
-      "payload" => [
-        'messages' => $messages,
-        'members' => $members
-      ]
-    ];
+    $result = new stdClass();
+    $result->messages = $messages;
+    $result->members = $members;
+
+    return $result;
   }
 
 }
