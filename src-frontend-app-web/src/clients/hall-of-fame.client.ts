@@ -1,4 +1,4 @@
-import { GameMode, HallOfFameListModel } from "../domain";
+import { GameMode } from "../domain";
 import { Environment } from "../environment";
 import { newGuid } from "../framework";
 import { InterceptorCache } from "../http";
@@ -8,6 +8,7 @@ import {
   API_GET_HALL_OF_FAME_PATH,
   HeaderNames,
   AcceptValues,
+  GetHallOfFameResponsePayload
 } from '../dal-generated';
 
 export class HallOfFameClient {
@@ -16,7 +17,7 @@ export class HallOfFameClient {
     private readonly _baseUrl: string
   ) { }
 
-  public async getHallOfFame(gameMode: GameMode): Promise<HallOfFameListModel> {
+  public async getHallOfFame(gameMode: GameMode): Promise<GetHallOfFameResponsePayload> {
     const url = `${this._baseUrl}${API_GET_HALL_OF_FAME_PATH(gameMode)}`;
     const response = await fetch(
       url,
