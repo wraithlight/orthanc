@@ -6,7 +6,9 @@ import { RuntimeContext } from "../runtime-context";
 import {
   API_GET_LOCALIZATION_LOCALE_PATH,
   HeaderNames,
-  AcceptValues,} from '../dal-generated';
+  AcceptValues,
+  GetLocalizationLocaleResponsePayload
+} from '../dal-generated';
 
 export class LocalizationClient {
 
@@ -14,7 +16,7 @@ export class LocalizationClient {
     private readonly _baseUrl: string
   ) { }
 
-  public async getLocalization(locale: string): Promise<Record<string, string>> {
+  public async getLocalization(locale: string): Promise<GetLocalizationLocaleResponsePayload> {
     const response = await fetch(
       `${this._baseUrl}${API_GET_LOCALIZATION_LOCALE_PATH(locale)}`,
       {
