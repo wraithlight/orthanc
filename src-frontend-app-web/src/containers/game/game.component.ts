@@ -8,15 +8,15 @@ import { GameActionClient, GameChatClient } from "../../clients";
 import { CharacterGameStats, GameCharacter, GameEquipment } from "../../domain";
 import { Environment } from "../../environment";
 import { isNotNil } from "../../framework";
-import { PostGameActionResponsePayload } from "../../dal-generated";
+import { GetPollChatResponsePayload, PostGameActionResponsePayload } from "../../dal-generated";
 
 export class GameContainer {
   public readonly onChatPoll = new subscribable();
   public readonly onSendChatMessage = new subscribable<string>();
   public readonly onActionItemClickHandler = new subscribable<{ key: string, payload: string }>();
 
-  public readonly chatMembers = observableArray([]);
-  public readonly chatMessages = observableArray([]);
+  public readonly chatMembers = observableArray<GetPollChatResponsePayload["members"][number]>([]);
+  public readonly chatMessages = observableArray<GetPollChatResponsePayload["messages"][number]>([]);
 
   public readonly shouldOpenEndDialog = observable(false);
   public readonly shouldOpenRetireDialog = observable(false);

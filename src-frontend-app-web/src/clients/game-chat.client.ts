@@ -8,6 +8,8 @@ import {
   API_GET_POLL_CHAT_PATH,
   HeaderNames,
   AcceptValues,
+  GetPollChatResponsePayload,
+  PostSendChatResponsePayload,
 } from '../dal-generated';
 
 export class GameChatClient {
@@ -16,7 +18,7 @@ export class GameChatClient {
   ) {
   }
 
-  public async sendMessage(message: string): Promise<void> {
+  public async sendMessage(message: string): Promise<PostSendChatResponsePayload> {
     const result = await fetch(
       `${this._baseUrl}${API_POST_SEND_CHAT_PATH()}`,
       {
@@ -37,9 +39,11 @@ export class GameChatClient {
     const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
     interceptors.forEach(m => m(result));
 
+    const content = JSON.parse(await result.text());
+    return content.payload;
   }
 
-  public async poll(): Promise<any> {
+  public async poll(): Promise<GetPollChatResponsePayload> {
     const response = await fetch(
       `${this._baseUrl}${API_GET_POLL_CHAT_PATH()}`,
       {
@@ -56,8 +60,8 @@ export class GameChatClient {
 
     const content = JSON.parse(await response.text());
 
-  const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
-  interceptors.forEach(m => m(response));
+    const interceptors = InterceptorCache.getInstance().getAfterInterceptors();
+    interceptors.forEach(m => m(response));
 
     return content.payload;
   }
