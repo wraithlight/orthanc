@@ -676,11 +676,8 @@ components:
         - type: object
           properties:
             payload:
-              type: array
-              minItems: 0
-              maxItems: 0
-              items:
-                type: object
+              type: object
+              properties: {}
 
     ChatPollSuccessResponse:
       allOf:

@@ -21,7 +21,7 @@ class ChatController
 
     $this->_chatManager->sendMessage($message);
 
-    echo json_encode([]);
+    echo json_encode(createSuccessResponse(new stdClass()));
   }
 
   public function getMessages()
@@ -29,6 +29,6 @@ class ChatController
     $id = $this->_sessionManager->authenticate();
     $result = $this->_chatManager->onPoll($id);
 
-    echo json_encode($result, JSON_UNESCAPED_UNICODE);
+    echo json_encode(createSuccessResponse($result), JSON_UNESCAPED_UNICODE);
   }
 }
