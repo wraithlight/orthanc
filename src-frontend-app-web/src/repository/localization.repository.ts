@@ -1,5 +1,6 @@
 import { Observable, observable, unwrap } from "knockout";
 import { isNil, Nullable } from "../framework";
+import { GetLocalizationLocaleResponsePayload } from "../dal-generated";
 
 export class LocalizationRepository {
 
@@ -9,10 +10,10 @@ export class LocalizationRepository {
     return this._instance;
   }
 
-  private _dictionary = observable<Nullable<Record<string, string>>>();
+  private _dictionary = observable<Nullable<GetLocalizationLocaleResponsePayload>>();
 
   public setLocalization(
-    dictionary: Record<string, string>
+    dictionary: GetLocalizationLocaleResponsePayload
   ): void {
     this._dictionary(dictionary);
   }
