@@ -175,6 +175,16 @@ components:
             - type: string
               enum: ["NORTH", "EAST", "SOUTH", "WEST"]
 
+    LoginGuestRequest:
+      type: object
+      required:
+        - gameMode
+      properties:
+        gameMode:
+          type: string
+          example: "Retail"
+          enum: ["Retail", "Vanilla"]
+
     CharacterGenerateRequest:
       type: object
       properties:
@@ -867,6 +877,12 @@ paths:
         - $ref: '#/components/parameters/DEVICE'
         - $ref: '#/components/parameters/ACCEPTSAPPJSON'
         - $ref: '#/components/parameters/CONTENTYPEJSON'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginGuestRequest'
       responses:
         '200':
           description: Successfully logged in as guest
