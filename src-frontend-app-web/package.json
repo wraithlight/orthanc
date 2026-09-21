@@ -20,7 +20,7 @@
     "test:unit:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@profiscience/knockout-contrib-router": "2.1.5",
+    "@profiscience/knockout-contrib-router": "patch:@profiscience/knockout-contrib-router@npm%3A2.1.5#~/.yarn/patches/@profiscience-knockout-contrib-router-npm-2.1.5-8b4a29204a.patch",
     "deepmerge-ts": "7.1.5",
     "knockout": "3.5.1"
   },

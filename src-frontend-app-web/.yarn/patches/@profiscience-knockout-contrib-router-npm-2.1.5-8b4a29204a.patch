@@ -1,0 +1,13 @@
+diff --git a/src/router.ts b/src/router.ts
+index c87cac9ca6c36c3cdb259006d26f68f0e1b8a1ab..5f6a86a5b201f1721b93918f6e3eeaeddc74c064 100644
+--- a/src/router.ts
++++ b/src/router.ts
+@@ -244,7 +244,7 @@ export class Router {
+         log.warn(
+           'Error in afterRender middleware during redirection. This may be caused by attempting to use ctx.component (or a property thereof), or the DOM in the middleware. Because redirection occured, no component was actually rendered. You may wish to add a guard in your middleware to handle this case.'
+         )
+-        log.error(e)
++        log.error(e as string | Error)
+       }
+       const { router: r, path: p } = traversePath(toCtx.router, toCtx._redirect)
+       r.update(p, toCtx._redirectArgs).catch((err) =>
