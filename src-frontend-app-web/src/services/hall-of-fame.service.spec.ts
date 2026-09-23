@@ -38,7 +38,7 @@ describe("HallOfFameService", () => {
       items: [
         {
           name: "Alice",
-          level: 42,
+          characterLevel: 42,
           sessionStartAtUtc: "1677628800000",
           sessionEndAtUtc: "1677632400000",
           sessionLengthInMs: 3600 * 1000,
