@@ -8,6 +8,7 @@ import {
   PostGenerateCharacterResponsePayload,
   HeaderNames,
   AcceptValues,
+  PostGenerateCharacterRequest,
 } from "../dal-generated";
 
 export class CharacterCreationClient {
@@ -16,7 +17,9 @@ export class CharacterCreationClient {
     private readonly _baseUrl: string
   ) { }
 
-  public async generateStats(): Promise<PostGenerateCharacterResponsePayload> {
+  public async generateStats(
+    requestBody: PostGenerateCharacterRequest
+  ): Promise<PostGenerateCharacterResponsePayload> {
     const response = await fetch(
       `${this._baseUrl}${API_POST_GENERATE_CHARACTER_PATH()}`,
       {
@@ -27,8 +30,8 @@ export class CharacterCreationClient {
           [HeaderNames.DEVICE]: RuntimeContext.device,
           [HeaderNames.REQUESTID]: newGuid(),
           [HeaderNames.ACCEPTSAPPJSON]: AcceptValues.ApplicationJson,
-
-        }
+        },
+        body: JSON.stringify(requestBody)
       }
     );
 
