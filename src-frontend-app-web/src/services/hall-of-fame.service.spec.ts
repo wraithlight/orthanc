@@ -1,6 +1,8 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 
-import { GameMode, HallOfFameListModel } from "../domain";
+import { GameMode } from "../domain";
+
+import { GetHallOfFameResponsePayload } from "../dal-generated";
 
 import { HallOfFameService } from "./hall-of-fame.service";
 
@@ -32,13 +34,13 @@ describe("HallOfFameService", () => {
   })
 
   it("should call getHallOfFame on the client with the provided game mode", async () => {
-    const mockData: HallOfFameListModel = {
+    const mockData: GetHallOfFameResponsePayload = {
       items: [
         {
           name: "Alice",
           level: 42,
-          sessionStartAtUtc: 1677628800000,
-          sessionEndAtUtc: 1677632400000,
+          sessionStartAtUtc: "1677628800000",
+          sessionEndAtUtc: "1677632400000",
           sessionLengthInMs: 3600 * 1000,
           experiencePoints: 15000,
           experienceFromKillsPercentage: 65,

@@ -210,7 +210,7 @@ export class GameContainer {
   private async sendChatMessage(
     message: string
   ): Promise<void> {
-    await this._gameChatClient.sendMessage(message);
+    await this._gameChatClient.sendMessage({ message: message });
   }
 
   private tryPickup(): void {
