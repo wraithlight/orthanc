@@ -39,7 +39,7 @@ describe("GameChatClientSpecs", () => {
     });
 
     const client = new GameChatClient("https://api.test");
-    await client.sendMessage("hello");
+    await client.sendMessage({ message: "hello" });
 
     expect(fetchMock).toHaveBeenCalledWith(
       "https://api.test/api/v1/chat/send",
