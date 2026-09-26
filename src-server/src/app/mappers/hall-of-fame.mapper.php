@@ -12,11 +12,11 @@ class HallOfFameItemMapper extends BaseMapper {
     $dto = new HallOfFameItemDto();
     $dto->name = $item["name"];
     $dto->id = $item["id"];
-    $dto->started = gmdate("Y-m-d\TH:i:s\Z", $item["started"]);
-    $dto->finished = gmdate("Y-m-d\TH:i:s\Z", $item["finished"]);
-    $dto->duration = $item["duration"];
-    $dto->sumXp = $item["sumXp"];
-    $dto->xpFromKillsPercentage = $item["xpFromKillsPercentage"];
+    $dto->sessionStartAtUtc = gmdate("Y-m-d\TH:i:s\Z", $item["started"]);
+    $dto->sessionEndAtUtc = gmdate("Y-m-d\TH:i:s\Z", $item["finished"]);
+    $dto->sessionLengthInMs = $item["duration"];
+    $dto->experiencePoints = $item["sumXp"];
+    $dto->experienceFromKillsPercentage = $item["xpFromKillsPercentage"];
     $dto->numberOfMoves = $item["numberOfMoves"];
     $dto->numberOfActions = $item["numberOfActions"];
     $dto->characterLevel = $item["characterLevel"];
