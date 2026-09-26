@@ -6,7 +6,8 @@ const config: KnipConfig = {
     "src/environment/environment.*.ts"
   ],
   ignoreDependencies: [
-    "@types/knockout"
+    "@types/knockout",
+    "@storybook/html"
   ],
   ignore: [
     "src/dal/enum/error-code.enum.ts",  // TODO: Remove once used.

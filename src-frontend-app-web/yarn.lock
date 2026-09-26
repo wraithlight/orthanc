@@ -1073,6 +1073,18 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@profiscience/knockout-contrib-router@patch:@profiscience/knockout-contrib-router@npm%3A2.1.5#~/.yarn/patches/@profiscience-knockout-contrib-router-npm-2.1.5-8b4a29204a.patch":
+  version: 2.1.5
+  resolution: "@profiscience/knockout-contrib-router@patch:@profiscience/knockout-contrib-router@npm%3A2.1.5#~/.yarn/patches/@profiscience-knockout-contrib-router-npm-2.1.5-8b4a29204a.patch::version=2.1.5&hash=0d16d2"
+  dependencies:
+    babel-runtime: "npm:^6.26.0"
+    path-to-regexp: "npm:^6.0.0"
+  peerDependencies:
+    knockout: 3.5.1
+  checksum: 10c0/3a24457073bec670a7debc22ed9b12c913d6c93edea3c6ce2b9b984c1a2fca60396688dce85001056b7e1bf1d0924102e2ab670788985ca1ff14ed12c2e53239
+  languageName: node
+  linkType: hard
+
 "@rollup/rollup-android-arm-eabi@npm:4.55.1":
   version: 4.55.1
   resolution: "@rollup/rollup-android-arm-eabi@npm:4.55.1"
@@ -3276,7 +3288,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "orthanc-frontend@workspace:."
   dependencies:
-    "@profiscience/knockout-contrib-router": "npm:2.1.5"
+    "@profiscience/knockout-contrib-router": "patch:@profiscience/knockout-contrib-router@npm%3A2.1.5#~/.yarn/patches/@profiscience-knockout-contrib-router-npm-2.1.5-8b4a29204a.patch"
     "@storybook/html-vite": "npm:10.3.5"
     "@types/jsdom": "npm:27.0.0"
     "@types/knockout": "npm:3.4.77"

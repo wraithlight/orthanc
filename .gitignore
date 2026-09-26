@@ -13,6 +13,10 @@ yarn-error.log*
 .yarn-integrity
 .pnp.*
 .yarn
+src-frontend-app-web/.yarn/*
+!src-frontend-app-web/.yarn/
+!src-frontend-app-web/.yarn/patches/
+!src-frontend-app-web/.yarn/patches/*.patch
 
 # Vite logs files
 vite.config.js.timestamp-*
