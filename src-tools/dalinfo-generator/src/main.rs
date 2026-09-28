@@ -1,11 +1,20 @@
 mod models {
   pub mod artifact;
+  pub mod enum_definition;
+  pub mod language;
 }
 
 mod services {
+  pub mod casing_service;
   pub mod io_service;
   pub mod yaml_service;
   pub mod yaml_to_json_service;
+}
+
+mod renderers {
+  pub mod enum_renderer;
+  pub mod php_enum_renderer;
+  pub mod typescript_enum_renderer;
 }
 
 mod managers {
@@ -13,6 +22,7 @@ mod managers {
   pub mod yaml_manager;
   pub mod path_manager;
   pub mod header_manager;
+  pub mod enum_render_manager;
   pub mod yaml_to_json_manager;
   pub mod dto_manager;
   pub mod operation_id_manager;
@@ -23,6 +33,7 @@ use managers::{
   yaml_manager::YamlManager,
   path_manager::PathManager,
   header_manager::HeaderManager,
+  enum_render_manager::EnumRenderManager,
   yaml_to_json_manager::YamlToJsonManager,
   dto_manager::DTOManager,
   operation_id_manager::OperationIdManager,
@@ -31,6 +42,7 @@ use managers::{
 use std::env;
 use std::path::Path;
 use crate::models::artifact::Artifact;
+use crate::models::language::Language;
 
 fn main() {
   let args: Vec<String> = env::args().collect();
@@ -43,6 +55,7 @@ fn main() {
 
   let inputfile = &args[1];
   let outputfolder = &args[2];
+  let language = Language::parse(&args[3]).expect("language parse failed");
 
   IOManager::cleanup_output_dir_sync(outputfolder).expect("Output cleanup failed!");
   let text = IOManager::read_file_sync(inputfile).expect("Reading input file failed!");
@@ -50,34 +63,29 @@ fn main() {
   let json = YamlToJsonManager::yaml_to_json_sync(yaml).expect("yaml->json failed");
   OperationIdManager::validate_operation_ids_sync(&json).expect("operationId validation failed");
 
-  
-  let pathfiles = PathManager::generate_paths_sync(&json).expect("path generation failed");
-  let headernamefiles = HeaderManager::generate_headers_names_sync(&json).expect("header name generation failed");
-  let headervaluesfiles = HeaderManager::generate_header_values_sync(&json).expect("header value generation failed");
-  let dtofiles = DTOManager::create_dtos(&json, "TYPESCRIPT").expect("header dto generation failed");
+  let headerenums = HeaderManager::generate_header_enums_sync(&json).expect("header collection failed");
+  let mut artifacts = EnumRenderManager::render_sync(&headerenums, language).expect("header render failed");
 
-  let mut artifacts = Vec::new();
+  if language == Language::TypeScript {
+    artifacts.extend(build_typescript_paths_and_dtos(&json));
+  }
+
+  for artifact in artifacts {
+    let _ = IOManager::write_file_sync(&format!("{}/{}", &outputfolder, &artifact.path), &artifact.content);
+  };
+}
+
+fn build_typescript_paths_and_dtos(json: &serde_json::Value) -> Vec<Artifact> {
+  let pathfiles = PathManager::generate_paths_sync(json).expect("path generation failed");
+  let dtofiles = DTOManager::create_dtos(json, "TYPESCRIPT").expect("header dto generation failed");
 
   let basepath_paths = "paths";
-  let basepath_headernames = "headers/names";
-  let basepath_headervalues = "headers/values";
   let basepath_dtofiles = "dtos";
-  artifacts.extend(self::build_indexes(&headernamefiles, &headervaluesfiles, &pathfiles, &dtofiles));
+
+  let mut artifacts = build_indexes(&pathfiles, &dtofiles);
   artifacts.extend(
     pathfiles.into_iter().map(|m| Artifact {
       path: format!("{}/{}", basepath_paths, m.path),
-      ..m
-    })
-  );
-  artifacts.extend(
-    headernamefiles.into_iter().map(|m| Artifact {
-      path: format!("{}/{}", basepath_headernames, m.path),
-      ..m
-    })
-  );
-  artifacts.extend(
-    headervaluesfiles.into_iter().map(|m| Artifact {
-      path: format!("{}/{}", basepath_headervalues, m.path),
       ..m
     })
   );
@@ -87,38 +95,13 @@ fn main() {
       ..m
     })
   );
-
-  for artifact in artifacts {
-    let _ = IOManager::write_file_sync(&format!("{}/{}", &outputfolder, &artifact.path), &artifact.content);
-  };
+  artifacts
 }
 
 fn build_indexes(
-  header_name_files: &[Artifact],
-  header_value_files: &[Artifact],
   header_path_files: &[Artifact],
   dto_files: &[Artifact],
 ) -> Vec<Artifact> {
-  let names_exports = header_name_files
-    .iter()
-    .filter_map(|a| {
-      Path::new(&a.path)
-        .file_stem()
-        .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
-      })
-    .collect::<Vec<_>>()
-    .join("\n");
-
-  let values_exports = header_value_files
-    .iter()
-    .filter_map(|a| {
-      Path::new(&a.path)
-        .file_stem()
-        .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
-      })
-    .collect::<Vec<_>>()
-    .join("\n");
-
   let paths_exports = header_path_files
     .iter()
     .filter_map(|a| {
@@ -133,18 +116,6 @@ fn build_indexes(
   let dto_response_exports = build_nested_exports(dto_files, "response");
 
   vec![
-    Artifact {
-      path: "headers/index.ts".into(),
-      content: "export * from \"./names\";\nexport * from \"./values\";".into(),
-    },
-    Artifact {
-      path: "headers/names/index.ts".into(),
-      content: names_exports,
-    },
-    Artifact {
-      path: "headers/values/index.ts".into(),
-      content: values_exports,
-    },
     Artifact {
       path: "paths/index.ts".into(),
       content: paths_exports,
