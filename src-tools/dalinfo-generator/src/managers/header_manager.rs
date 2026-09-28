@@ -1,4 +1,5 @@
-use crate::models::artifact::Artifact;
+use crate::models::enum_definition::{EnumDefinition, EnumKind, EnumMember};
+use crate::services::casing_service::CasingService;
 use serde_json::Value;
 
 pub struct HeaderDefinition {
@@ -11,92 +12,47 @@ pub struct HeaderManager;
 
 impl HeaderManager {
 
-  pub fn generate_headers_names_sync(swagger_json: &Value) -> Result<Vec<Artifact>, String> {
-    let mut artifacts: Vec<Artifact> = vec![];
+  /// Emits language-agnostic definitions; rendering is delegated to a per-language renderer.
+  pub fn generate_header_enums_sync(swagger_json: &Value) -> Result<Vec<EnumDefinition>, String> {
     let headers = Self::collect_headers(swagger_json);
-    let mut content = String::new();
-    content.push_str("export const enum HeaderNames {\n");
-
-    for header in headers {
-      let const_name = Self::to_screaming_snake_case(&header.canonical_name);
-      content.push_str(&format!("  {} = \"{}\",\n", const_name, header.name));
-    }
-
-    content.push_str("}\n");
-
-    let path = format!("header-names.enum.ts");
-    let artifact = Artifact { path, content };
-    artifacts.push(artifact);
-    Ok(artifacts)
+    let mut definitions = vec![Self::build_header_names_definition(&headers)];
+    definitions.extend(Self::build_header_values_definitions(&headers));
+    Ok(definitions)
   }
 
-  pub fn generate_header_values_sync(swagger_json: &Value) -> Result<Vec<Artifact>, String> {
-    let mut artifacts: Vec<Artifact> = vec![];
-    let headers = Self::collect_headers(swagger_json);
-
-    for header in headers {
-        if header.enum_values.is_empty() {
-          continue;
-        }
-
-        let file_base = Self::to_kebab_case(&header.name);
-        let enum_name = Self::to_pascal_case(&header.name);
-
-        let content = Self::render_enum(&enum_name, &header.enum_values,);
-        let path = format!("header-values-{}.enum.ts",file_base);
-
-        let artifact = Artifact { path, content };
-        artifacts.push(artifact);
+  fn build_header_names_definition(headers: &[HeaderDefinition]) -> EnumDefinition {
+    EnumDefinition {
+      kind: EnumKind::HeaderName,
+      type_name: "HeaderNames".to_string(),
+      file_base: "header-names".to_string(),
+      members: headers
+        .iter()
+        .map(|header| EnumMember {
+          source_name: header.canonical_name.clone(),
+          value: header.name.clone(),
+        })
+        .collect(),
     }
-
-    Ok(artifacts)
-}
-
-  fn render_enum(name: &str, values: &[String]) -> String {
-    let mut out = String::new();
-    out.push_str(&format!("export enum {}Values {{\n", name));
-
-    for v in values {
-      let key = Self::to_pascal_case(v);
-      out.push_str(&format!("  {} = \"{}\",\n", key, v));
-    }
-
-    out.push_str("}\n");
-    out
   }
 
-  fn to_pascal_case(input: &str) -> String {
-    input
-      .split(|c: char| {
-        c == '-' || c == '_' || c == ' ' || c == '/' || c == '.'
-      })
-      .filter(|s| !s.is_empty())
-      .map(|w| {
-        let mut c = w.chars();
-        match c.next() {
-          None => String::new(),
-          Some(f) => f.to_uppercase().collect::<String>() + c.as_str(),
-        }
+  fn build_header_values_definitions(headers: &[HeaderDefinition]) -> Vec<EnumDefinition> {
+    headers
+      .iter()
+      .filter(|header| !header.enum_values.is_empty())
+      .map(|header| EnumDefinition {
+        kind: EnumKind::HeaderValue,
+        type_name: format!("{}Values", CasingService::to_pascal_case(&header.name)),
+        file_base: format!("header-values-{}", CasingService::to_kebab_case(&header.name)),
+        members: header
+          .enum_values
+          .iter()
+          .map(|value| EnumMember {
+            source_name: value.clone(),
+            value: value.clone(),
+          })
+          .collect(),
       })
       .collect()
-  }
-
-  fn to_screaming_snake_case(input: &str) -> String {
-    input
-      .split(|c: char| c == '-' || c == '_' || c == ' ')
-      .filter(|s| !s.is_empty())
-      .map(|s| s.to_uppercase())
-      .collect::<Vec<_>>()
-      .join("_")
-  }
-
-  fn to_kebab_case(input: &str) -> String {
-    input
-      .split(|c: char| c == '-' || c == '_' || c == ' ' || c == '/')
-      .filter(|s| !s.is_empty())
-      .map(|s| s.to_lowercase())
-      .collect::<Vec<_>>()
-      .join("-")
   }
 
   fn extract_enum_values(arr: &Vec<Value>) -> Vec<String> {
