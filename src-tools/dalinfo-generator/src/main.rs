@@ -1,5 +1,6 @@
 mod models {
   pub mod artifact;
+  pub mod dto_definition;
   pub mod enum_definition;
   pub mod language;
   pub mod path_definition;
@@ -13,10 +14,13 @@ mod services {
 }
 
 mod renderers {
+  pub mod dto_renderer;
   pub mod enum_renderer;
   pub mod path_renderer;
+  pub mod php_dto_renderer;
   pub mod php_enum_renderer;
   pub mod php_path_renderer;
+  pub mod typescript_dto_renderer;
   pub mod typescript_enum_renderer;
   pub mod typescript_path_renderer;
 }
@@ -44,7 +48,6 @@ use managers::{
 };
 
 use std::env;
-use std::path::Path;
 use crate::models::artifact::Artifact;
 use crate::models::language::Language;
 
@@ -69,74 +72,20 @@ fn main() {
 
   let headerenums = HeaderManager::generate_header_enums_sync(&json).expect("header collection failed");
   let pathdefinitions = PathManager::generate_paths_sync(&json).expect("path collection failed");
+  let dtooperations = DTOManager::generate_dtos_sync(&json).expect("dto collection failed");
 
   let mut artifacts = RenderManager::render_enums_sync(&headerenums, language).expect("header render failed");
   artifacts.extend(RenderManager::render_paths_sync(&pathdefinitions, language).expect("path render failed"));
+  artifacts.extend(RenderManager::render_dtos_sync(&dtooperations, language).expect("dto render failed"));
 
   if language == Language::TypeScript {
-    artifacts.extend(build_typescript_dtos(&json));
+    artifacts.push(Artifact {
+      path: "index.ts".into(),
+      content: "export * from \"./headers\";\nexport * from \"./paths\";\nexport * from \"./dtos\";".into(),
+    });
   }
 
   for artifact in artifacts {
     let _ = IOManager::write_file_sync(&format!("{}/{}", &outputfolder, &artifact.path), &artifact.content);
   };
-}
-
-fn build_typescript_dtos(json: &serde_json::Value) -> Vec<Artifact> {
-  let dtofiles = DTOManager::create_dtos(json, "TYPESCRIPT").expect("header dto generation failed");
-
-  let basepath_dtofiles = "dtos";
-
-  let mut artifacts = build_indexes(&dtofiles);
-  artifacts.extend(
-    dtofiles.into_iter().map(|m| Artifact {
-      path: format!("{}/{}", basepath_dtofiles, m.path),
-      ..m
-    })
-  );
-  artifacts
-}
-
-fn build_indexes(
-  dto_files: &[Artifact],
-) -> Vec<Artifact> {
-  let dto_request_exports = build_nested_exports(dto_files, "request");
-  let dto_response_exports = build_nested_exports(dto_files, "response");
-
-  vec![
-    Artifact {
-      path: "index.ts".into(),
-      content: "export * from \"./headers\";\nexport * from \"./paths\";\nexport * from \"./dtos\";".into(),
-    },
-    Artifact {
-      path: "dtos/index.ts".into(),
-      content: "export * from \"./request\";\nexport * from \"./response\";".into(),
-    },
-    Artifact {
-      path: "dtos/request/index.ts".into(),
-      content: dto_request_exports,
-    },
-    Artifact {
-      path: "dtos/response/index.ts".into(),
-      content: dto_response_exports,
-    },
-  ]
-}
-
-fn build_nested_exports(files: &[Artifact], folder: &str) -> String {
-  files
-    .iter()
-    .filter_map(|artifact| {
-      let path = Path::new(&artifact.path);
-      let parent = path.parent()?.to_string_lossy();
-
-      if parent != folder {
-        return None;
-      }
-
-      path.file_stem()
-        .map(|stem| format!("export * from \"./{}\";", stem.to_string_lossy()))
-    })
-    .collect::<Vec<_>>()
-    .join("\n")
 }
