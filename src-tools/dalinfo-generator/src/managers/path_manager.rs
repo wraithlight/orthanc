@@ -1,23 +1,19 @@
-use crate::models::artifact::Artifact;
+use crate::models::path_definition::{PathDefinition, PathParameter, PathSegment};
+use crate::services::casing_service::CasingService;
 use serde_json::Value;
 use regex::Regex;
 
 pub struct PathManager;
 
-struct QueryParam {
-  name: String,
-  arg_name: String,
-  required: bool,
-}
-
 impl PathManager {
-  pub fn generate_paths_sync(swagger_json: &Value) -> Result<Vec<Artifact>, String> {
+  /// Emits language-agnostic definitions; rendering is delegated to a per-language renderer.
+  pub fn generate_paths_sync(swagger_json: &Value) -> Result<Vec<PathDefinition>, String> {
     let paths = swagger_json["paths"]
       .as_object()
       .ok_or("Missing paths section")?;
     let components_params = swagger_json["components"]["parameters"].as_object();
     let param_regex = Regex::new(r"\{([^}]+)\}").unwrap();
-    let mut artifacts: Vec<Artifact> = vec![];
+    let mut definitions: Vec<PathDefinition> = vec![];
 
     for (endpoint_path, methods) in paths {
       let methods_obj = methods
@@ -29,66 +25,63 @@ impl PathManager {
           .as_str()
           .ok_or("Missing operationId")?;
 
-        let file_name = Self::to_kebab_case(operation_id);
-        let const_name = Self::to_path_const_name(operation_id);
-
-        let mut path_params: Vec<String> = vec![];
-        for cap in param_regex.captures_iter(endpoint_path) {
-          path_params.push(cap[1].to_string());
-        }
-
+        let segments = Self::split_segments(endpoint_path, &param_regex);
+        let path_params = Self::collect_path_params(&segments);
         let query_params = Self::collect_query_params(operation, components_params);
 
-        let mut args: Vec<String> = path_params
-          .iter()
-          .map(|p| format!("{}: string", p))
-          .collect();
-        args.extend(query_params.iter().map(|p| {
-          if p.required {
-            format!("{}: string", p.arg_name)
-          } else {
-            format!("{}?: string", p.arg_name)
-          }
-        }));
-        let args_str = args.join(", ");
-
-        let mut interpolated_path = endpoint_path.to_string();
-
-        for param in &path_params {
-          interpolated_path = interpolated_path.replace(
-            &format!("{{{}}}", param),
-            &format!("${{{}}}", param)
-          );
-        }
-
-        let content = if args.is_empty() {
-          format!(
-            r#"export const {} = () => `{}` as const;"#,
-            const_name, endpoint_path
-          )
-        } else if query_params.is_empty() {
-          format!(
-            r#"export const {} = ({}) => `{}` as const;"#,
-            const_name, args_str, interpolated_path
-          )
-        } else {
-          Self::build_content_with_query(&const_name, &args_str, &interpolated_path, &query_params)
-        };
-
-        let path = format!("{}.path.const.ts", file_name);
-
-        let artifact = Artifact { path, content };
-        artifacts.push(artifact);
+        definitions.push(PathDefinition {
+          operation_id: operation_id.to_string(),
+          file_base: CasingService::camel_to_kebab_case(operation_id),
+          segments,
+          path_params,
+          query_params,
+        });
       }
     }
 
-    Ok(artifacts)
+    Ok(definitions)
+  }
+
+  fn split_segments(endpoint_path: &str, param_regex: &Regex) -> Vec<PathSegment> {
+    let mut segments: Vec<PathSegment> = vec![];
+    let mut cursor = 0;
+
+    for capture in param_regex.captures_iter(endpoint_path) {
+      let whole = capture.get(0).unwrap();
+
+      if whole.start() > cursor {
+        segments.push(PathSegment::Literal(endpoint_path[cursor..whole.start()].to_string()));
+      }
+
+      segments.push(PathSegment::Param(capture[1].to_string()));
+      cursor = whole.end();
+    }
+
+    if cursor < endpoint_path.len() {
+      segments.push(PathSegment::Literal(endpoint_path[cursor..].to_string()));
+    }
+
+    segments
+  }
+
+  fn collect_path_params(segments: &[PathSegment]) -> Vec<PathParameter> {
+    segments
+      .iter()
+      .filter_map(|segment| match segment {
+        PathSegment::Param(name) => Some(PathParameter {
+          name: name.clone(),
+          arg_name: CasingService::to_camel_case(name),
+          required: true,
+        }),
+        PathSegment::Literal(_) => None,
+      })
+      .collect()
   }
 
   fn collect_query_params(
     operation: &Value,
     components_params: Option<&serde_json::Map<String, Value>>,
-  ) -> Vec<QueryParam> {
+  ) -> Vec<PathParameter> {
     operation["parameters"]
       .as_array()
       .map(|params| {
@@ -98,9 +91,9 @@ impl PathManager {
           .filter(|param| param["in"].as_str() == Some("query"))
           .map(|param| {
             let name = param["name"].as_str().unwrap_or_default().to_string();
-            let arg_name = Self::to_camel_case(&name);
+            let arg_name = CasingService::to_camel_case(&name);
             let required = param["required"].as_bool().unwrap_or(false);
-            QueryParam { name, arg_name, required }
+            PathParameter { name, arg_name, required }
           })
           .collect()
       })
@@ -118,83 +111,5 @@ impl PathManager {
       }
     }
     param.clone()
-  }
-
-  fn build_content_with_query(
-    const_name: &str,
-    args_str: &str,
-    interpolated_path: &str,
-    query_params: &[QueryParam],
-  ) -> String {
-    let mut body = String::from("  const queryParams = new URLSearchParams();\n");
-
-    for param in query_params {
-      let set_call = format!(
-        "  queryParams.set(\"{}\", {});\n",
-        param.name, param.arg_name
-      );
-
-      if param.required {
-        body.push_str(&set_call);
-      } else {
-        body.push_str(&format!(
-          "  if ({} !== undefined) {{\n  {}  }}\n",
-          param.arg_name, set_call
-        ));
-      }
-    }
-
-    body.push_str(&format!(
-      "  return `{}?${{queryParams.toString()}}` as const;\n",
-      interpolated_path
-    ));
-
-    format!(
-      "export const {} = ({}) => {{\n{}}};",
-      const_name, args_str, body
-    )
-  }
-
-  fn to_camel_case(input: &str) -> String {
-    let mut result = String::new();
-    let mut capitalize_next = false;
-
-    for c in input.chars() {
-      if c == '-' || c == '_' {
-        capitalize_next = true;
-        continue;
-      }
-
-      if capitalize_next {
-        result.extend(c.to_uppercase());
-        capitalize_next = false;
-      } else {
-        result.push(c);
-      }
-    }
-
-    result
-  }
-
-  fn to_kebab_case(input: &str) -> String {
-    let mut result = String::new();
-    for (i, c) in input.chars().enumerate() {
-      if c.is_uppercase() && i != 0 {
-        result.push('-');
-      }
-      result.push(c.to_ascii_lowercase());
-    }
-    result
-  }
-
-  fn to_path_const_name(operation_id: &str) -> String {
-    let mut screaming_snake = String::new();
-    for (i, c) in operation_id.chars().enumerate() {
-      if c.is_uppercase() && i != 0 {
-        screaming_snake.push('_');
-      }
-      screaming_snake.push(c.to_ascii_uppercase());
-    }
-    format!("API_{}_PATH", screaming_snake)
   }
 }
