@@ -2,6 +2,7 @@ mod models {
   pub mod artifact;
   pub mod enum_definition;
   pub mod language;
+  pub mod path_definition;
 }
 
 mod services {
@@ -13,8 +14,11 @@ mod services {
 
 mod renderers {
   pub mod enum_renderer;
+  pub mod path_renderer;
   pub mod php_enum_renderer;
+  pub mod php_path_renderer;
   pub mod typescript_enum_renderer;
+  pub mod typescript_path_renderer;
 }
 
 mod managers {
@@ -22,7 +26,7 @@ mod managers {
   pub mod yaml_manager;
   pub mod path_manager;
   pub mod header_manager;
-  pub mod enum_render_manager;
+  pub mod render_manager;
   pub mod yaml_to_json_manager;
   pub mod dto_manager;
   pub mod operation_id_manager;
@@ -33,7 +37,7 @@ use managers::{
   yaml_manager::YamlManager,
   path_manager::PathManager,
   header_manager::HeaderManager,
-  enum_render_manager::EnumRenderManager,
+  render_manager::RenderManager,
   yaml_to_json_manager::YamlToJsonManager,
   dto_manager::DTOManager,
   operation_id_manager::OperationIdManager,
@@ -64,10 +68,13 @@ fn main() {
   OperationIdManager::validate_operation_ids_sync(&json).expect("operationId validation failed");
 
   let headerenums = HeaderManager::generate_header_enums_sync(&json).expect("header collection failed");
-  let mut artifacts = EnumRenderManager::render_sync(&headerenums, language).expect("header render failed");
+  let pathdefinitions = PathManager::generate_paths_sync(&json).expect("path collection failed");
+
+  let mut artifacts = RenderManager::render_enums_sync(&headerenums, language).expect("header render failed");
+  artifacts.extend(RenderManager::render_paths_sync(&pathdefinitions, language).expect("path render failed"));
 
   if language == Language::TypeScript {
-    artifacts.extend(build_typescript_paths_and_dtos(&json));
+    artifacts.extend(build_typescript_dtos(&json));
   }
 
   for artifact in artifacts {
@@ -75,20 +82,12 @@ fn main() {
   };
 }
 
-fn build_typescript_paths_and_dtos(json: &serde_json::Value) -> Vec<Artifact> {
-  let pathfiles = PathManager::generate_paths_sync(json).expect("path generation failed");
+fn build_typescript_dtos(json: &serde_json::Value) -> Vec<Artifact> {
   let dtofiles = DTOManager::create_dtos(json, "TYPESCRIPT").expect("header dto generation failed");
 
-  let basepath_paths = "paths";
   let basepath_dtofiles = "dtos";
 
-  let mut artifacts = build_indexes(&pathfiles, &dtofiles);
-  artifacts.extend(
-    pathfiles.into_iter().map(|m| Artifact {
-      path: format!("{}/{}", basepath_paths, m.path),
-      ..m
-    })
-  );
+  let mut artifacts = build_indexes(&dtofiles);
   artifacts.extend(
     dtofiles.into_iter().map(|m| Artifact {
       path: format!("{}/{}", basepath_dtofiles, m.path),
@@ -99,27 +98,12 @@ fn build_typescript_paths_and_dtos(json: &serde_json::Value) -> Vec<Artifact> {
 }
 
 fn build_indexes(
-  header_path_files: &[Artifact],
   dto_files: &[Artifact],
 ) -> Vec<Artifact> {
-  let paths_exports = header_path_files
-    .iter()
-    .filter_map(|a| {
-      Path::new(&a.path)
-        .file_stem()
-        .map(|s| format!("export * from \"./{}\";", s.to_string_lossy()))
-      })
-    .collect::<Vec<_>>()
-    .join("\n");
-
   let dto_request_exports = build_nested_exports(dto_files, "request");
   let dto_response_exports = build_nested_exports(dto_files, "response");
 
   vec![
-    Artifact {
-      path: "paths/index.ts".into(),
-      content: paths_exports,
-    },
     Artifact {
       path: "index.ts".into(),
       content: "export * from \"./headers\";\nexport * from \"./paths\";\nexport * from \"./dtos\";".into(),
