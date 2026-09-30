@@ -53,6 +53,20 @@ impl CasingService {
     Self::split_camel_humps(input, '_').to_uppercase()
   }
 
+  pub fn sanitize_identifier(input: &str) -> String {
+    let mut out: String = input.chars().filter(|c| c.is_ascii_alphanumeric()).collect();
+
+    if out.is_empty() {
+      return "GeneratedType".to_string();
+    }
+
+    if out.chars().next().map(|c| c.is_ascii_digit()).unwrap_or(false) {
+      out = format!("Type{}", out);
+    }
+
+    out
+  }
+
   fn split_camel_humps(input: &str, separator: char) -> String {
     let mut result = String::new();
     for (index, character) in input.chars().enumerate() {
