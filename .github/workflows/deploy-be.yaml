@@ -27,6 +27,9 @@ jobs:
         with:
           ref: ${{ github.event.client_payload.target_branch }}
 
+      - name: Generate DALInfo
+        run: bash ./generate-dalinfo-php.sh
+
       - name: Deploy to Server FTP
         uses: ./.github/actions/deploy-ftp
         with:
