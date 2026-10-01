@@ -29,13 +29,15 @@ class CharacterCreationController
     $stateService->setPlayerConstitution($con);
     $playerService->setMaxHits($hits);
 
-    $result = new stdClass();
+    $stats = new PostGenerateCharacterResponsePayloadStats();
+    $stats->str = $str;
+    $stats->int = $int;
+    $stats->dex = $dex;
+    $stats->con = $con;
+
+    $result = new PostGenerateCharacterResponsePayload();
     $result->maxHits = $hits;
-    $result->stats = new stdClass();
-    $result->stats->str = $str;
-    $result->stats->int = $int;
-    $result->stats->dex = $dex;
-    $result->stats->con = $con;
+    $result->stats = $stats;
 
     echo json_encode(createSuccessResponse($result));
   }
