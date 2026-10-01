@@ -21,7 +21,7 @@ class ChatController
 
     $this->_chatManager->sendMessage($message);
 
-    echo json_encode(createSuccessResponse(new stdClass()));
+    echo json_encode(createSuccessResponse(new PostSendChatResponsePayload()));
   }
 
   public function getMessages()
