@@ -66,7 +66,7 @@ class ChatManager
     $members = $this->_chatMembersService->getActiveMembers($this->_sessionService->getGameMode()->value);
     $messages = $this->_chatMessageService->getMessagesSince($lastMessageId, $this->_sessionService->getGameMode()->value);
 
-    $result = new stdClass();
+    $result = new GetPollChatResponsePayload();
     $result->messages = $messages;
     $result->members = $members;
 
