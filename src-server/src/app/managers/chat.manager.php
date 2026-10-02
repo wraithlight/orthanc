@@ -15,7 +15,7 @@ class ChatManager
 
   public function addMember(
     string $id
-  ) {
+  ): void {
     $username = $this->_sessionService->getPlayerName();
     $lastMessageId = $this->_chatMessageService->getLastMessageId($this->_sessionService->getGameMode()->value);
 
@@ -29,7 +29,7 @@ class ChatManager
 
   public function sendMessage(
     string $message
-  ) {
+  ): void {
     $this->_chatMessageService->addMessage([
       "payload" => [
         'sender' => $this->_sessionService->getPlayerName(),
@@ -42,7 +42,7 @@ class ChatManager
 
   public function sendSystemMessage(
     string $message
-  ) {
+  ): void {
     $this->_chatMessageService->addMessage([
       "payload" => [
         'sender' => "[PLATOSYS]",
@@ -55,7 +55,7 @@ class ChatManager
 
   public function onPoll(
     string $id
-  ): object
+  ): GetPollChatResponsePayload
   {
     $lastMessageId = $this->_sessionService->getLastChatMessageId();
 
