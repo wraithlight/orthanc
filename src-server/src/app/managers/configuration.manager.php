@@ -11,13 +11,16 @@ class ConfigurationManager
     $this->_configurationService = new ConfigurationService();
   }
 
-  public function getConfiguration(): object {
+  public function getConfiguration(): GetConfigurationResponsePayload {
     $versionInfo = $this->_versionService->getVersion();
     $configuration = $this->_configurationService->getConfiguration();
 
-    $configuration->version = $versionInfo->version;
+    $result = new GetConfigurationResponsePayload();
+    $result->availableLocales = $configuration->availableLocales;
+    $result->featureStates = $configuration->featureStates;
+    $result->version = $versionInfo->version;
 
-    return $configuration;
+    return $result;
   }
 
 }
