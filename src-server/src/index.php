@@ -96,6 +96,7 @@ require_once("./app/managers/localization.manager.php");
 require_once("./app/dal-generated/dtos/response/get-poll-chat.model.php");
 require_once("./app/dal-generated/dtos/response/post-send-chat.model.php");
 require_once("./app/dal-generated/dtos/response/post-generate-character.model.php");
+require_once("./app/dal-generated/dtos/response/get-configuration.model.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
