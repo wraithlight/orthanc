@@ -448,12 +448,12 @@ components:
                       type: object
                       required:
                         - current
-                        - maximmum
+                        - maximum
                       properties:
                         current:
                           type: number
                           example: 4
-                        maximmum:
+                        maximum:
                           type: number
                           example: 4
                     xpPercentageFromKills:
