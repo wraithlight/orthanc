@@ -6,7 +6,7 @@ export interface CharacterGameStats {
   playerLevel: number,
   spellUnits: {
     current: number,
-    maximmum: number
+    maximum: number
   },
   xpPercentageFromKills: number
 }
