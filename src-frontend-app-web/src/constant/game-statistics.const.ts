@@ -8,7 +8,7 @@ export const INITIAL_GAME_STATISTICS: CharacterGameStats = {
   playerLevel: 0,
   spellUnits: {
     current: 0,
-    maximmum: 0
+    maximum: 0
   },
   xpPercentageFromKills: 0
 };
