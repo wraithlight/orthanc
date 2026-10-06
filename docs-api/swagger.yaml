@@ -584,7 +584,7 @@ components:
                         example: "Pick up the Orb"
                       key:
                         type: string
-                        enum: ["PICKUP"]
+                        enum: ["PICKUP", "RUN", "FIGHT", "MOVE", "CAST_SPELL", "EVENT_RETIRE"]
                         example: "PICKUP"
                       payload:
                         type: string
