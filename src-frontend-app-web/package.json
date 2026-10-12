@@ -14,7 +14,7 @@
     "gha:typecheck": "tsc --noEmit",
     "gha:knip": "knip -c knip-config.ts",
     "dev": "vite",
-    "dev:storbook": "storybook dev",
+    "dev:storybook": "storybook dev",
     "build:local": "vite build -- local",
     "build:local-dev": "vite build -- local-development",
     "test:unit": "vitest run",
