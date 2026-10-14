@@ -652,7 +652,7 @@ components:
                     maxItems: 51
                     items:
                       type: string
-                      enum: ["EMPTY", "WALL", "UNKNOWN"]
+                      enum: ["EMPTY", "WALL", "UNKNOWN", "PLAYER"]
                       example: "UNKNOWN"
                 endgameItems:
                   type: array
