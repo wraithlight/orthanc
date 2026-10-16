@@ -164,7 +164,7 @@ class GameController
       }
     }
 
-    $minimapState[$location->coordY][$location->coordX] = "PLAYER";
+    $minimapState[$location->coordY][$location->coordX] = PostGameActionResponsePayloadMinimapStateItemItem::Player;
     $stateService->setPreviousGameState($gameState);
 
     $mapSize = min($mapHeight, $mapWidth);
