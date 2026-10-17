@@ -38,6 +38,10 @@ class HallOfFameManager
     );
   }
 
+  /**
+   * @param GameMode $gameMode
+   * @return GetHallOfFameResponsePayloadItemsItem[]
+   */
   public function listHallOfFame(GameMode $gameMode): array {
     $result = $this->_hallOfFameService->list(10, $gameMode);
     return $this->_hallOfFameMapper->mapListToDto($result);

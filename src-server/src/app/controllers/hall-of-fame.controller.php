@@ -16,7 +16,7 @@ class HallOfFameController
     $validGameMode = GameMode::tryFrom($gameMode) ?? GameMode::Vanilla;
     $payload = $this->_hallOfFameManager->listHallOfFame($validGameMode);
 
-    $result = new stdClass();
+    $result = new GetHallOfFameResponsePayload();
     $result->items = $payload;
 
     echo json_encode(createSuccessResponse($result));
