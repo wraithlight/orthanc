@@ -11,9 +11,9 @@ class LocalizationManager {
 
   public function getLocalization(
     AppLocale $locale
-  ): object {
+  ): GetLocalizationLocaleResponsePayload {
     $localization = $this->_localizationService->getLocalizationForLocale($locale->value);
-    return (object) $localization;
+    return new GetLocalizationLocaleResponsePayload($localization);
   }
 
 }
