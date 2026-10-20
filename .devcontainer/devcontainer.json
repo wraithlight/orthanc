@@ -1,0 +1,42 @@
+
+{
+  "name": "Orthanc Development",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/php:1": {
+      "version": "8.1",
+      "installComposer": true
+    },
+    "ghcr.io/devcontainers/features/rust:1": {
+      "version": "latest",
+      "profile": "default",
+      "components": "rustfmt,clippy"
+    },
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "DEVSENSE.composer-php-vscode",
+        "DEVSENSE.intelli-php-vscode",
+        "DEVSENSE.phptools-vscode",
+        "DEVSENSE.profiler-php-vscode",
+        "rust-lang.rust-analyzer",
+        "vadimcn.vscode-lldb"
+      ]
+    }
+  },
+  "forwardPorts": [
+    3000,
+    3100
+  ],
+  "portsAttributes": {
+    "3000": {
+      "label": "Orthanc Frontend"
+    },
+    "3100": {
+      "label": "Orthanc Backend"
+    }
+  },
+  "postCreateCommand": "bash .devcontainer/post-create.sh"
+}
