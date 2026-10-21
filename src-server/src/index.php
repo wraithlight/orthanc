@@ -100,6 +100,7 @@ require_once("./app/dal-generated/dtos/response/get-configuration.model.php");
 require_once("./app/dal-generated/dtos/response/post-game-action.model.php");
 require_once("./app/dal-generated/dtos/response/get-hall-of-fame.model.php");
 require_once("./app/dal-generated/dtos/response/get-localization-locale.model.php");
+require_once("./app/dal-generated/dtos/response/post-login-guest.model.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");

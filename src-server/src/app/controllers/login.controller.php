@@ -25,11 +25,10 @@ class LoginController
     $sessionService->setPlayerName($username);
     $sessionService->setGameMode($gameMode);
     $this->_chatManager->addMember($id);
-    echo json_encode([
-      "payload" => [
-        'username' => $username
-      ]
-    ], JSON_PRETTY_PRINT);
+
+    $result = new PostLoginGuestResponsePayload();
+    $result->username = $username;
+    echo json_encode(createSuccessResponse($result));
   }
 
   private function getGameMode(): GameMode {
@@ -40,7 +39,7 @@ class LoginController
     }
     $configuration = $this->_configurationManager->getConfiguration();
 
-    $defaultGameMode = $configuration->featureStates['loginScreenModeScreenDefault']['value'];
+    $defaultGameMode = $configuration->featureStates->loginScreenModeScreenDefault->value;
     return GameMode::tryFrom($defaultGameMode);
   }
 }
