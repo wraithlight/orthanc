@@ -102,6 +102,16 @@ require_once("./app/dal-generated/dtos/response/get-hall-of-fame.model.php");
 require_once("./app/dal-generated/dtos/response/get-localization-locale.model.php");
 require_once("./app/dal-generated/dtos/response/post-login-guest.model.php");
 
+require_once("./app/dal-generated/paths/post-login-guest.path.const.php");
+require_once("./app/dal-generated/paths/post-generate-character.path.const.php");
+require_once("./app/dal-generated/paths/post-start-game.path.const.php");
+require_once("./app/dal-generated/paths/post-game-action.path.const.php");
+require_once("./app/dal-generated/paths/get-hall-of-fame.path.const.php");
+require_once("./app/dal-generated/paths/get-configuration.path.const.php");
+require_once("./app/dal-generated/paths/get-localization-locale.path.const.php");
+require_once("./app/dal-generated/paths/get-poll-chat.path.const.php");
+require_once("./app/dal-generated/paths/post-send-chat.path.const.php");
+
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
 require_once("./app/controllers/game.controller.php");
@@ -173,15 +183,15 @@ $localizationControllerFactory = function() {
   return new LocalizationController();
 };
 
-Wrapper::RegisterPath("POST", "/api/v1/login/guest", $loginControllerFactory, "loginGuest");
-Wrapper::RegisterPath("POST", "/api/v1/character-creation/generate", $characterCreationControllerFactory, "generate");
-Wrapper::RegisterPath("POST", "/api/v1/game/start", $gameControllerFactory, "startGame");
-Wrapper::RegisterPath("POST", "/api/v1/chat/send", $chatControllerFactory, "sendMessage");
-Wrapper::RegisterPath("GET", "/api/v1/chat/poll", $chatControllerFactory, "getMessages");
-Wrapper::RegisterPath("POST", "/api/v1/game/action", $gameControllerFactory, "onAction");
-Wrapper::RegisterPath("GET", "/api/v1/main/hall-of-fame", $hallOfFameControllerFactory, "getRecords");
-Wrapper::RegisterPath("GET", "/api/v1/configuration", $configurationControllerFactory, "getConfiguration");
-Wrapper::RegisterPath("GET", "/api/v1/localization/:locale", $localizationControllerFactory, "getLocalization");
+Wrapper::RegisterPath("POST", API_POST_LOGIN_GUEST_PATH, $loginControllerFactory, "loginGuest");
+Wrapper::RegisterPath("POST", API_POST_GENERATE_CHARACTER_PATH, $characterCreationControllerFactory, "generate");
+Wrapper::RegisterPath("POST", API_POST_START_GAME_PATH, $gameControllerFactory, "startGame");
+Wrapper::RegisterPath("POST", API_POST_SEND_CHAT_PATH, $chatControllerFactory, "sendMessage");
+Wrapper::RegisterPath("GET", API_GET_POLL_CHAT_PATH, $chatControllerFactory, "getMessages");
+Wrapper::RegisterPath("POST", API_POST_GAME_ACTION_PATH, $gameControllerFactory, "onAction");
+Wrapper::RegisterPath("GET", API_GET_HALL_OF_FAME_PATH, $hallOfFameControllerFactory, "getRecords");
+Wrapper::RegisterPath("GET", API_GET_CONFIGURATION_PATH, $configurationControllerFactory, "getConfiguration");
+Wrapper::RegisterPath("GET", API_GET_LOCALIZATION_LOCALE_PATH, $localizationControllerFactory, "getLocalization");
 strtolower($isSwadocEnabled) === "true" && Wrapper::RegisterPath("GET", "/api/v1/swadoc", $swadocControllerFactory, "getSwadoc");
 
 Wrapper::Listen(true);
