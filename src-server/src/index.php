@@ -112,6 +112,9 @@ require_once("./app/dal-generated/paths/get-localization-locale.path.const.php")
 require_once("./app/dal-generated/paths/get-poll-chat.path.const.php");
 require_once("./app/dal-generated/paths/post-send-chat.path.const.php");
 
+require_once("./src/app/dal-generated/headers/names/header-names.enum.php");
+require_once("./src/app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
+
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
 require_once("./app/controllers/game.controller.php");

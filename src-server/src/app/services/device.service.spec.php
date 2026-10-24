@@ -3,18 +3,19 @@
 use PHPUnit\Framework\TestCase;
 
 require_once __DIR__ . '/device.service.php';
-require_once("./src/app/header/header-values.enum.php");
+require_once("./src/app/dal-generated/headers/names/header-names.enum.php");
+require_once("./src/app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
 
 class Device extends TestCase
 {
   protected function tearDown(): void
   {
-    unset($_SERVER['HTTP_X_ORTHANC_DEVICE']);
+    unset($_SERVER[HeaderNames::XOrthancDevice->value]);
   }
 
   public function testIsMobileReturnsTrue()
   {
-    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = HeaderValueDevice::Mobile->value;
+    $_SERVER[HeaderNames::XOrthancDevice->value] = XOrthancDeviceValues::Mobile->value;
 
     $service = new DeviceService();
 
@@ -24,7 +25,7 @@ class Device extends TestCase
 
   public function testIsDesktopReturnsTrue()
   {
-    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = HeaderValueDevice::Desktop->value;
+    $_SERVER[HeaderNames::XOrthancDevice->value] = XOrthancDeviceValues::Desktop->value;
 
     $service = new DeviceService();
 
@@ -34,7 +35,7 @@ class Device extends TestCase
 
   public function testIsMobileReturnsFalseForOtherValues()
   {
-    $_SERVER['HTTP_X_ORTHANC_DEVICE'] = 'tablet';
+    $_SERVER[HeaderNames::XOrthancDevice->value] = 'tablet';
 
     $service = new DeviceService();
 

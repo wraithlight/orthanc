@@ -6,16 +6,16 @@ class DeviceService
 
   public function __construct()
   {
-    $this->_device = $_SERVER['HTTP_X_ORTHANC_DEVICE'];
+    $this->_device = $_SERVER[HeaderNames::XOrthancDevice->value];
   }
 
   public function isMobile(): bool
   {
-    return $this->_device === HeaderValueDevice::Mobile->value;
+    return $this->_device === XOrthancDeviceValues::Mobile->value;
   }
 
   public function isDesktop(): bool
   {
-    return $this->_device === HeaderValueDevice::Desktop->value;
+    return $this->_device === XOrthancDeviceValues::Desktop->value;
   }
 }
