@@ -11,6 +11,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Generate DALInfo
+        run: bash ./generate-dalinfo-php.sh
+
       - name: Set up PHP with Composer
         uses: shivammathur/setup-php@v2
         with:
