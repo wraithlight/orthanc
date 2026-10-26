@@ -37,10 +37,12 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
-// TODO: Cleanup range end.
-
 require_once("./app/header/header-names.enum.php");
 require_once("./app/header/header-values.enum.php");
+// TODO: Cleanup range end.
+
+require_once("./app/dal-generated/headers/names/header-names.enum.php");
+require_once("./app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
 
 require_once("./app/api-guard/is-header-valid.php");
 require_once("./app/api-guard/get-header-value.php");
@@ -111,9 +113,6 @@ require_once("./app/dal-generated/paths/get-configuration.path.const.php");
 require_once("./app/dal-generated/paths/get-localization-locale.path.const.php");
 require_once("./app/dal-generated/paths/get-poll-chat.path.const.php");
 require_once("./app/dal-generated/paths/post-send-chat.path.const.php");
-
-require_once("./src/app/dal-generated/headers/names/header-names.enum.php");
-require_once("./src/app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
