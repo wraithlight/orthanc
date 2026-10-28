@@ -43,6 +43,8 @@ require_once("./app/header/header-values.enum.php");
 
 require_once("./app/dal-generated/headers/names/header-names.enum.php");
 require_once("./app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
+require_once("./app/dal-generated/headers/values/header-values-accept.enum.php");
+require_once("./app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
 
 require_once("./app/api-guard/is-header-valid.php");
 require_once("./app/api-guard/get-header-value.php");
@@ -128,7 +130,7 @@ $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 if (isNotOptionsRequest()) { 
   if (!isHeaderValid(
     getHeaderValue(HeaderNames::Accept->value, ""),
-    [HeaderValueAccept::ApplicationJson->value])
+    [AcceptValues::ApplicationJson->value])
   ) {
     http_response_code(400);
     echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::Accept->value));
@@ -138,8 +140,8 @@ if (isNotOptionsRequest()) {
   if (!isHeaderValid(
     getHeaderValue(HeaderNames::XOrthancDevice->value, ""),
       [
-        HeaderValueDevice::Desktop->value,
-        HeaderValueDevice::Mobile->value
+        XOrthancDeviceValues::Desktop->value,
+        XOrthancDeviceValues::Mobile->value
       ]
     )
   ) {
