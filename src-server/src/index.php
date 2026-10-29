@@ -37,8 +37,6 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
-require_once("./app/header/header-names.enum.php");
-require_once("./app/header/header-values.enum.php");
 // TODO: Cleanup range end.
 
 require_once("./app/dal-generated/headers/names/header-names.enum.php");
