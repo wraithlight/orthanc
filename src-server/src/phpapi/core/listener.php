@@ -33,7 +33,7 @@ namespace PhpAPI2 {
       }
 
       $requestUriParams = Params::GetUriParams($chopped[0], $requestedPathRef->RelativeUri);
-      $requestBodyParams = Params::GetBodyParams($_SERVER);
+      $requestBodyParams = Params::GetBodyParams();
       $requestQueryParams = Params::GetQueryParams($chopped[1]);
 
       return new CallableReference($requestedPathRef, $requestUriParams, $requestBodyParams, $requestQueryParams);

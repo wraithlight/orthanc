@@ -34,8 +34,11 @@ namespace PhpAPI2 {
             ? self::kebabToCamel($allParam->Name)
             : $allParam->Name ?? null;
 
-          if ($paramName === $fnParam) {
-            array_push($result, $allParam->Value ?? null);
+          if ($paramName === $fnParam['Name']) {
+            if ($fnParam['Type'] instanceof \ReflectionNamedType && !$fnParam['Type']->isBuiltin()) {
+              $value = self::Hydrate($allParam->Value ?? null, $fnParam['Type']->getName());
+            }
+            array_push($result, $value ?? $allParam->Value ?? null);
             $isAdded = true;
             break;
           }
@@ -53,6 +56,16 @@ namespace PhpAPI2 {
       return lcfirst(str_replace(' ', '', ucwords(str_replace('-', ' ', $str))));
     }
 
+    private static function Hydrate($data, string $className)
+    {
+      $object = new $className();
+      foreach ($data as $key => $value) {
+        if (property_exists($object, $key)) {
+          $object->$key = $value;
+        }
+      }
+      return $object;
+    }
   }
 }
 ?>
