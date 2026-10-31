@@ -7,7 +7,7 @@ namespace PhpAPI2 {
       $reflectedFn = new \ReflectionMethod($classInstance, $fnRef);
       $result = array();
       foreach ($reflectedFn->getParameters() as $param) {
-        array_push($result, $param->name);
+        array_push($result, ['Name' => $param->name, 'Type' => $param->getType()]);
       }
       return $result;
     }
