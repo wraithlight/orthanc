@@ -104,6 +104,8 @@ require_once("./app/dal-generated/dtos/response/get-hall-of-fame.model.php");
 require_once("./app/dal-generated/dtos/response/get-localization-locale.model.php");
 require_once("./app/dal-generated/dtos/response/post-login-guest.model.php");
 
+require_once("./app/dal-generated/dtos/request/post-generate-character.model.php");
+
 require_once("./app/dal-generated/paths/post-login-guest.path.const.php");
 require_once("./app/dal-generated/paths/post-generate-character.path.const.php");
 require_once("./app/dal-generated/paths/post-start-game.path.const.php");

@@ -9,7 +9,7 @@ class CharacterCreationController
     $this->sessionManager = new SessionManager();
   }
 
-  public function generate()
+  public function generate(PostGenerateCharacterRequest $body)
   {
     $this->sessionManager->authenticate();
 
