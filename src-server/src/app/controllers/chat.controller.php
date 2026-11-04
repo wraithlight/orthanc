@@ -11,15 +11,11 @@ class ChatController
     $this->_sessionManager = new SessionManager();
   }
 
-  public function sendMessage()
+  public function sendMessage(PostSendChatRequest $body)
   {
     $this->_sessionManager->authenticate();
 
-    $rawBody = file_get_contents('php://input');
-    $payload = json_decode($rawBody, true);
-    $message = $payload['message'];
-
-    $this->_chatManager->sendMessage($message);
+    $this->_chatManager->sendMessage($body->message);
 
     echo json_encode(createSuccessResponse(new PostSendChatResponsePayload()));
   }
