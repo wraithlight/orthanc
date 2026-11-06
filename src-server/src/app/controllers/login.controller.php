@@ -1,7 +1,5 @@
 <?php
 
-use function PHPUnit\Framework\returnArgument;
-
 class LoginController
 {
   private $_chatManager;
@@ -15,13 +13,13 @@ class LoginController
     $this->_sessionManager = new SessionManager();
   }
 
-  public function loginGuest()
+  public function loginGuest(PostLoginGuestRequest $body)
   {
     $id = $this->_sessionManager->createNewSession();
     $sessionService = new SessionService();
 
     $username = 'guest_' . roll_d10k();
-    $gameMode = $this->getGameMode();
+    $gameMode = $this->getGameMode($body->gameMode);
     $sessionService->setPlayerName($username);
     $sessionService->setGameMode($gameMode);
     $this->_chatManager->addMember($id);
@@ -31,11 +29,9 @@ class LoginController
     echo json_encode(createSuccessResponse($result));
   }
 
-  private function getGameMode(): GameMode {
-    $gameModeFromRequest = json_decode(file_get_contents('php://input'))->gameMode;
-
-    if (GameMode::tryFrom($gameModeFromRequest)) {
-      return GameMode::tryFrom($gameModeFromRequest);
+  private function getGameMode(PostLoginGuestRequestGameMode $initialGameMode): GameMode {
+    if (GameMode::tryFrom($initialGameMode->value)) {
+      return GameMode::tryFrom($initialGameMode->value);
     }
     $configuration = $this->_configurationManager->getConfiguration();
 
