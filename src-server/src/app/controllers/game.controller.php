@@ -71,17 +71,15 @@ class GameController
     $this->sendBackState();
   }
 
-  public function onAction()
+  public function onAction(PostGameActionRequest $body)
   {
     $this->_sessionManager->authenticate();
 
     $playerLocationService = new PlayerLocationService();
     $feedbackEventsService = new FeedbackEventsService();
 
-    $rawBody = file_get_contents('php://input');
-    $payload = json_decode($rawBody, true);
-    $action = $payload['action'];
-    $target = array_key_exists('payload', $payload) ? $payload['payload'] : null;
+    $action = $body->action;
+    $target = $body->payload ?? null;
 
     $feedbackEventsService->startRound();
     $location = $playerLocationService->getPlayerCurrentLocation();

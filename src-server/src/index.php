@@ -105,6 +105,7 @@ require_once("./app/dal-generated/dtos/response/get-localization-locale.model.ph
 require_once("./app/dal-generated/dtos/response/post-login-guest.model.php");
 
 require_once("./app/dal-generated/dtos/request/post-generate-character.model.php");
+require_once("./app/dal-generated/dtos/request/post-game-action.model.php");
 require_once("./app/dal-generated/dtos/request/post-send-chat.model.php");
 
 require_once("./app/dal-generated/paths/post-login-guest.path.const.php");
