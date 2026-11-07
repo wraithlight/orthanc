@@ -21,24 +21,24 @@ class ActionsManager
   }
 
   public function handleAction(
-    string $action,
-    string $target
+    PostGameActionRequestAction $action,
+    PostGameActionRequestPayloadVariant2|string|null $target
   ): void {
     switch ($action) {
-      case "MOVE": {
+      case PostGameActionRequestAction::Move: {
         $enum = MovementDirection::tryFrom($target);
         $enum && $this->handleMovement($enum);
         break;
       }
-      case "RUN": {
+      case PostGameActionRequestAction::Run: {
         $this->handleRun();
         break;
       }
-      case "PICKUP": {
+      case PostGameActionRequestAction::Pickup: {
         $this->handlePickup($target);
         break;
       }
-      case "INITIAL_IN_GAME": {
+      case PostGameActionRequestAction::InitialInGame: {
         break;
       }
       default: {
@@ -50,7 +50,7 @@ class ActionsManager
       exit;
       }
     }
-    if ($action !== "MOVE") {
+    if ($action !== PostGameActionRequestAction::Move) {
       $this->_userInteractionsService->incrementActions();
     }
   }
@@ -110,11 +110,11 @@ class ActionsManager
 
   public function canDoAction(
     array $actionsArray,
-    string $action,
+    PostGameActionRequestAction $action,
     $target = null
   ): bool {
     foreach ($actionsArray as $element) {
-      if ($element['key'] === $action) {
+      if ($element['key'] === $action->value) {
         if ($target === null) {
           return true;
         }
