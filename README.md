@@ -126,7 +126,7 @@ The `package.json` file under `src-frontend-app-web` contains the following scri
   gha:sherif            - Used by GitHub | Runs the sherif check for frontend.
   gha:typecheck         - Used by GitHub | Runs the tsc typecheck for frontend.
   dev                   - Runs the FE locally on port 3000.
-  dev:storbook          - Runs and opens StoryBook on a random port.
+  dev:storybook         - Runs and opens StoryBook on a random port.
   build                 - Runs the build with local-development env.
   test:unit             - Runs the FE unit tests.
   test:unit:coverage    - Runs the FE unit tests with coverage report.
