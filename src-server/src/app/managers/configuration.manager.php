@@ -27,7 +27,7 @@ class ConfigurationManager
 
     $featureStatesLoginScreenLanguageSwitchEnabled = new GetConfigurationResponsePayloadFeatureStatesLoginScreenLanguageSwitchEnabled();
     $featureStatesLoginScreenLanguageSwitchEnabledRaw = $configuration->featureStates['loginScreenLanguageSwitchEnabled'];
-    $featureStatesLoginScreenLanguageSwitchEnabled->value = $featureStatesLoginScreenLanguageSwitchEnabledRaw['value'] ? 'true' : 'false';
+    $featureStatesLoginScreenLanguageSwitchEnabled->value = GetConfigurationResponsePayloadFeatureStatesLoginScreenLanguageSwitchEnabledValue::from($featureStatesLoginScreenLanguageSwitchEnabledRaw['value']);
     $featureStatesLoginScreenLanguageSwitchEnabled->type = GetConfigurationResponsePayloadFeatureStatesLoginScreenLanguageSwitchEnabledType::from($featureStatesLoginScreenLanguageSwitchEnabledRaw['type']);
 
     $featureStatesLoginScreenModeScreenDefault = new GetConfigurationResponsePayloadFeatureStatesLoginScreenModeScreenDefault();
@@ -37,7 +37,7 @@ class ConfigurationManager
 
     $featureStatesLoginScreenModeScreenEnabled = new GetConfigurationResponsePayloadFeatureStatesLoginScreenModeScreenEnabled();
     $featureStatesLoginScreenModeScreenEnabledRaw = $configuration->featureStates['loginScreenModeScreenEnabled'];
-    $featureStatesLoginScreenModeScreenEnabled->value = $featureStatesLoginScreenModeScreenEnabledRaw['value'] ? 'true' : 'false';
+    $featureStatesLoginScreenModeScreenEnabled->value = GetConfigurationResponsePayloadFeatureStatesLoginScreenModeScreenEnabledValue::from($featureStatesLoginScreenModeScreenEnabledRaw['value']);
     $featureStatesLoginScreenModeScreenEnabled->type = GetConfigurationResponsePayloadFeatureStatesLoginScreenModeScreenEnabledType::from($featureStatesLoginScreenModeScreenEnabledRaw['type']);
 
 
