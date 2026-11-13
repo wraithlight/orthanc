@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 use crate::models::artifact::Artifact;
-use crate::models::dto_definition::{Node, OperationAst};
+use crate::models::dto_definition::{Node, OperationAst, Property};
 use crate::renderers::dto_renderer::DTORenderer;
 use crate::services::casing_service::CasingService;
 
@@ -22,9 +22,15 @@ struct EnumDefinition {
   values: Vec<String>,
 }
 
+struct DictionaryClassDefinition {
+  name: String,
+  value_doc: String,
+}
+
 struct EmitContext {
   classes: Vec<ClassDefinition>,
   enums: Vec<EnumDefinition>,
+  dictionary_classes: Vec<DictionaryClassDefinition>,
   type_name_counts: HashMap<String, usize>,
 }
 
@@ -62,7 +68,21 @@ impl PhpDTORenderer {
       dto_type,
     );
     let mut context = EmitContext::new();
-    context.register_class(&root_name, operation_node);
+
+    let payload_type_name = format!("{}Payload", root_name);
+    let (main_node, payload_node) = Self::extract_payload_node(operation_node, &payload_type_name);
+
+    match &payload_node {
+      Some(node @ Node::Object { .. }) => {
+        context.register_class(&payload_type_name, node);
+      }
+      Some(Node::Dictionary(value)) => {
+        context.register_dictionary_class(&payload_type_name, value);
+      }
+      _ => {}
+    }
+
+    context.register_class(&root_name, &main_node);
 
     let mut out = String::from("<?php\n");
 
@@ -70,11 +90,49 @@ impl PhpDTORenderer {
       out.push_str(&Self::emit_enum(enum_definition));
     }
 
+    for dictionary_class in &context.dictionary_classes {
+      out.push_str(&Self::emit_dictionary_class(dictionary_class));
+    }
+
     // nested classes are registered before the root that references them
     for class in &context.classes {
       out.push_str(&Self::emit_class(class));
     }
     out
+  }
+
+  /// extracts an object or dictionary "payload" property into a dedicated named type,
+  /// mirroring the TypeScript renderer
+  fn extract_payload_node(
+    operation_node: &Node,
+    payload_type_name: &str,
+  ) -> (Node, Option<Node>) {
+    if let Node::Object { properties } = operation_node {
+      if let Some(payload_prop) = properties.iter().find(|p| p.name == "payload") {
+        if matches!(&payload_prop.node, Node::Object { .. } | Node::Dictionary(_)) {
+          let payload_node = payload_prop.node.clone();
+          let main_properties = properties
+            .iter()
+            .map(|p| {
+              if p.name == "payload" {
+                Property {
+                  name: p.name.clone(),
+                  required: p.required,
+                  node: Node::TypeRef(payload_type_name.to_string()),
+                }
+              } else {
+                p.clone()
+              }
+            })
+            .collect();
+          return (
+            Node::Object { properties: main_properties },
+            Some(payload_node),
+          );
+        }
+      }
+    }
+    (operation_node.clone(), None)
   }
 
   fn emit_enum(enum_definition: &EnumDefinition) -> String {
@@ -102,6 +160,17 @@ impl PhpDTORenderer {
     pascal
   }
 
+  /// dictionaries have dynamic keys, so the class wraps ArrayObject and
+  /// serializes as a JSON object (a plain PHP array would encode an empty
+  /// dictionary as [] instead of {})
+  fn emit_dictionary_class(dictionary_class: &DictionaryClassDefinition) -> String {
+    format!(
+      "\n/** @extends ArrayObject<string, {}> */\nclass {} extends ArrayObject implements JsonSerializable {{\n  public function jsonSerialize(): object {{\n    return (object) $this->getArrayCopy();\n  }}\n}}\n",
+      dictionary_class.value_doc,
+      dictionary_class.name,
+    )
+  }
+
   fn emit_class(class: &ClassDefinition) -> String {
     let mut out = format!("\nclass {} {{\n", class.name);
 
@@ -122,6 +191,7 @@ impl EmitContext {
     Self {
       classes: vec![],
       enums: vec![],
+      dictionary_classes: vec![],
       type_name_counts: HashMap::new(),
     }
   }
@@ -156,6 +226,14 @@ impl EmitContext {
     }
 
     self.classes.push(ClassDefinition { name: name.clone(), properties: class_properties });
+    name
+  }
+
+  fn register_dictionary_class(&mut self, preferred_name: &str, value: &Node) -> String {
+    let name = self.unique_type_name(preferred_name);
+    let (value_type, value_doc) = self.emit_type(value, &format!("{}Value", name));
+    let value_doc = value_doc.unwrap_or(value_type);
+    self.dictionary_classes.push(DictionaryClassDefinition { name: name.clone(), value_doc });
     name
   }
 
