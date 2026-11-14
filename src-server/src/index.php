@@ -127,16 +127,16 @@ $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
 if (isNotOptionsRequest()) { 
   if (!isHeaderValid(
-    getHeaderValue(HeaderName::Accept->value, ""),
+    getHeaderValue(HeaderNames::Accept->value, ""),
     [HeaderValueAccept::ApplicationJson->value])
   ) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::Accept->value));
     return;
   }
 
   if (!isHeaderValid(
-    getHeaderValue(HeaderName::Device->value, ""),
+    getHeaderValue(HeaderNames::XOrthancDevice->value, ""),
       [
         HeaderValueDevice::Desktop->value,
         HeaderValueDevice::Mobile->value
@@ -144,19 +144,19 @@ if (isNotOptionsRequest()) {
     )
   ) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Device->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::XOrthancDevice->value . ")"));
     return;
   }
 
-  if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+  if (!isGuid(getHeaderValue(HeaderNames::XOrthancRequestId->value, ""))) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::XOrthancRequestId->value . ")"));
     return;
   }
 }
 
 $configManager = new ConfigurationManager();
-header(HeaderName::OrthancPlafromVersion->value . ": " . $configManager->getConfiguration()->version);
+header(HeaderNames::XOrthancPlatformVersion->value . ": " . $configManager->getConfiguration()->version);
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
