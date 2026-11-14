@@ -4,5 +4,6 @@ function getHeaderValue(
   string $headerName,
   string $defaultValue
 ): string {
-  return $_SERVER[$headerName] ?? $defaultValue;
+  $headers = array_change_key_case(getallheaders(), CASE_UPPER);
+  return $headers[strtoupper($headerName)] ?? $defaultValue;
 }

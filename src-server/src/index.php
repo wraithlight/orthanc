@@ -37,11 +37,11 @@ require_once("./app/utils/dice/d10_000.php");
 require_once("./app/utils/state/state.service.php");
 require_once("./app/utils/maze.php");
 
-require_once("./app/header/header-names.enum.php");
-require_once("./app/header/header-values.enum.php");
 // TODO: Cleanup range end.
 
 require_once("./app/dal-generated/headers/names/header-names.enum.php");
+require_once("./app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
+require_once("./app/dal-generated/headers/values/header-values-accept.enum.php");
 require_once("./app/dal-generated/headers/values/header-values-x-orthanc-device.enum.php");
 
 require_once("./app/api-guard/is-header-valid.php");
@@ -127,36 +127,36 @@ $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
 if (isNotOptionsRequest()) { 
   if (!isHeaderValid(
-    getHeaderValue(HeaderName::Accept->value, ""),
-    [HeaderValueAccept::ApplicationJson->value])
+    getHeaderValue(HeaderNames::Accept->value, ""),
+    [AcceptValues::ApplicationJson->value])
   ) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Accept->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::Accept->value));
     return;
   }
 
   if (!isHeaderValid(
-    getHeaderValue(HeaderName::Device->value, ""),
+    getHeaderValue(HeaderNames::XOrthancDevice->value, ""),
       [
-        HeaderValueDevice::Desktop->value,
-        HeaderValueDevice::Mobile->value
+        XOrthancDeviceValues::Desktop->value,
+        XOrthancDeviceValues::Mobile->value
       ]
     )
   ) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::Device->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::XOrthancDevice->value . ")"));
     return;
   }
 
-  if (!isGuid(getHeaderValue(HeaderName::RequestId->value, ""))) {
+  if (!isGuid(getHeaderValue(HeaderNames::XOrthancRequestId->value, ""))) {
     http_response_code(400);
-    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderName::RequestId->value . ")"));
+    echo json_encode(createFailResponse(ErrorCode::ERROR_0400_H, "Invalid header (" .HeaderNames::XOrthancRequestId->value . ")"));
     return;
   }
 }
 
 $configManager = new ConfigurationManager();
-header(HeaderName::OrthancPlafromVersion->value . ": " . $configManager->getConfiguration()->version);
+header(HeaderNames::XOrthancPlatformVersion->value . ": " . $configManager->getConfiguration()->version);
 
 use PhpApi2\PhpAPI2Wrapper as Wrapper;
 
