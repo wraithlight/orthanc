@@ -33,9 +33,10 @@ namespace PhpAPI2 {
 
       return $result;
     }
-    public static function GetBodyParams($request)
+    public static function GetBodyParams()
     {
-      return array();
+      $body = json_decode(file_get_contents('php://input'));
+      return [new Param('body', $body)];
     }
     public static function GetQueryParams($queryString)
     {
