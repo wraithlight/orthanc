@@ -1,11 +1,10 @@
 <div class="login-box">
-  <div class="login-title">
-    ORTHANC LOGIN
+  <div class="login-title" data-bind="localizedText: 'LOGIN_CONTAINER__LOGIN_FORM__TITLE'">
   </div>
 
   <div class="actions">
-    <button data-bind="click: onGuestLogin">Play as Guest</button>
-    <button data-bind="click: onOptionsClick">Options</button>
-    <button data-bind="click: onHallOfFameClick">Hall of Fame</button>
+    <button data-bind="click: onGuestLogin, localizedText: 'LOGIN_CONTAINER__LOGIN_FORM__CTA_PLAY_AS_GUEST'"></button>
+    <button data-bind="click: onOptionsClick, localizedText: 'LOGIN_CONTAINER__LOGIN_FORM__CTA_OPTIONS'"></button>
+    <button data-bind="click: onHallOfFameClick, localizedText: 'LOGIN_CONTAINER__LOGIN_FORM__CTA_HALL_OF_FAME'"></button>
   </div>
 </div>
