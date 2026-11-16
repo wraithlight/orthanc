@@ -52,16 +52,21 @@ jobs:
 
           echo "<details>" >> table.md
           echo "<summary>CVE scan results</summary>" >> table.md
+          echo "" >> table.md
           echo "| Package | CVE | Severity | Title |" >> table.md
           echo "|---------|-----|----------|-------|" >> table.md
 
           jq -r '
-            .Results[]?.Vulnerabilities[] |
+            .Results[]?.Vulnerabilities[]? |
             [.PkgName, .VulnerabilityID, .Severity, .Title] |
             @tsv
-          ' trivy-output/result.json | while IFS=$'\t' read -r pkg cve sev title; do
-            echo "| $pkg | $cve | $sev | $title |" >> table.md
+          ' trivy-output/result.json |
+          while IFS=$'\t' read -r pkg cve sev title; do
+            printf '| %s | %s | %s | %s |\n' \
+            "$pkg" "$cve" "$sev" "$title"  >> table.md
           done
+
+          echo "" >> table.md
           echo "</details>" >> table.md
 
       - name: Find Comment
