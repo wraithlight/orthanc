@@ -58,13 +58,32 @@ namespace PhpAPI2 {
 
     private static function Hydrate($data, string $className)
     {
-      $object = new $className();
-      foreach ($data as $key => $value) {
-        if (property_exists($object, $key)) {
+        $object = new $className();
+        $reflection = new \ReflectionClass($object);
+
+        foreach ($data as $key => $value) {
+          if (!$reflection->hasProperty($key)) {
+            continue;
+          }
+
+          $property = $reflection->getProperty($key);
+          $type = $property->getType();
+
+          if ($type instanceof \ReflectionNamedType && !$type->isBuiltin() && $value !== null) {
+            $propertyClass = $type->getName();
+
+            if (enum_exists($propertyClass)) {
+              $value = is_subclass_of($propertyClass, \BackedEnum::class)
+                ? $propertyClass::from($value)
+                : constant($propertyClass . '::' . $value);
+              } else {
+                $value = self::Hydrate($value, $propertyClass);
+              }
+          }
           $object->$key = $value;
         }
-      }
-      return $object;
+
+        return $object;
     }
   }
 }
