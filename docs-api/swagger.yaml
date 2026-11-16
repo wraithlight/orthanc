@@ -27,7 +27,7 @@ components:
 
     REQUESTID:
       in: header
-      name: X-ORTHANC-REQUEST-ID
+      name: X-Orthanc-Request-Id
       required: true
       schema:
         type: string
@@ -36,7 +36,7 @@ components:
 
     PLATFORM:
       in: header
-      name: X-ORTHANC-PLATFORM
+      name: X-Orthanc-Platform
       required: true
       schema:
         type: string
@@ -45,7 +45,7 @@ components:
 
     DEVICE:
       in: header
-      name: X-ORTHANC-DEVICE
+      name: X-Orthanc-Device
       required: true
       schema:
         type: string
@@ -71,7 +71,7 @@ components:
       description: Content-Type header, required for all endpoints
 
   headers:
-    X-ORTHANC-PLATFORM-VERSION:
+    X-Orthanc-Platform-Version:
       description: Current platform version
       schema:
         type: string
