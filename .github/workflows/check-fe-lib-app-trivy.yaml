@@ -50,6 +50,8 @@ jobs:
             exit 0
           fi
 
+          echo "<details>" >> table.md
+          echo "<summary>CVE scan results</summary>" >> table.md
           echo "| Package | CVE | Severity | Title |" >> table.md
           echo "|---------|-----|----------|-------|" >> table.md
 
@@ -60,6 +62,7 @@ jobs:
           ' trivy-output/result.json | while IFS=$'\t' read -r pkg cve sev title; do
             echo "| $pkg | $cve | $sev | $title |" >> table.md
           done
+          echo "</details>" >> table.md
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
