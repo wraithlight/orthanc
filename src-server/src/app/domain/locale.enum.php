@@ -2,4 +2,5 @@
 enum AppLocale: string {
   case English = "en";
   case Hungarian = "hu";
+  case Croatian = "hr";
 }

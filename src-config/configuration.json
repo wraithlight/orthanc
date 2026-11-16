@@ -10,7 +10,9 @@
   },
   "common": {
     "availableLocales": [
-      "en"
+      "en",
+      "hu",
+      "hr"
     ],
     "featureStates": {
       "applicationDefaultLanguageDefault": {
@@ -18,7 +20,7 @@
         "type": "VALUE"
       },
       "loginScreenLanguageSwitchEnabled": {
-        "value": false,
+        "value": "ENABLED",
         "type": "FLAG"
       },
       "loginScreenLanguageSwitchDefault": {
@@ -26,7 +28,7 @@
         "type": "VALUE"
       },
       "loginScreenModeScreenEnabled": {
-        "value": false,
+        "value": "DISABLED",
         "type": "FLAG"
       },
       "loginScreenModeScreenDefault": {

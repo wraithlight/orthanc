@@ -12,6 +12,7 @@ class LocalizationController
 
   public function getLocalization(string $locale)
   {
+    // TODO: Match this based on the respecitve configuration.
     $appLocale = AppLocale::tryFrom($locale);
 
     if ($appLocale === null) {
