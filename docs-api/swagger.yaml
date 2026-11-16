@@ -738,6 +738,7 @@ components:
           enum: ["FLAG"]
         value:
           type: string
+          enum: ["ENABLED", "DISABLED"]
           example: "ENABLED"
 
     ConfigurationSuccessResponseValueFeature:
