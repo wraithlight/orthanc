@@ -850,7 +850,7 @@ paths:
           description: Successfully fetched the hall of fame
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -859,7 +859,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -888,7 +888,7 @@ paths:
           description: Successfully logged in as guest
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -897,7 +897,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -927,7 +927,7 @@ paths:
           description: Character generated successfully
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -936,7 +936,7 @@ paths:
           description: Unauthorized
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -945,7 +945,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -969,7 +969,7 @@ paths:
           description: Game started successfully
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -978,7 +978,7 @@ paths:
           description: Unauthorized
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -987,7 +987,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1017,7 +1017,7 @@ paths:
           description: Message sent successfully
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1026,7 +1026,7 @@ paths:
           description: Unauthorized
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1035,7 +1035,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1059,7 +1059,7 @@ paths:
           description: Chat messages retrieved
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1068,7 +1068,7 @@ paths:
           description: Unauthorized
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1077,7 +1077,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1107,7 +1107,7 @@ paths:
           description: Action performed
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1116,7 +1116,7 @@ paths:
           description: Unauthorized
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1125,7 +1125,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1148,7 +1148,7 @@ paths:
           description: Successfully fetched the configuration
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1157,7 +1157,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1190,7 +1190,7 @@ paths:
           description: Successful get.
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
@@ -1199,7 +1199,7 @@ paths:
           description: Internal server error
           headers:
             X-ORTHANC-PLATFROM-VERSION:
-              $ref: '#/components/headers/X-ORTHANC-PLATFORM-VERSION'
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
           content:
             application/json:
               schema:
