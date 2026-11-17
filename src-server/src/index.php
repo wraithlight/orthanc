@@ -103,11 +103,15 @@ require_once("./app/dal-generated/dtos/response/post-game-action.model.php");
 require_once("./app/dal-generated/dtos/response/get-hall-of-fame.model.php");
 require_once("./app/dal-generated/dtos/response/get-localization-locale.model.php");
 require_once("./app/dal-generated/dtos/response/post-login-guest.model.php");
+require_once("./app/dal-generated/dtos/response/post-database-deploy.model.php");
+require_once("./app/dal-generated/dtos/response/post-database-migrate.model.php");
 
 require_once("./app/dal-generated/dtos/request/post-generate-character.model.php");
 require_once("./app/dal-generated/dtos/request/post-game-action.model.php");
 require_once("./app/dal-generated/dtos/request/post-send-chat.model.php");
 require_once("./app/dal-generated/dtos/request/post-login-guest.model.php");
+require_once("./app/dal-generated/dtos/request/post-database-deploy.model.php");
+require_once("./app/dal-generated/dtos/request/post-database-migrate.model.php");
 
 require_once("./app/dal-generated/paths/post-login-guest.path.const.php");
 require_once("./app/dal-generated/paths/post-generate-character.path.const.php");
@@ -118,6 +122,8 @@ require_once("./app/dal-generated/paths/get-configuration.path.const.php");
 require_once("./app/dal-generated/paths/get-localization-locale.path.const.php");
 require_once("./app/dal-generated/paths/get-poll-chat.path.const.php");
 require_once("./app/dal-generated/paths/post-send-chat.path.const.php");
+require_once("./app/dal-generated/paths/post-database-deploy.path.const.php");
+require_once("./app/dal-generated/paths/post-database-migrate.path.const.php");
 
 require_once("./app/controllers/login.controller.php");
 require_once("./app/controllers/character-creation.controller.php");
@@ -127,6 +133,7 @@ require_once("./app/controllers/swadoc.controller.php");
 require_once("./app/controllers/hall-of-fame.controller.php");
 require_once("./app/controllers/configuration.controller.php");
 require_once("./app/controllers/localization.controller.php");
+require_once("./app/controllers/database.controller.php");
 
 $isSwadocEnabled = getenv("SWAGGER_ENABLED");
 
@@ -189,6 +196,9 @@ $configurationControllerFactory = function() {
 $localizationControllerFactory = function() {
   return new LocalizationController();
 };
+$databaseControllerFactory = function() {
+  return new DatabaseController();
+};
 
 Wrapper::RegisterPath("POST", API_POST_LOGIN_GUEST_PATH, $loginControllerFactory, "loginGuest");
 Wrapper::RegisterPath("POST", API_POST_GENERATE_CHARACTER_PATH, $characterCreationControllerFactory, "generate");
@@ -199,6 +209,8 @@ Wrapper::RegisterPath("POST", API_POST_GAME_ACTION_PATH, $gameControllerFactory,
 Wrapper::RegisterPath("GET", API_GET_HALL_OF_FAME_PATH, $hallOfFameControllerFactory, "getRecords");
 Wrapper::RegisterPath("GET", API_GET_CONFIGURATION_PATH, $configurationControllerFactory, "getConfiguration");
 Wrapper::RegisterPath("GET", API_GET_LOCALIZATION_LOCALE_PATH, $localizationControllerFactory, "getLocalization");
+Wrapper::RegisterPath("POST", API_POST_DATABASE_DEPLOY_PATH, $databaseControllerFactory, "deploy");
+Wrapper::RegisterPath("POST", API_POST_DATABASE_MIGRATE_PATH, $databaseControllerFactory, "migrate");
 strtolower($isSwadocEnabled) === "true" && Wrapper::RegisterPath("GET", "/api/v1/swadoc", $swadocControllerFactory, "getSwadoc");
 
 Wrapper::Listen(true);
