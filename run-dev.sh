@@ -1,10 +1,11 @@
 #!/bin/bash
 CONTAINER_NAME=orthanc-server-dev
 ROOT_DIR=$(dirname "$(realpath "$0")")
+NETWORK_NAME=ORTHANC_Internal
 
 docker stop $CONTAINER_NAME >/dev/null 2>&1 || true
 docker rm $CONTAINER_NAME >/dev/null 2>&1 || true
-docker build -t $CONTAINER_NAME . -f Dockerfile.dev
+docker build -t $CONTAINER_NAME . -f Dockerfile.be-server.dev
 docker run -it --rm \
   -d \
   -p 3100:80 \
@@ -16,4 +17,5 @@ docker run -it --rm \
   -v $ROOT_DIR/docs-api:/var/www/docs-api \
   --env-file .env.dev \
   --name $CONTAINER_NAME \
+    --network $NETWORK_NAME \
   $CONTAINER_NAME
