@@ -224,7 +224,6 @@ components:
     DatabaseDeployRequest:
       type: object
       properties:
-      additionalProperties: false
 
     DatabaseDeploySuccessResponse:
       allOf:
