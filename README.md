@@ -21,6 +21,11 @@ Reimplementation of the Orthanc Labyrinth game from 1975.
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to the repo
+sh init.sh                                              # to create the required Docker network (ORTHANC_Internal)
+cd src-database                                         # navigate to database source
+yarn gha:build                                          # build database scheme
+sh run.sh                                               # run the database
+cd ..                                                   # back to the repo root
 cd src-server                                           # navigate to server folder
 composer install                                        # install dependencies via composer
 cd ..                                                   # navigate to the repo root
@@ -34,6 +39,11 @@ yarn                                                    # install dependencies v
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to the repo
+sh init.sh                                              # to create the required Docker network (ORTHANC_Internal)
+cd src-database                                         # navigate to database source
+yarn gha:build                                          # build database scheme
+sh run.sh                                               # run the database
+cd ..                                                   # back to the repo root
 sh run-dev.sh                                           # run the server in docker (port 3100)
 cd src-frontend-app-web                                 # navigate to frontend folder
 yarn                                                    # install dependencies via yarn
@@ -47,15 +57,27 @@ open localhost:3000                                     # open the app in your b
 
 git clone https://github.com/wraithlight/orthanc.git    # fork the repo
 cd orthanc                                              # navigate to the repo
+sh init.sh                                              # to create the required Docker network (ORTHANC_Internal)
+cd src-database                                         # navigate to database source
+yarn gha:build                                          # build database scheme
+sh run.sh                                               # run the database
+cd ..                                                   # back to the repo root
 sh run-local.sh                                         # run the app in docker
 open localhost:4100                                     # open the app in your browser
 
 ```
 
+### Application containers
+
 | Mode    | SH file         | Docker image name     | Docker container name | BE Port   | FE Port     |
 | :-:     | :-:             | :-:                   | :-:                   | :-:       | :-:         |
 | `dev`   | `run-dev.sh`    | `orthanc-server-dev`  | `orthanc-server-dev`  | `3100`    | `3000`      |
 | `local` | `run-local-sh`  | `orthanc-game-local`  | `orthanc-game-local`  | `4100`    | self-hosted |
+
+### Database container
+| Mode    | SH file                   | Docker image name     | Docker container name | DB Port   |
+| :-:     | :-:                       | :-:                   | :-:                   | :-:       |
+| `both`  | `src-database/run.sh`     | `orthanc-db`          | `orthanc-db`          | `3300`    |
 
 ## Repo-wide utilities
 If you are writing unit tests, you may press <kbd>F5</kbd> to run the spec file in the integrated terminal of Visual Studio Code.
@@ -141,7 +163,9 @@ The following technologies are used during the development of this game:
 * Docker
 * HTML
 * HTML Canvas with Typescript
+* mySQL
 * PHP
+* PHPMyAdmin
 * Rust
 * StoryBook
 * typescript/javascript
