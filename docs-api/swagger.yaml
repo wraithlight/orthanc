@@ -43,6 +43,16 @@ components:
         enum: ["web", "mobile", "application"]
       description: Platform identifier header, required for all endpoints
 
+    DATABASE-TOKEN:
+      in: header
+      name: X-Orthanc-Database-Token
+      required: true
+      schema:
+        type: string
+        format: uuid
+        example: "e5443dfe-6600-43df-972b-50e1038ff9ad"
+      description: Token to do DB deployment operations
+
     DEVICE:
       in: header
       name: X-Orthanc-Device
@@ -187,6 +197,47 @@ components:
     CharacterGenerateRequest:
       type: object
       properties:
+
+    DatabaseMigrateRequest:
+      type: object
+      properties:
+        targetVersion:
+          type: "string"
+          description: The target version. Can be `latest` or a semver.
+      required:
+        - targetVersion
+
+    DatabaseMigrateSuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              required:
+                - currentVersion
+              properties:
+                currentVersion:
+                  type: string
+                  example: "1.2.3"
+
+    DatabaseDeployRequest:
+      type: object
+      properties:
+
+    DatabaseDeploySuccessResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseSuccessResponse'
+        - type: object
+          properties:
+            payload:
+              type: object
+              required:
+                - currentVersion
+              properties:
+                currentVersion:
+                  type: string
+                  example: "1.2.3"
 
     LoginGuestSuccessResponse:
       allOf:
@@ -822,6 +873,8 @@ tags:
     description: Endpoints that are being called from the main menu.
   - name: configuration
     description: Endpoints that are configuration related.
+  - name: database
+    description: Endpoints that are DB maintenance related.
 
 paths:
   /api/v1/main/hall-of-fame:
@@ -1197,6 +1250,116 @@ paths:
                 $ref: '#/components/schemas/GetLocalizationLocaleSuccessResponse'
         '500':
           description: Internal server error
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/database/migrate:
+    post:
+      summary: Endpoint to migrate the database.
+      operationId: postDatabaseMigrate
+      tags:
+        - database
+      parameters:
+        - $ref: '#/components/parameters/REQUESTID'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
+        - $ref: '#/components/parameters/DATABASE-TOKEN'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseMigrateRequest'
+      responses:
+        '200':
+          description: Successful migration.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseMigrateSuccessResponse'
+        '400':
+          description: Bad request.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /api/v1/database/deploy:
+    post:
+      summary: Endpoint to deploy the database.
+      operationId: postDatabaseDeploy
+      tags:
+        - database
+      parameters:
+        - $ref: '#/components/parameters/REQUESTID'
+        - $ref: '#/components/parameters/ACCEPTSAPPJSON'
+        - $ref: '#/components/parameters/CONTENTYPEJSON'
+        - $ref: '#/components/parameters/DATABASE-TOKEN'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DatabaseDeployRequest'
+      responses:
+        '200':
+          description: Successful migration.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DatabaseDeploySuccessResponse'
+        '400':
+          description: Bad request.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized.
+          headers:
+            X-ORTHANC-PLATFROM-VERSION:
+              $ref: '#/components/headers/X-Orthanc-Platform-Version'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error.
           headers:
             X-ORTHANC-PLATFROM-VERSION:
               $ref: '#/components/headers/X-Orthanc-Platform-Version'
