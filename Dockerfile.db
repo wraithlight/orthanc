@@ -1,0 +1,4 @@
+FROM mysql:8.0.32
+WORKDIR /usr/src/app
+
+EXPOSE 3300

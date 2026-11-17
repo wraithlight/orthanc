@@ -1,0 +1,8 @@
+CONTAINER_NAME=orthanc-db
+SQL_ROOT_PASSWORD=orthanc-db-password
+SQL_USERNAME=orthanc-db-user
+SQL_PASSWORD=orthanc-db-password
+OUT_PORT=9000
+IN_PORT=3300
+DATABASE_NAME=ORTHANC
+NETWORK_NAME=ORTHANC_Internal
