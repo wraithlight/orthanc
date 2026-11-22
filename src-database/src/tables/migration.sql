@@ -1,0 +1,14 @@
+CREATE TABLE Migration (
+  `id` CHAR(36) NOT NULL PRIMARY KEY,
+  `version` VARCHAR(5) NOT NULL,
+  `status` ENUM(
+    'MIGRATION_PROGRESS',
+    'MIGRATION_FAIL',
+    'MIGRATION_SUCCESS',
+    'REVERT_PROGRESS',
+    'REVERT_FAIL',
+    'REVERT_SUCCESS'
+  ) NOT NULL,
+  `migrationStart` DATETIME(6) NULL,
+  `migrationEnd` DATETIME(6) NULL
+);
